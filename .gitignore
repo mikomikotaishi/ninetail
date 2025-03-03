@@ -1,0 +1,124 @@
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
+
+# Bot token and personalised information
+app/src/main/resources/config.properties
+app/src/main/resources/responses.json
+app/bin
+app/build
+
+# Ignore Maven build directory
+.settings
+.project
+app/.classpath
+app/.project
+app/.settings
+
+# C++ build directory
+app/src/native/chess/.xmake
+app/src/native/poker/.xmake
+app/src/native/chess/.cache
+app/src/native/poker/.cache
+
+# Tools
+/.direnv/
+/venv/
+compile_commands.json
+/.envrc
+
+# IDEs
+/.vs/
+/.vscode/
+/.idea/
+
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+## Compiled Dynamic libraries
+# *.so
+# *.dylib
+# *.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Program specific (C++)
+bin/
+build/
+modules_cache/
+gcm.cache/
+
+# Temporary
+includeold/
+srcold/
+srcmodules/
+
+# Added by cargo
+
+/target
+
+
+# bdep
+
+.bdep/
+
+# Local default options files.
+#
+.build2/local/
+
+# Compiler/linker output.
+#
+*.d
+*.t
+*.i
+*.i.*
+*.ii
+*.ii.*
+*.o
+*.obj
+*.gcm
+*.pcm
+*.ifc
+# *.so
+# *.dylib
+# *.dll
+*.a
+*.lib
+*.exp
+*.pdb
+*.ilk
+*.exe
+*.exe.dlls/
+*.exe.manifest
+*.pc
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
