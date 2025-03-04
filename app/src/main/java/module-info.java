@@ -4,6 +4,7 @@ module bot.ninetail {
     requires jakarta.annotation;
     requires transitive jakarta.json;
     requires org.slf4j;
+    requires org.mockito;
     requires net.dv8tion.jda;
 
     opens bot.ninetail.core to jakarta.json;

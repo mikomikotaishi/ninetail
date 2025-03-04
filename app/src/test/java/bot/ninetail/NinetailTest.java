@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AppTest {
+class NinetailTest {
     @Test void appHasAGreeting() {
         Ninetail classUnderTest = new Ninetail();
         // assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
