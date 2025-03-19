@@ -3,6 +3,8 @@ package bot.ninetail.audio;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import bot.ninetail.core.LogLevel;
+import bot.ninetail.core.Logger;
 import bot.ninetail.utilities.Temporal;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
@@ -66,13 +68,13 @@ public class TrackScheduler extends AudioEventAdapter {
     public void queue(AudioTrack track) {
         String trackInfo = String.format("%s (%s)", track.getInfo().title, Temporal.getFormattedTime(track.getInfo().length));
         if (!player.startTrack(track, true)) {
-            System.out.println(String.format("Queued track: %s", track.getInfo().title));
+            Logger.log(LogLevel.INFO, String.format("Queued track: %s", track.getInfo().title));
             MessageChannel textChannel = botAudio.getTextChannel();
             queue.offer(track);
             if (textChannel != null)
                 textChannel.sendMessage(String.format("Queued track: **%s**", trackInfo)).queue();
         } else {
-            System.out.println("Now playing: " + track.getInfo().title);
+            Logger.log(LogLevel.INFO, "Now playing: " + track.getInfo().title);
             sendNowPlayingMessage(track);
         }
     }
@@ -89,11 +91,11 @@ public class TrackScheduler extends AudioEventAdapter {
         if (endReason.mayStartNext) {
             AudioTrack nextTrack = queue.poll();
             if (nextTrack != null) {
-                System.out.println("Current song ended. Beginning next song...");
+                Logger.log(LogLevel.INFO, "Current song ended. Beginning next song...");
                 player.startTrack(nextTrack, false);
                 sendNowPlayingMessage(nextTrack);
             } else {
-                System.out.println("Song queue empty.");
+                Logger.log(LogLevel.INFO, "Song queue empty.");
                 MessageChannel textChannel = botAudio.getTextChannel();
                 if (textChannel != null)
                     textChannel.sendMessage("Queue is empty. Use `/play` to queue new songs.").queue();
@@ -107,10 +109,10 @@ public class TrackScheduler extends AudioEventAdapter {
     public void skip() {
         AudioTrack nextTrack = queue.poll();
         if (nextTrack != null) {
-            System.out.println("Skipping to next track...");
+            Logger.log(LogLevel.INFO, "Skipping to next track...");
             player.startTrack(nextTrack, false);
         } else {
-            System.out.println("No more tracks to skip.");
+            Logger.log(LogLevel.INFO, "No more tracks to skip.");
             player.stopTrack();
         }
     }

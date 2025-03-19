@@ -61,7 +61,7 @@ export struct Player {
      * @param playerId The ID of the player.
      * @param startingChips The starting number of chips for the player.
      */
-    Player(int playerId, int startingChips) : 
+    Player(int playerId, int startingChips): 
         id(playerId), 
         chips(startingChips), 
         currentBet(0), 
@@ -239,7 +239,7 @@ private:
         int bestHandValue = -1;
         std::vector<int> winners;
 
-        for (int i = 0; i < players.size(); i++) {
+        for (int i = 0; i < players.size(); ++i) {
             if (players[i].folded) 
                 continue;
 

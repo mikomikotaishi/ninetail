@@ -1,5 +1,8 @@
 package bot.ninetail.audio;
 
+import bot.ninetail.core.LogLevel;
+import bot.ninetail.core.Logger;
+
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
@@ -50,7 +53,7 @@ public class AudioPlayerLoadResultHandler implements AudioLoadResultHandler {
      */
     @Override
     public void trackLoaded(AudioTrack track) {
-        System.out.println("Loading track: " + track.getInfo().title);
+        Logger.log(LogLevel.INFO, "Loading track: " + track.getInfo().title);
         textChannel.sendMessage(String.format("Added to queue: **%s**", track.getInfo().title)).queue();
         scheduler.queue(track);
     }
@@ -62,7 +65,7 @@ public class AudioPlayerLoadResultHandler implements AudioLoadResultHandler {
      */
     @Override
     public void playlistLoaded(AudioPlaylist playlist) {
-        System.out.println("Loading playlist: " + playlist.getName());
+        Logger.log(LogLevel.INFO, "Loading playlist: " + playlist.getName());
         if (playlist.isSearchResult()) {
             AudioTrack firstTrack = playlist.getTracks().get(0);
             textChannel.sendMessage(String.format("Added to queue: **%s**", firstTrack.getInfo().title)).queue();

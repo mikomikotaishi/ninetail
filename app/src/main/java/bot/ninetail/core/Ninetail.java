@@ -17,6 +17,7 @@ import bot.ninetail.commands.game.poker.*;
 import bot.ninetail.commands.general.*;
 import bot.ninetail.commands.imageboard.*;
 import bot.ninetail.commands.system.*;
+import bot.ninetail.commands.system.Shutdown;
 import bot.ninetail.commands.webhook.*;
 import bot.ninetail.system.*;
 
@@ -31,6 +32,7 @@ import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.InteractionContextType;
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -82,12 +84,14 @@ public class Ninetail extends ListenerAdapter {
             GatewayIntent.SCHEDULED_EVENTS
         );
 
+        Logger.log(LogLevel.INFO, "Starting bot.");
         JDA api = JDABuilder.createDefault(BOT_TOKEN, INTENTS)
             .build()
             .awaitReady();
 
         CommandListUpdateAction commands = api.updateCommands();
 
+        Logger.log(LogLevel.INFO, "Loading bot commands.");
         commands.addCommands(
             // ====== Admin commands ======
             // Ban command
@@ -97,27 +101,27 @@ public class Ninetail extends ListenerAdapter {
                 .addOptions(new OptionData(INTEGER, "del_days", "Delete messages from the past days.")
                     .setRequiredRange(0, 7))
                 .addOptions(new OptionData(STRING, "reason", "The ban reason to use (default: Banned by <user>)"))
-                .setGuildOnly(true)
+                .setContexts(InteractionContextType.GUILD)
                 .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.BAN_MEMBERS)),
             
             // ====== Audio commands ======
             // Check queue command
             Commands.slash("checkqueue", "Sends the list of all songs in the current queue")
-                .setGuildOnly(true),
+                .setContexts(InteractionContextType.GUILD),
             // Clear command
             Commands.slash("clear", "Clears all music in the current queue")
-                .setGuildOnly(true),
+                .setContexts(InteractionContextType.GUILD),
             // Disconnect command
             Commands.slash("disconnect", "Disconnects the bot from voice channel")
-                .setGuildOnly(true),
+                .setContexts(InteractionContextType.GUILD),
             // Play command
             Commands.slash("play", "Plays audio in the voice channel of the user")
                 .addOptions(new OptionData(STRING, "query", "The query for YouTube")
                     .setRequired(true))
-                .setGuildOnly(true),
+                .setContexts(InteractionContextType.GUILD),
             // Skip command
             Commands.slash("skip", "Skips the current song")
-                .setGuildOnly(true),
+                .setContexts(InteractionContextType.GUILD),
 
             // ====== Cryptography commands ======
             // Encrypt AES command
@@ -233,9 +237,16 @@ public class Ninetail extends ListenerAdapter {
                     .setRequired(true))
                 .addOptions(new OptionData(STRING, "message", "The message to send")
                     .setRequired(true))
-                .setGuildOnly(true)
+                .setContexts(InteractionContextType.GUILD)
         ).queue();
+        Logger.log(LogLevel.INFO, "Commands finished logging!");
 
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            Logger.log(LogLevel.INFO, "Invoking shutdown hook");
+            Logger.close();
+        }));
+
+        Logger.log(LogLevel.INFO, "Instantiating instance.");
         Ninetail botInstance = new Ninetail(api);
         api.addEventListener(botInstance);
     }
@@ -366,6 +377,7 @@ public class Ninetail extends ListenerAdapter {
             // Default
             default:
                 event.reply("Invalid command!").setEphemeral(true).queue();
+                Logger.log(LogLevel.INFO, String.format("Invalid command called by %s of guild %s", event.getUser(), event.getGuild()));
         }
     }
 }

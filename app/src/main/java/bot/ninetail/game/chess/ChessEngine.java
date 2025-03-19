@@ -7,6 +7,8 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+import bot.ninetail.core.LogLevel;
+import bot.ninetail.core.Logger;
 import bot.ninetail.game.Engine;
 
 /**
@@ -79,7 +81,7 @@ public class ChessEngine extends Engine {
         arena = Arena.ofShared();
         Linker linker = Linker.nativeLinker();
         Path libPath = Paths.get(System.getProperty("user.dir"), "src/native/chess/lib/libchess.so").toAbsolutePath();
-        System.out.println("Loading chess library from: " + libPath);
+        Logger.log(LogLevel.INFO, "Loading chess library from: " + libPath);
         SymbolLookup symbolLookup = SymbolLookup.libraryLookup(libPath.toString(), arena);
         
         initChessEngineHandle = linker.downcallHandle(
@@ -140,9 +142,9 @@ public class ChessEngine extends Engine {
      */
     public void initChessEngine() {
         try {
-            System.out.println("Initialising chess engine...");
+            Logger.log(LogLevel.INFO, "Initialising chess engine...");
             initChessEngineHandle.invoke();
-            System.out.println("Chess engine initialised successfully");
+            Logger.log(LogLevel.INFO, "Chess engine initialised successfully");
         } catch (Throwable e) {
             throw new RuntimeException("Failed to initialise chess engine", e);
         }
@@ -168,7 +170,7 @@ public class ChessEngine extends Engine {
             }
             
             String resultStr = result.getUtf8String(0);
-            System.out.println("Java: getBoardState returned: " + resultStr);
+            Logger.log(LogLevel.INFO, "Java: getBoardState returned: " + resultStr);
             return resultStr;
         } catch (Throwable e) {
             System.err.println("getBoardState exception: " + e);

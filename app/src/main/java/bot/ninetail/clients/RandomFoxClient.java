@@ -10,6 +10,8 @@ import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 
+import bot.ninetail.core.LogLevel;
+import bot.ninetail.core.Logger;
 import bot.ninetail.structures.clients.RandomImageClient;
 
 /**
@@ -44,12 +46,15 @@ public class RandomFoxClient extends RandomImageClient {
                 .build();
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        Logger.log(LogLevel.INFO, "Obtaining response.");
 
         if (response.statusCode() != 200) {
+            Logger.log(LogLevel.ERROR, "Failed to execute HTTP request!");
             throw new IOException("Unexpected response code: " + response.statusCode());
         }
-
+        Logger.log(LogLevel.INFO, "Successfully obtained response.");
         String responseBody = response.body();
+
         try (JsonReader jsonReader = Json.createReader(new StringReader(responseBody))) {
             JsonObject jsonObject = jsonReader.readObject();
             JsonArray array = Json.createArrayBuilder().add(jsonObject).build();

@@ -4,7 +4,7 @@
 </div>
 
 ## Overview
-A general-use fox-themed Discord bot, written in Java with [JDA (Java Discord API)](https://github.com/discord-jda/JDA) and C++ (via `java.lang.foreign`).
+🦊 A general-use fox-themed Discord bot, written in Java with [JDA (Java Discord API)](https://github.com/discord-jda/JDA) and C++ (via `java.lang.foreign`).
 
 ## Usage:
 To use the bot, ensure that Java is installed.

@@ -2,6 +2,8 @@ package bot.ninetail.commands.admin;
 
 import java.util.concurrent.TimeUnit;
 
+import bot.ninetail.core.LogLevel;
+import bot.ninetail.core.Logger;
 import bot.ninetail.structures.commands.BasicCommand;
 
 import jakarta.annotation.Nonnull;
@@ -30,7 +32,11 @@ public final class Ban implements BasicCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        System.out.println("Ban command attempted.");
+        Logger.log(LogLevel.INFO, String.format("Ban command invoked by %s (%s) of guild %s (%s)", 
+                                                event.getUser().getGlobalName(), 
+                                                event.getUser().getId(),
+                                                event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
+                                                event.getGuild() != null ? event.getGuild().getId() : "N/A"));
 
         Member member = event.getOption("user").getAsMember();
         User user = event.getOption("user").getAsUser();
@@ -39,20 +45,20 @@ public final class Ban implements BasicCommand {
         InteractionHook hook = event.getHook();
         hook.setEphemeral(true);
         if (!event.getMember().hasPermission(Permission.BAN_MEMBERS)) {
-            System.out.println(String.format("Attempted (failed) ban attempt by %s (%s)", event.getUser().getGlobalName(), event.getUser().getId()));
+            Logger.log(LogLevel.INFO, String.format("Attempted (failed) ban attempt by %s (%s)", event.getUser().getGlobalName(), event.getUser().getId()));
             hook.sendMessage("You do not have the required permissions to ban users from this server.").queue();
             return;
         }
 
         Member selfMember = event.getGuild().getSelfMember();
         if (!selfMember.hasPermission(Permission.BAN_MEMBERS)) {
-            System.out.println(String.format("Attempted (failed) shutdown attempt by %s (%s)", event.getUser().getGlobalName(), event.getUser().getId()));
+            Logger.log(LogLevel.INFO, String.format("Attempted (failed) shutdown attempt by %s (%s)", event.getUser().getGlobalName(), event.getUser().getId()));
             hook.sendMessage("I don't have the required permissions to ban users from this server.").queue();
             return;
         }
 
         if (member != null && !selfMember.canInteract(member)) {
-            System.out.println(String.format("Attempted (failed) shutdown attempt by %s (%s)", event.getUser().getGlobalName(), event.getUser().getId()));
+            Logger.log(LogLevel.INFO, String.format("Attempted (failed) shutdown attempt by %s (%s)", event.getUser().getGlobalName(), event.getUser().getId()));
             hook.sendMessage("This user is too powerful for me to ban.").queue();
             return;
         }
@@ -68,7 +74,7 @@ public final class Ban implements BasicCommand {
             .flatMap(v -> hook.sendMessage("Banned user " + user.getName()))
             .queue();
 
-        System.out.println(String.format("Ban executed by %s (%s) on %s (%s)", 
+        Logger.log(LogLevel.INFO, String.format("Ban executed by %s (%s) on %s (%s)", 
             event.getUser().getGlobalName(), event.getUser().getId(), user.getName(), user.getId()));
     }
 }

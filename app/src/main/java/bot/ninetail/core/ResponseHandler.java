@@ -38,23 +38,23 @@ public class ResponseHandler {
      * Reloads responses from responses.json.
      */
     public static void reloadResponses() {
-        System.out.println("Emptying map");
+        Logger.log(LogLevel.INFO, "Emptying map");
         RESPONSES.clear();
         try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("responses.json")) {
             if (inputStream == null) {
-                System.out.println("responses.json not found. Skipping loading responses.");
+                Logger.log(LogLevel.WARN, "responses.json not found. Skipping loading responses.");
                 return;
             }
-            System.out.println("Loading responses.json");
+            Logger.log(LogLevel.INFO, "Loading responses.json");
             try (JsonReader jsonReader = Json.createReader(inputStream)) {
                 JsonObject responsesJSON = jsonReader.readObject();
-                for (String key : responsesJSON.keySet()) {
-                    System.out.println("Loading response for key " + key);
+                for (String key: responsesJSON.keySet()) {
+                    Logger.log(LogLevel.INFO, "Loading response for key " + key);
                     RESPONSES.put(key, responsesJSON.getString(key));
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.logException(LogLevel.ERROR, e);
         }
     }
 
@@ -64,13 +64,13 @@ public class ResponseHandler {
      * @param textChannel The channel to send the response to.
      */
     public static void handleMessage(String content, MessageChannel textChannel) {
-        System.out.println("Parsing for responses");
-        System.out.println("Message: " + content);
+        Logger.log(LogLevel.INFO, "Parsing for responses");
+        Logger.log(LogLevel.INFO, "Message: " + content);
         for (Map.Entry<String, String> entry: RESPONSES.entrySet()) {
-            System.out.println("Checking response key: " + entry.getKey());
+            Logger.log(LogLevel.INFO, "Checking response key: " + entry.getKey());
             String pattern = String.format("\\b%s\\b", Pattern.quote(entry.getKey()));
             if (Pattern.compile(pattern, Pattern.CASE_INSENSITIVE).matcher(content).find()) {
-                System.out.println("Match found! Sending: " + entry.getValue());
+                Logger.log(LogLevel.INFO, "Match found! Sending: " + entry.getValue());
                 textChannel.sendMessage(entry.getValue()).queue();
                 break;
             }

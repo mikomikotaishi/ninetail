@@ -1,9 +1,12 @@
 package bot.ninetail.commands.game.chess;
 
+import jakarta.annotation.Nonnull;
+
+import bot.ninetail.core.LogLevel;
+import bot.ninetail.core.Logger;
 import bot.ninetail.game.chess.*;
 import bot.ninetail.structures.commands.GameCommand;
 
-import jakarta.annotation.Nonnull;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 /**
@@ -23,6 +26,11 @@ public final class ChessMove implements GameCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
+        Logger.log(LogLevel.INFO, String.format("Chess move command invoked by %s (%s) of guild %s (%s)", 
+                                                event.getUser().getGlobalName(), 
+                                                event.getUser().getId(),
+                                                event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
+                                                event.getGuild() != null ? event.getGuild().getId() : "N/A"));
         ChessEngine chessEngine = ChessGameManager.getChessEngine();
         if (chessEngine == null) {
             event.reply("No game in progress. Use /newchess to start a new game.").queue();

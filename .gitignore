@@ -9,6 +9,7 @@ app/src/main/resources/config.properties
 app/src/main/resources/responses.json
 app/bin
 app/build
+app/logs
 
 # Ignore Maven build directory
 .settings

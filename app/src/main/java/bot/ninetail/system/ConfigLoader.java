@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import bot.ninetail.core.LogLevel;
+import bot.ninetail.core.Logger;
+
 /**
  * Loads configuration properties from config.properties.
  */
@@ -63,7 +66,7 @@ public class ConfigLoader {
     static {
         try (InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream("config.properties")) {
             if (input == null) {
-                System.err.println("Unable to find config.properties!");
+                Logger.log(LogLevel.ERROR, "Unable to find config.properties!");
                 throw new FileNotFoundException("Unable to find config.properties!");
             }
             PROPERTIES.load(input);
@@ -83,29 +86,29 @@ public class ConfigLoader {
 
 
             if (botToken == null) {
-                System.err.println("No bot token found!");
+                Logger.log(LogLevel.ERROR, "No bot token found!");
                 throw new IllegalArgumentException("No bot token found!");
             }
             if (masterPassword == null) {
-                System.err.println("No shutdown password found!");
+                Logger.log(LogLevel.ERROR, "No shutdown password found!");
                 throw new IllegalArgumentException("No shutdown password found!");
             }
             if (weatherToken == null)
-                System.err.println("No Weather token found!");
+                Logger.log(LogLevel.WARN, "No Weather token found!");
             if (danbooruToken == null)
-                System.err.println("No Danbooru token found!");
+                Logger.log(LogLevel.WARN, "No Danbooru token found!");
             if (e621Token == null)
-                System.err.println("No e621 token found!");
+                Logger.log(LogLevel.WARN, "No e621 token found!");
             if (gelbooruToken == null)
-                System.err.println("No Gelbooru token found!");
+                Logger.log(LogLevel.WARN, "No Gelbooru token found!");
             if (gyatebooruToken == null)
-                System.err.println("No Gyate Booru token found!");
+                Logger.log(LogLevel.WARN, "No Gyate Booru token found!");
             if (rule34Token == null)
-                System.err.println("No Rule34 token found!");
+                Logger.log(LogLevel.WARN, "No Rule34 token found!");
             
                 
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.logException(LogLevel.ERROR, e);
         }
     }
 
@@ -192,7 +195,7 @@ public class ConfigLoader {
     public static void reloadConfig() {
         try (InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream("config.properties")) {
             if (input == null) {
-                System.err.println("Unable to find config.properties!");
+                Logger.log(LogLevel.ERROR, "Unable to find config.properties!");
                 throw new FileNotFoundException("Unable to find config.properties!");
             }
             PROPERTIES.load(input);
@@ -204,19 +207,19 @@ public class ConfigLoader {
             rule34Token = PROPERTIES.getProperty("RULE34_TOKEN");
             
             if (weatherToken == null)
-                System.err.println("No weather token found!");
+                Logger.log(LogLevel.WARN, "No weather token found!");
             if (danbooruToken == null)
-                System.err.println("No Danbooru token found!");
+                Logger.log(LogLevel.WARN, "No Danbooru token found!");
             if (e621Token == null)
-                System.err.println("No e621 token found!");
+                Logger.log(LogLevel.WARN, "No e621 token found!");
             if (gelbooruToken == null)
-                System.err.println("No Gelbooru token found!");
+                Logger.log(LogLevel.WARN, "No Gelbooru token found!");
             if (gyatebooruToken == null)
-                System.err.println("No Gyate Booru token found!");
+                Logger.log(LogLevel.WARN, "No Gyate Booru token found!");
             if (rule34Token == null)
-                System.err.println("No Rule34 token found!");
+                Logger.log(LogLevel.WARN, "No Rule34 token found!");
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.logException(LogLevel.ERROR, e);
         }
     }
 }

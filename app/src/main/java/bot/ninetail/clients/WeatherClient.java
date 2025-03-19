@@ -5,13 +5,15 @@ import java.io.StringReader;
 import java.net.URI;
 import java.net.http.*;
 
-import bot.ninetail.structures.clients.LocationInformationClient;
-import bot.ninetail.system.ConfigLoader;
-
 import jakarta.annotation.Nonnull;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
+
+import bot.ninetail.core.LogLevel;
+import bot.ninetail.core.Logger;
+import bot.ninetail.structures.clients.LocationInformationClient;
+import bot.ninetail.system.ConfigLoader;
 
 /**
  * Client for OpenWeatherMap.
@@ -42,7 +44,7 @@ public class WeatherClient extends LocationInformationClient {
     @Override
     public JsonObject getInfo(@Nonnull String location) throws IOException, InterruptedException {
         if (getApiKey() == null || getApiKey().isEmpty()) {
-            System.err.println("Weather API key missing!");
+            Logger.log(LogLevel.ERROR, "Weather API key missing!");
             throw new IllegalArgumentException("No Weather token found!");
         }
 
@@ -50,14 +52,14 @@ public class WeatherClient extends LocationInformationClient {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .build();
-        System.out.println("Issuing request to OpenWeatherMap for location: " + location);
+        Logger.log(LogLevel.INFO, "Issuing request to OpenWeatherMap for location: " + location);
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println("Obtaining response.");
+        Logger.log(LogLevel.INFO, "Obtaining response.");
         if (response.statusCode() != 200) {
-            System.err.println("Failed to execute HTTP request!");
+            Logger.log(LogLevel.ERROR, "Failed to execute HTTP request!");
             throw new IOException("Failed to execute HTTP request: " + response.statusCode());
         }
-        System.out.println("Successfully obtained response.");
+        Logger.log(LogLevel.INFO, "Successfully obtained response.");
         String responseBody = response.body();
         
         try (JsonReader jsonReader = Json.createReader(new StringReader(responseBody))) {

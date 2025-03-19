@@ -1,9 +1,11 @@
 package bot.ninetail.commands.general;
 
+import jakarta.annotation.Nonnull;
+
+import bot.ninetail.core.LogLevel;
+import bot.ninetail.core.Logger;
 import bot.ninetail.structures.commands.BasicCommand;
 import bot.ninetail.utilities.RandomNumberGenerator;
-
-import jakarta.annotation.Nonnull;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
@@ -41,7 +43,11 @@ public final class FoxFacts implements BasicCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        System.out.println("Fox fact command invoked.");
+        Logger.log(LogLevel.INFO, String.format("Fox facts command invoked by %s (%s) of guild %s (%s)", 
+                                                event.getUser().getGlobalName(), 
+                                                event.getUser().getId(),
+                                                event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
+                                                event.getGuild() != null ? event.getGuild().getId() : "N/A"));
         event.reply(FoxFacts.getResponse()).queue();
     }
 }

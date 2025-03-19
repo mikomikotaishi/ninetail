@@ -1,8 +1,10 @@
 package bot.ninetail.commands.general;
 
-import bot.ninetail.structures.commands.BasicCommand;
-
 import jakarta.annotation.Nonnull;
+
+import bot.ninetail.core.LogLevel;
+import bot.ninetail.core.Logger;
+import bot.ninetail.structures.commands.BasicCommand;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
@@ -23,13 +25,17 @@ public final class Ping implements BasicCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        System.out.println("Ping command invoked.");
+        Logger.log(LogLevel.INFO, String.format("Ping command invoked by %s (%s) of guild %s (%s)", 
+                                                event.getUser().getGlobalName(), 
+                                                event.getUser().getId(),
+                                                event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
+                                                event.getGuild() != null ? event.getGuild().getId() : "N/A"));
         long startTime = System.currentTimeMillis();
         event.reply("Konkon!").queue(response -> {
             long endTime = System.currentTimeMillis();
             long latency = endTime - startTime;
             response.editOriginal(String.format("Konkon! (Latency: %dms)", latency)).queue();
-            System.out.println("Ping executed with latency %dms" + latency);
+            Logger.log(LogLevel.INFO, String.format("Ping executed with latency %dms", latency));
         });
     }
 }

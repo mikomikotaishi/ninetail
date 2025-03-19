@@ -7,6 +7,8 @@ import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 
 import bot.ninetail.clients.DanbooruClient;
+import bot.ninetail.core.LogLevel;
+import bot.ninetail.core.Logger;
 import bot.ninetail.structures.commands.APICommand;
 import bot.ninetail.utilities.RandomNumberGenerator;
 
@@ -34,16 +36,20 @@ public final class Danbooru implements APICommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        System.out.println("Danbooru command invoked");
+        Logger.log(LogLevel.INFO, String.format("Danbooru command invoked by %s (%s) of guild %s (%s)", 
+                                                event.getUser().getGlobalName(), 
+                                                event.getUser().getId(),
+                                                event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
+                                                event.getGuild() != null ? event.getGuild().getId() : "N/A"));
         if (danbooruClient.getApiKey() == null) {
-            System.err.println("Failed to invoke Danbooru command due to missing API token.");
-            event.reply("Sorry, Danbooru API token was not provided, I cannot retrieve anything.").queue();
+            Logger.log(LogLevel.WARN, "Failed to invoke Danbooru command due to missing API token.");
+            event.reply("Sorry, Danbooru API token was not provided, I cannot reteventrieve anything.").queue();
             return;
         }
         String tag1 = event.getOption("tag1").getAsString();
         String tag2 = event.getOption("tag2") != null ? event.getOption("tag2").getAsString() : null;
         try {
-            System.out.println(String.format("Attempting to retrieve posts for tags: %s%s", tag1, (tag2 != null ? ", " + tag2 : "")));
+            Logger.log(LogLevel.INFO, String.format("Attempting to retrieve posts for tags: %s%s", tag1, (tag2 != null ? ", " + tag2 : "")));
             JsonArray posts = danbooruClient.getPosts(tag1, tag2);
             if (posts.isEmpty()) {
                 event.reply(String.format("No posts found for tags: %s%s.", tag1, (tag2 != null ? " and " + tag2 : ""))).queue();
@@ -58,10 +64,10 @@ public final class Danbooru implements APICommand {
             String imageUrl = post.getString("file_url");
             event.reply(imageUrl).queue();
         } catch (IOException e) {
-            System.err.println(String.format("Failed to retrieve posts for tags: %s%s", tag1, (tag2 != null ? ", " + tag2 : "")));
+            Logger.log(LogLevel.WARN, String.format("Failed to retrieve posts for tags: %s%s", tag1, (tag2 != null ? ", " + tag2 : "")));
             event.reply(String.format("Error retrieving posts for tags: %s%s.", tag1, (tag2 != null ? " and " + tag2 : ""))).queue();
         } catch (InterruptedException e) {
-            System.err.println(String.format("Interrupted while retrieving posts for tags: %s%s", tag1, (tag2 != null ? ", " + tag2 : "")));
+            Logger.log(LogLevel.WARN, String.format("Interrupted while retrieving posts for tags: %s%s", tag1, (tag2 != null ? ", " + tag2 : "")));
             event.reply(String.format("Interrupted while retrieving posts for tags: %s%s.", tag1, (tag2 != null ? " and " + tag2 : ""))).queue();
         }
     }
