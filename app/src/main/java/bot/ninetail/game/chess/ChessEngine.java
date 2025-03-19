@@ -45,6 +45,31 @@ public class ChessEngine extends Engine {
     
     private static final String WHITE_SQUARE = ":white_large_square:";
     private static final String BLACK_SQUARE = ":black_large_square:";
+
+    /**
+     * Calculate the length of a null-terminated C string in a memory segment
+     * @param segment The memory segment containing the string
+     * @return The length of the string (excluding the null terminator)
+     */
+    private static long strlen(MemorySegment segment) {
+        if (segment == null) 
+            return -1;
+        if (segment.byteSize() <= 0)
+            return -1;
+        
+        long len = 0;
+        try {
+            while (true) {
+                byte b = segment.get(ValueLayout.JAVA_BYTE, len);
+                if (b == 0) 
+                    break;
+                ++len;
+            }
+            return len;
+        } catch (IndexOutOfBoundsException e) {
+            return -1;
+        }
+    }
     
     /**
      * Constructs a new ChessEngine object.
@@ -53,7 +78,8 @@ public class ChessEngine extends Engine {
         super("chess");
         arena = Arena.ofShared();
         Linker linker = Linker.nativeLinker();
-        Path libPath = Paths.get("src/native/chess/lib/libchess.so").toAbsolutePath();
+        Path libPath = Paths.get(System.getProperty("user.dir"), "src/native/chess/lib/libchess.so").toAbsolutePath();
+        System.out.println("Loading chess library from: " + libPath);
         SymbolLookup symbolLookup = SymbolLookup.libraryLookup(libPath.toString(), arena);
         
         initChessEngineHandle = linker.downcallHandle(
@@ -118,7 +144,7 @@ public class ChessEngine extends Engine {
             initChessEngineHandle.invoke();
             System.out.println("Chess engine initialised successfully");
         } catch (Throwable e) {
-            throw new RuntimeException("Failed to initialize chess engine", e);
+            throw new RuntimeException("Failed to initialise chess engine", e);
         }
     }
     
@@ -129,12 +155,25 @@ public class ChessEngine extends Engine {
     public String getBoardState() {
         try {
             MemorySegment result = (MemorySegment) getBoardStateHandle.invoke();
+            
+            if (result == null) {
+                System.err.println("getBoardState: Native call returned null");
+                return "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+            }
+            
+            long strLen = strlen(result);
+            if (strLen <= 0) {
+                System.err.println("getBoardState: Native call returned empty string");
+                return "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+            }
+            
             String resultStr = result.getUtf8String(0);
-            if (resultStr == null || resultStr.isEmpty())
-                throw new RuntimeException("Failed to get board state: empty result");
+            System.out.println("Java: getBoardState returned: " + resultStr);
             return resultStr;
         } catch (Throwable e) {
-            throw new RuntimeException("Failed to get board state", e);
+            System.err.println("getBoardState exception: " + e);
+            e.printStackTrace();
+            return "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         }
     }
     

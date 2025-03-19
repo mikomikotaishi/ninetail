@@ -25,7 +25,13 @@ public final class NewChess implements GameCommand {
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
         ChessGameManager.startNewGame();
         ChessEngine chessEngine = ChessGameManager.getChessEngine();
+        
         String boardState = chessEngine.getBoardState();
+        System.out.println("NewChess command - received board state: " + boardState);
+        
+        if (boardState.startsWith("ERROR:"))
+            boardState = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+        
         String boardDisplay = chessEngine.convertFenToEmoji(boardState);
         event.reply("New game started!\n" + boardDisplay).queue();
     }

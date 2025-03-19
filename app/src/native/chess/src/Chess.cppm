@@ -12,6 +12,7 @@ module;
 #endif
 
 #include <memory>
+#include <print>
 #include <string>
 
 export module chess;
@@ -28,8 +29,14 @@ export extern "C" {
      * @brief Initialises the chess engine.
      */
     EXPORT_API void initChessEngine() {
-        if (!chessEngine)
+        if (!chessEngine) {
+            std::println("C++: Creating new chess engine");
             chessEngine = std::make_unique<ChessEngine>();
+            chessEngine->resetBoard();
+            std::println("C++: Chess engine initialised");
+        } else {
+            std::println("C++: Chess engine already exists");
+        }
     }
     
     /**
@@ -37,14 +44,30 @@ export extern "C" {
      * @return The board state in FEN notation.
      */
     EXPORT_API const char* getBoardState() {
-        static std::string boardFEN;
-        if (chessEngine)
-            boardFEN = chessEngine->getBoardFEN();
-        else
-            boardFEN = "Engine not initialised";
-        if (boardFEN.empty())
-            boardFEN = "empty";
-        return boardFEN.c_str();
+        static std::string boardFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+        
+        if (!chessEngine) {
+            std::println("C++: getBoardState called with null engine");
+            return boardFEN.c_str();
+        }
+        
+        try {
+            std::string newFEN = chessEngine->getBoardFEN();
+            if (!newFEN.empty()) {
+                boardFEN = newFEN;
+                std::println("C++: getBoardState returning: {}", boardFEN);
+            } else {
+                std::println("C++: getBoardState got empty FEN, using default");
+            }
+            
+            return boardFEN.c_str();
+        } catch (const std::exception& e) {
+            std::println(stderr, "C++: Exception in getBoardState: {}", e.what());
+            return boardFEN.c_str();
+        } catch (...) {
+            std::println(stderr, "C++: Unknown exception in getBoardState");
+            return boardFEN.c_str();
+        }
     }
     
     /**

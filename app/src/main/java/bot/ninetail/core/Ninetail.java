@@ -152,7 +152,9 @@ public class Ninetail extends ListenerAdapter {
                     .setRequired(true)),
             // === Chess ===
             // New chess command
-            Commands.slash("newchess", "Begins a new chess game"),
+            Commands.slash("newchess", "Begins a new chess game")
+                .addOptions(new OptionData(STRING, "colour", "The colour to play (black/white)")
+                    .setRequired(true)),
             // Chess move command
             Commands.slash("chessmove", "Makes a move on the current chess game (if any)")
                 .addOptions(new OptionData(STRING, "move", "The chess move to make (in algebraic notation)")

@@ -44,11 +44,10 @@ public final class Uwuify implements APICommand {
             String uwuifiedText = uwuifyClient.getText(text);
 
             if (uwuifiedText != null && !uwuifiedText.isEmpty()) {
-                if (uwuifiedText.length() > 1994) {
+                if (uwuifiedText.length() > 1994)
                     event.reply("Your text is too long!").queue();
-                } else {
+                else
                     event.reply(uwuifiedText).queue();
-                }
             } else {
                 event.reply("That didn't work. Try some other text!").queue();
             }
