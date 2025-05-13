@@ -10,7 +10,7 @@ import bot.ninetail.clients.RandomFoxClient;
 import bot.ninetail.core.LogLevel;
 import bot.ninetail.core.Logger;
 import bot.ninetail.structures.commands.APICommand;
-
+import bot.ninetail.structures.commands.ContentResponder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 /**
@@ -18,7 +18,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  *
  * @implements APICommand
  */
-public final class RandomFox implements APICommand {
+public final class RandomFox extends ContentResponder implements APICommand {
     /**
      * Private constructor to prevent instantiation.
      */
@@ -36,8 +36,8 @@ public final class RandomFox implements APICommand {
                                                 event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
                                                 event.getGuild() != null ? event.getGuild().getId() : "N/A"));
         try {
-            RandomFoxClient foxClient = new RandomFoxClient();
-            JsonArray imageData = foxClient.getImage();
+            RandomFoxClient randomFoxClient = new RandomFoxClient();
+            JsonArray imageData = randomFoxClient.getImage();
             
             if (!imageData.isEmpty()) {
                 JsonObject imageObject = imageData.getJsonObject(0);

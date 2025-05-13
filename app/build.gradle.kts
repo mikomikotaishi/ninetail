@@ -10,6 +10,7 @@ plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
     kotlin("jvm") version "2.1.10"
+    // id("org.openjfx.javafxplugin") version "0.1.0"
 }
 
 repositories {
@@ -32,24 +33,24 @@ dependencies {
 
     // Jakarta
     implementation("jakarta.annotation:jakarta.annotation-api:3.0.0")
-    implementation("jakarta.json:jakarta.json-api:2.1.0")
+    implementation("jakarta.json:jakarta.json-api:2.1.3")
 
     // JSON
     implementation("org.eclipse.parsson:parsson:1.1.7")
 
     // JDA
-    implementation("net.dv8tion:JDA:5.3.0")
+    implementation("net.dv8tion:JDA:5.5.1")
 
     // Audio
     implementation("dev.arbjerg:lavaplayer:2.2.3")
-    implementation("dev.lavalink.youtube:common:1.11.5")
+    implementation("dev.lavalink.youtube:common:1.13.2")
 
     // SLF4J
     implementation("org.slf4j:slf4j-api:2.0.17")
     implementation("org.slf4j:slf4j-simple:2.0.17")
 
     // Testing
-    implementation("org.mockito:mockito-core:5.15.2")
+    implementation("org.mockito:mockito-core:5.17.0")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -59,6 +60,17 @@ java {
     }
     modularity.inferModulePath = true 
 }
+
+// javafx {
+//     version = "22"
+//     modules = listOf(
+//         "javafx.base",
+//         "javafx.controls",
+//         "javafx.fxml",
+//         "javafx.media",
+//         "javafx.web"
+//     )
+// }
 
 application {
     // Define the main class for the application.

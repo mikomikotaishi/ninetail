@@ -5,7 +5,7 @@ import jakarta.annotation.Nonnull;
 import bot.ninetail.core.LogLevel;
 import bot.ninetail.core.Logger;
 import bot.ninetail.structures.commands.BasicCommand;
-
+import bot.ninetail.structures.commands.ContentResponder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 /**
@@ -13,7 +13,21 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  * 
  * @implements BasicCommand
  */
-public final class Ping implements BasicCommand {
+public final class Ping extends ContentResponder implements BasicCommand {
+    static {
+        CONTENTS = new String[]{
+            "Konkon!",
+            "Konkon~",
+            "こんこん〜",
+            "Mofumofu!",
+            "Mofumofu~",
+            "もふもふ〜",
+            "Fuwafuwa!",
+            "Fuwafuwa~",
+            "ふわふわ〜"
+        };
+    }
+
     /**
      * Private constructor to prevent instantiation.
      */
@@ -31,10 +45,11 @@ public final class Ping implements BasicCommand {
                                                 event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
                                                 event.getGuild() != null ? event.getGuild().getId() : "N/A"));
         long startTime = System.currentTimeMillis();
-        event.reply("Konkon!").queue(response -> {
+        final String pingMessage = getRandomContent();
+        event.reply(pingMessage).queue(response -> {
             long endTime = System.currentTimeMillis();
             long latency = endTime - startTime;
-            response.editOriginal(String.format("Konkon! (Latency: %dms)", latency)).queue();
+            response.editOriginal(String.format("%s (Latency: %dms)", pingMessage, latency)).queue();
             Logger.log(LogLevel.INFO, String.format("Ping executed with latency %dms", latency));
         });
     }

@@ -5,7 +5,7 @@ import jakarta.annotation.Nonnull;
 import bot.ninetail.core.LogLevel;
 import bot.ninetail.core.Logger;
 import bot.ninetail.structures.commands.BasicCommand;
-import bot.ninetail.utilities.RandomNumberGenerator;
+import bot.ninetail.structures.commands.ContentResponder;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
@@ -14,28 +14,17 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  * 
  * @implements BasicCommand
  */
-public final class FoxFacts implements BasicCommand {
+public final class FoxFacts extends ContentResponder implements BasicCommand {
+    static {
+        CONTENTS = new String[]{
+            "Foxes are known to make up to 40 different sounds, some of which inlcude a scream-like howl, as well as chattering."
+        };
+    }
+
     /**
      * Private constructor to prevent instantiation.
      */
     private FoxFacts() {}
-
-    /**
-     * Array of facts about foxes.
-     */
-    private static final String[] FACTS = {
-        "Foxes are known to make up to 40 different sounds, some of which inlcude a scream-like howl, as well as chattering."
-    };
-
-    /**
-     * Gets a random fact about foxes.
-     *
-     * @return A random fact about foxes.
-     */
-    private static String getResponse() {
-        int index = RandomNumberGenerator.generateRandomNumber(FACTS.length);
-        return FACTS[index];
-    }
 
     /**
      * Invokes the command.
@@ -48,6 +37,6 @@ public final class FoxFacts implements BasicCommand {
                                                 event.getUser().getId(),
                                                 event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
                                                 event.getGuild() != null ? event.getGuild().getId() : "N/A"));
-        event.reply(FoxFacts.getResponse()).queue();
+        event.reply(FoxFacts.getRandomContent()).queue();
     }
 }

@@ -1,3 +1,6 @@
+/**
+ * The module of the entire bot system.
+ */
 module bot.ninetail {
     requires java.base;
     requires java.net.http;
