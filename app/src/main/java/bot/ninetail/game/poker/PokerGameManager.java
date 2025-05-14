@@ -4,6 +4,8 @@ import bot.ninetail.game.GameManager;
 
 /**
  * Poker game manager class
+ * 
+ * @extends GameManager
  */
 public class PokerGameManager extends GameManager {
     private static PokerEngine pokerEngine;
@@ -23,6 +25,7 @@ public class PokerGameManager extends GameManager {
 
     /**
      * Gets the current poker engine instance.
+     * 
      * @return The current poker engine instance.
      */
     public static PokerEngine getPokerEngine() {

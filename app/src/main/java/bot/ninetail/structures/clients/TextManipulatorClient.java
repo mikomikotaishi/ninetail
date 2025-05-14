@@ -9,6 +9,8 @@ import bot.ninetail.structures.Client;
 /**
  * Abstract class for text manipulator clients.
  * This abstract class provides a base structure for manipulating text.
+ * 
+ * @extends Client
  */
 public abstract class TextManipulatorClient extends Client {
     /**

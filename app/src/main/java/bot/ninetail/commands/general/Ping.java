@@ -6,11 +6,13 @@ import bot.ninetail.core.LogLevel;
 import bot.ninetail.core.Logger;
 import bot.ninetail.structures.commands.BasicCommand;
 import bot.ninetail.structures.commands.ContentResponder;
+
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 /**
  * Command to provide a simple ping response.
  * 
+ * @extends ContentResponder
  * @implements BasicCommand
  */
 public final class Ping extends ContentResponder implements BasicCommand {

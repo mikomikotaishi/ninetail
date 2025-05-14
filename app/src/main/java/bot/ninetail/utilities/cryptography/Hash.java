@@ -18,7 +18,9 @@ public class Hash {
      *
      * @param message The message to hash.
      * @param algorithmName The name of the algorithm to use.
+     * 
      * @return The hash.
+     * 
      * @throws NoSuchAlgorithmException If the algorithm is not found.
      */
     public static String hash(String message, String algorithmName) throws NoSuchAlgorithmException {
@@ -33,7 +35,9 @@ public class Hash {
      * @param message The message to verify.
      * @param hash The hash to verify.
      * @param algorithmName The name of the algorithm to use.
+     * 
      * @return True if the hash is verified, false otherwise.
+     * 
      * @throws NoSuchAlgorithmException If the algorithm is not found.
      */
     public static boolean verifyHash(String message, String hash, String algorithmName) throws NoSuchAlgorithmException {

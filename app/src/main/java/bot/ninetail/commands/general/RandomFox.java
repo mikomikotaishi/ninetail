@@ -11,11 +11,13 @@ import bot.ninetail.core.LogLevel;
 import bot.ninetail.core.Logger;
 import bot.ninetail.structures.commands.APICommand;
 import bot.ninetail.structures.commands.ContentResponder;
+
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 /**
  * Command to retrieve a random fox image.
  *
+ * @extends ContentResponder
  * @implements APICommand
  */
 public final class RandomFox extends ContentResponder implements APICommand {

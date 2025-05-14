@@ -17,7 +17,6 @@ import bot.ninetail.commands.game.poker.*;
 import bot.ninetail.commands.general.*;
 import bot.ninetail.commands.imageboard.*;
 import bot.ninetail.commands.system.*;
-import bot.ninetail.commands.system.Shutdown;
 import bot.ninetail.commands.webhook.*;
 import bot.ninetail.system.*;
 
@@ -60,6 +59,7 @@ public class Ninetail extends ListenerAdapter {
 
     /**
      * Constructor for the bot.
+     * 
      * @param jda The JDA instance to use
      */
     public Ninetail(@Nonnull JDA jda) {
@@ -68,7 +68,9 @@ public class Ninetail extends ListenerAdapter {
 
     /**
      * Main method for the bot.
+     * 
      * @param args Command line arguments
+     * 
      * @throws LoginException If the bot fails to log in
      * @throws InterruptedException If the bot is interrupted
      */
@@ -253,6 +255,7 @@ public class Ninetail extends ListenerAdapter {
 
     /**
      * Method to handle messages received by the bot.
+     * 
      * @param event The event to handle
      */
     @Override

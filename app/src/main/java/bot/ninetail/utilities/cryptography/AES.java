@@ -59,7 +59,9 @@ public class AES {
      *
      * @param plaintext The plaintext to encrypt.
      * @param secretKey The secret key to use for encryption.
+     * 
      * @return The encrypted ciphertext.
+     * 
      * @throws BadPaddingException If the padding is bad.
      * @throws IllegalBlockSizeException If the block size is illegal.
      * @throws InvalidKeyException If the key is invalid.
@@ -76,7 +78,9 @@ public class AES {
      *
      * @param ciphertext The ciphertext to decrypt.
      * @param secretKey The secret key to use for decryption.
+     * 
      * @return The decrypted plaintext.
+     * 
      * @throws BadPaddingException If the padding is bad.
      * @throws IllegalBlockSizeException If the block size is illegal.
      * @throws InvalidKeyException If the key is invalid.
@@ -102,6 +106,7 @@ public class AES {
      * Converts an AES key to a string.
      *
      * @param secretKey The secret key to convert.
+     * 
      * @return The secret key as a string.
      */
     public static String keyToString(SecretKey secretKey) {

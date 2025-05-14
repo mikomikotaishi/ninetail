@@ -15,6 +15,7 @@ public class Temporal {
      * Gets a formatted time string.
      *
      * @param msDuration The duration in milliseconds.
+     * 
      * @return The formatted time string.
      */
     public static String getFormattedTime(long msDuration) {

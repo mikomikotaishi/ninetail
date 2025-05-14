@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 /**
  * Command to provide facts about foxes.
  * 
+ * @extends ContentResponder
  * @implements BasicCommand
  */
 public final class FoxFacts extends ContentResponder implements BasicCommand {

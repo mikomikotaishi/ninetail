@@ -4,6 +4,8 @@ import bot.ninetail.game.GameManager;
 
 /**
  * Chess game manager class
+ * 
+ * @extends GameManager
  */
 public class ChessGameManager extends GameManager {
     private static ChessEngine chessEngine;
@@ -23,6 +25,7 @@ public class ChessGameManager extends GameManager {
 
     /**
      * Gets the current chess engine instance.
+     * 
      * @return The current chess engine instance.
      */
     public static ChessEngine getChessEngine() {

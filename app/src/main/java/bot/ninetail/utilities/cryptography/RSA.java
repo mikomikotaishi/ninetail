@@ -54,7 +54,9 @@ public class RSA {
      * 
      * @param plaintext The plaintext to encrypt.
      * @param publicKey The public key.
+     * 
      * @return The encrypted text.
+     * 
      * @throws BadPaddingException If padding is bad.
      * @throws IllegalBlockSizeException If the block size is illegal.
      * @throws InvalidKeyException If the key is invalid.
@@ -71,7 +73,9 @@ public class RSA {
      * 
      * @param ciphertext The ciphertext to decrypt.
      * @param privateKey The private key.
+     * 
      * @return The decrypted text.
+     * 
      * @throws BadPaddingException If padding is bad.
      * @throws IllegalBlockSizeException If the block size is illegal.
      * @throws InvalidKeyException If the key is invalid.
@@ -105,7 +109,9 @@ public class RSA {
      * Generates a key pair.
      * 
      * @param keyString The key string.
+     * 
      * @return The public key.
+     * 
      * @throws InvalidKeySpecException If the key spec is invalid.
      * @throws NoSuchAlgorithmException If the algorithm is not found.
      */
@@ -118,7 +124,9 @@ public class RSA {
      * Generates a key pair.
      * 
      * @param keyString The key string.
+     * 
      * @return The private key.
+     * 
      * @throws InvalidKeySpecException If the key spec is invalid.
      * @throws NoSuchAlgorithmException If the algorithm is not found.
      */

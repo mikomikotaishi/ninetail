@@ -60,6 +60,7 @@ public class ResponseHandler {
 
     /**
      * Handles a message by sending a response if a keyword is found.
+     * 
      * @param content The message content.
      * @param textChannel The channel to send the response to.
      */

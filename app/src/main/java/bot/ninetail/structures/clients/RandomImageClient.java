@@ -10,6 +10,8 @@ import bot.ninetail.structures.Client;
 /**
  * Abstract class for random image clients.
  * This abstract class provides a base structure for grabbing random images from random image services.
+ * 
+ * @extends Client
  */
 public abstract class RandomImageClient extends Client {
     /**

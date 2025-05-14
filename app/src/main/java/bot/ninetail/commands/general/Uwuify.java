@@ -2,12 +2,12 @@ package bot.ninetail.commands.general;
 
 import java.io.IOException;
 
+import jakarta.annotation.Nonnull;
+
 import bot.ninetail.clients.UwuifyClient;
 import bot.ninetail.core.LogLevel;
 import bot.ninetail.core.Logger;
 import bot.ninetail.structures.commands.APICommand;
-
-import jakarta.annotation.Nonnull;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 

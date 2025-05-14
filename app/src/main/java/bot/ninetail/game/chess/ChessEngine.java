@@ -13,6 +13,8 @@ import bot.ninetail.game.Engine;
 
 /**
  * Chess engine implementation using Java Foreign Function Interface
+ * 
+ * @extends Engine
  */
 public class ChessEngine extends Engine {
     private final MethodHandle initChessEngineHandle;
@@ -50,7 +52,9 @@ public class ChessEngine extends Engine {
 
     /**
      * Calculate the length of a null-terminated C string in a memory segment
+     * 
      * @param segment The memory segment containing the string
+     * 
      * @return The length of the string (excluding the null terminator)
      */
     private static long strlen(MemorySegment segment) {
@@ -145,13 +149,14 @@ public class ChessEngine extends Engine {
             Logger.log(LogLevel.INFO, "Initialising chess engine...");
             initChessEngineHandle.invoke();
             Logger.log(LogLevel.INFO, "Chess engine initialised successfully");
-        } catch (Throwable e) {
+        } catch (Throwable t) {
             throw new RuntimeException("Failed to initialise chess engine", e);
         }
     }
     
     /**
      * Gets the board state in FEN notation.
+     * 
      * @return The board state in FEN notation.
      */
     public String getBoardState() {
@@ -172,7 +177,7 @@ public class ChessEngine extends Engine {
             String resultStr = result.getUtf8String(0);
             Logger.log(LogLevel.INFO, "Java: getBoardState returned: " + resultStr);
             return resultStr;
-        } catch (Throwable e) {
+        } catch (Throwable t) {
             System.err.println("getBoardState exception: " + e);
             e.printStackTrace();
             return "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
@@ -181,6 +186,7 @@ public class ChessEngine extends Engine {
     
     /**
      * Gets a string representation of the board.
+     * 
      * @return The string representation of the board.
      */
     public String getBoardDisplay() {
@@ -189,21 +195,23 @@ public class ChessEngine extends Engine {
             if (result.byteSize() == 0)
                 throw new RuntimeException("Failed to get board display: empty result");
             return result.getUtf8String(0);
-        } catch (Throwable e) {
+        } catch (Throwable t) {
             throw new RuntimeException("Failed to get board display", e);
         }
     }
     
     /**
      * Makes a move on the board.
+     * 
      * @param moveStr The move in algebraic notation.
+     * 
      * @return 1 if the move was successful, 0 otherwise.
      */
     public int makeMove(String moveStr) {
         try {
             MemorySegment moveStrSegment = arena.allocateUtf8String(moveStr);
             return (int) makeMoveHandle.invoke(moveStrSegment);
-        } catch (Throwable e) {
+        } catch (Throwable t) {
             throw new RuntimeException("Failed to make move", e);
         }
     }
@@ -214,61 +222,68 @@ public class ChessEngine extends Engine {
     public void resetBoard() {
         try {
             resetBoardHandle.invoke();
-        } catch (Throwable e) {
+        } catch (Throwable t) {
             throw new RuntimeException("Failed to reset board", e);
         }
     }
     
     /**
      * Loads a position from a FEN string.
+     * 
      * @param fen The FEN string.
+     * 
      * @return 1 if the position was successfully loaded, 0 otherwise.
      */
     public int loadPosition(String fen) {
         try {
             MemorySegment fenSegment = arena.allocateUtf8String(fen);
             return (int) loadPositionHandle.invoke(fenSegment);
-        } catch (Throwable e) {
+        } catch (Throwable t) {
             throw new RuntimeException("Failed to load position", e);
         }
     }
     
     /**
      * Checks if it is white's turn to move.
+     * 
      * @return 1 if it is white's turn to move, 0 otherwise.
      */
     public int isWhiteTurn() {
         try {
             return (int) isWhiteTurnHandle.invoke();
-        } catch (Throwable e) {
+        } catch (Throwable t) {
             throw new RuntimeException("Failed to check turn", e);
         }
     }
     
     /**
      * Gets the best move for the current position using alpha-beta pruning.
+     * 
      * @param depth The depth of the search.
+     * 
      * @return The best move in algebraic notation.
      */
     public String getBestMove(int depth) {
         try {
             MemorySegment result = (MemorySegment) getBestMoveHandle.invoke(depth);
             return result.getUtf8String(0);
-        } catch (Throwable e) {
+        } catch (Throwable t) {
             throw new RuntimeException("Failed to get best move", e);
         }
     }
     
     /**
      * Checks if the specified colour is in check.
+     * 
      * @param colour The colour to check ("white" or "black").
+     * 
      * @return True if the specified colour is in check, false otherwise.
      */
     public boolean isInCheck(String colour) {
         try {
             MemorySegment colourSegment = arena.allocateUtf8String(colour);
             return (int) isInCheckHandle.invoke(colourSegment) == 1;
-        } catch (Throwable e) {
+        } catch (Throwable t) {
             throw new RuntimeException("Failed to check if in check", e);
         }
     }
@@ -279,7 +294,7 @@ public class ChessEngine extends Engine {
     public void destroyChessEngine() {
         try {
             destroyChessEngineHandle.invoke();
-        } catch (Throwable e) {
+        } catch (Throwable t) {
             throw new RuntimeException("Failed to destroy chess engine", e);
         }
     }
@@ -294,7 +309,9 @@ public class ChessEngine extends Engine {
     
     /**
      * Converts the FEN representation of the board to a Discord message using emojis.
+     * 
      * @param fen The FEN string.
+     * 
      * @return The board representation using Discord emojis.
      */
     public String convertFenToEmoji(String fen) {

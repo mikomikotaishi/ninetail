@@ -26,9 +26,12 @@ public abstract class ImageboardClient extends Client {
 
     /**
      * Gets posts from the imageboard.
+     * 
      * @param tag1 The first tag to search for.
      * @param tag2 The second tag to search for (optional).
+     * 
      * @return A JsonArray containing the posts.
+     * 
      * @throws IOException If an I/O error occurs.
      * @throws InterruptedException If the operation is interrupted.
      */

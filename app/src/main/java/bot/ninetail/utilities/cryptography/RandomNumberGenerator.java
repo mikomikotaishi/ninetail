@@ -20,6 +20,7 @@ public class RandomNumberGenerator {
      * Generates a random number.
      *
      * @param n The upper bound of the random number.
+     * 
      * @return The random number.
      */
     public static int generateRandomNumber(int n) {
@@ -30,6 +31,7 @@ public class RandomNumberGenerator {
      * Generates random bytes.
      *
      * @param numBytes The number of bytes to generate.
+     * 
      * @return The random bytes.
      */
     public static byte[] generateRandomBytes(int numBytes) {

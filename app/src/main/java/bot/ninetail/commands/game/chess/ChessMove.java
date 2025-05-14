@@ -57,6 +57,13 @@ public final class ChessMove implements GameCommand {
         }
     }
 
+    /**
+     * Checks if the chess engine is in checkmate.
+     * 
+     * @param chessEngine The engine to check
+     * 
+     * @return Whether the chess engine is in checkmate
+     */
     private static boolean isCheckmate(ChessEngine chessEngine) {
         return chessEngine.isInCheck(chessEngine.isWhiteTurn() == 1 ? "white" : "black");
     }
