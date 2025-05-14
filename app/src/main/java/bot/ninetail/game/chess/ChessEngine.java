@@ -150,7 +150,7 @@ public class ChessEngine extends Engine {
             initChessEngineHandle.invoke();
             Logger.log(LogLevel.INFO, "Chess engine initialised successfully");
         } catch (Throwable t) {
-            throw new RuntimeException("Failed to initialise chess engine", e);
+            throw new RuntimeException("Failed to initialise chess engine", t);
         }
     }
     
@@ -196,7 +196,7 @@ public class ChessEngine extends Engine {
                 throw new RuntimeException("Failed to get board display: empty result");
             return result.getUtf8String(0);
         } catch (Throwable t) {
-            throw new RuntimeException("Failed to get board display", e);
+            throw new RuntimeException("Failed to get board display", t);
         }
     }
     
@@ -212,7 +212,7 @@ public class ChessEngine extends Engine {
             MemorySegment moveStrSegment = arena.allocateUtf8String(moveStr);
             return (int) makeMoveHandle.invoke(moveStrSegment);
         } catch (Throwable t) {
-            throw new RuntimeException("Failed to make move", e);
+            throw new RuntimeException("Failed to make move", t);
         }
     }
     
@@ -223,7 +223,7 @@ public class ChessEngine extends Engine {
         try {
             resetBoardHandle.invoke();
         } catch (Throwable t) {
-            throw new RuntimeException("Failed to reset board", e);
+            throw new RuntimeException("Failed to reset board", t);
         }
     }
     
@@ -239,7 +239,7 @@ public class ChessEngine extends Engine {
             MemorySegment fenSegment = arena.allocateUtf8String(fen);
             return (int) loadPositionHandle.invoke(fenSegment);
         } catch (Throwable t) {
-            throw new RuntimeException("Failed to load position", e);
+            throw new RuntimeException("Failed to load position", t);
         }
     }
     
@@ -252,7 +252,7 @@ public class ChessEngine extends Engine {
         try {
             return (int) isWhiteTurnHandle.invoke();
         } catch (Throwable t) {
-            throw new RuntimeException("Failed to check turn", e);
+            throw new RuntimeException("Failed to check turn", t);
         }
     }
     
@@ -268,7 +268,7 @@ public class ChessEngine extends Engine {
             MemorySegment result = (MemorySegment) getBestMoveHandle.invoke(depth);
             return result.getUtf8String(0);
         } catch (Throwable t) {
-            throw new RuntimeException("Failed to get best move", e);
+            throw new RuntimeException("Failed to get best move", t);
         }
     }
     
@@ -284,7 +284,7 @@ public class ChessEngine extends Engine {
             MemorySegment colourSegment = arena.allocateUtf8String(colour);
             return (int) isInCheckHandle.invoke(colourSegment) == 1;
         } catch (Throwable t) {
-            throw new RuntimeException("Failed to check if in check", e);
+            throw new RuntimeException("Failed to check if in check", t);
         }
     }
     
@@ -295,7 +295,7 @@ public class ChessEngine extends Engine {
         try {
             destroyChessEngineHandle.invoke();
         } catch (Throwable t) {
-            throw new RuntimeException("Failed to destroy chess engine", e);
+            throw new RuntimeException("Failed to destroy chess engine", t);
         }
     }
     
