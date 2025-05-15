@@ -178,8 +178,8 @@ public class ChessEngine extends Engine {
             Logger.log(LogLevel.INFO, "Java: getBoardState returned: " + resultStr);
             return resultStr;
         } catch (Throwable t) {
-            System.err.println("getBoardState exception: " + e);
-            e.printStackTrace();
+            System.err.println("getBoardState exception: " + t);
+            t.printStackTrace();
             return "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         }
     }
