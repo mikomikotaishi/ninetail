@@ -164,13 +164,13 @@ public class ChessEngine extends Engine {
             MemorySegment result = (MemorySegment) getBoardStateHandle.invoke();
             
             if (result == null) {
-                System.err.println("getBoardState: Native call returned null");
+                Logger.log(LogLevel.WARN, "getBoardState: Native call returned null");
                 return "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
             }
             
             long strLen = strlen(result);
             if (strLen <= 0) {
-                System.err.println("getBoardState: Native call returned empty string");
+                Logger.log(LogLevel.WARN, "getBoardState: Native call returned empty string");
                 return "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
             }
             
@@ -178,7 +178,7 @@ public class ChessEngine extends Engine {
             Logger.log(LogLevel.INFO, "Java: getBoardState returned: " + resultStr);
             return resultStr;
         } catch (Throwable t) {
-            System.err.println("getBoardState exception: " + t);
+            Logger.log(LogLevel.WARN, "getBoardState exception: " + t);
             t.printStackTrace();
             return "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         }

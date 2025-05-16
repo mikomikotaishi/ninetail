@@ -17,17 +17,19 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  */
 public final class Ping extends ContentResponder implements BasicCommand {
     static {
-        CONTENTS = new String[]{
-            "Konkon!",
-            "Konkon~",
-            "こんこん〜",
-            "Mofumofu!",
-            "Mofumofu~",
-            "もふもふ〜",
-            "Fuwafuwa!",
-            "Fuwafuwa~",
-            "ふわふわ〜"
-        };
+        setContents(Ping.class, 
+            new String[]{
+                "Konkon!",
+                "Konkon~",
+                "こんこん〜",
+                "Mofumofu!",
+                "Mofumofu~",
+                "もふもふ〜",
+                "Fuwafuwa!",
+                "Fuwafuwa~",
+                "ふわふわ〜"
+            }
+        );
     }
 
     /**
