@@ -207,7 +207,11 @@ public class Ninetail extends ListenerAdapter {
                     .setRequired(true))
                 .addOptions(new OptionData(OptionType.STRING, "tag2", "The second tag to search")),
 
-            // ====== System commands ======            
+            // ====== System commands ======      
+            // List guilds command
+            Commands.slash("listguilds", "List all guilds the bot is present in")
+                .addOptions(new OptionData(OptionType.STRING, "password", "The master pasword (specified in config.properties)")
+                    .setRequired(true)),      
             // Reload config command
             Commands.slash("reloadconfig", "Reloads config.properties")
                 .addOptions(new OptionData(OptionType.STRING, "password", "The master pasword (specified in config.properties)")

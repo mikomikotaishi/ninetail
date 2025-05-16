@@ -9,6 +9,7 @@ import java.util.Map;
 
 import bot.ninetail.core.LogLevel;
 import bot.ninetail.core.Logger;
+import bot.ninetail.core.config.ConfigNames;
 import bot.ninetail.game.Engine;
 
 /**
@@ -84,7 +85,7 @@ public class ChessEngine extends Engine {
         super("chess");
         arena = Arena.ofShared();
         Linker linker = Linker.nativeLinker();
-        Path libPath = Paths.get(System.getProperty("user.dir"), "src/native/chess/lib/libchess.so").toAbsolutePath();
+        Path libPath = Paths.get(System.getProperty("user.dir"), ConfigNames.ENGINE_CHESS_PATH).toAbsolutePath();
         Logger.log(LogLevel.INFO, "Loading chess library from: " + libPath);
         SymbolLookup symbolLookup = SymbolLookup.libraryLookup(libPath.toString(), arena);
         

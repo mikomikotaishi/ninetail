@@ -7,6 +7,7 @@ import java.util.Properties;
 
 import bot.ninetail.core.LogLevel;
 import bot.ninetail.core.Logger;
+import bot.ninetail.core.config.ConfigNames;
 
 /**
  * Loads configuration properties from config.properties.
@@ -64,10 +65,10 @@ public class ConfigLoader {
      * Static block to load properties from config.properties.
      */
     static {
-        try (InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream("config.properties")) {
+        try (InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream(ConfigNames.CONFIG_PROPERTIES_FILE)) {
             if (input == null) {
-                Logger.log(LogLevel.ERROR, "Unable to find config.properties!");
-                throw new FileNotFoundException("Unable to find config.properties!");
+                Logger.log(LogLevel.ERROR, String.format("Unable to find %s!", ConfigNames.CONFIG_PROPERTIES_FILE));
+                throw new FileNotFoundException(String.format("Unable to find %s", ConfigNames.CONFIG_PROPERTIES_FILE));
             }
             PROPERTIES.load(input);
             // System
@@ -193,10 +194,10 @@ public class ConfigLoader {
      * Reloads the configuration.
      */
     public static void reloadConfig() {
-        try (InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream("config.properties")) {
+        try (InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream(ConfigNames.CONFIG_PROPERTIES_FILE)) {
             if (input == null) {
-                Logger.log(LogLevel.ERROR, "Unable to find config.properties!");
-                throw new FileNotFoundException("Unable to find config.properties!");
+                Logger.log(LogLevel.ERROR, String.format("Unable to find %s!", ConfigNames.CONFIG_PROPERTIES_FILE));
+                throw new FileNotFoundException(String.format("Unable to find %s!", ConfigNames.CONFIG_PROPERTIES_FILE));
             }
             PROPERTIES.load(input);
             weatherToken = PROPERTIES.getProperty("WEATHER_TOKEN");

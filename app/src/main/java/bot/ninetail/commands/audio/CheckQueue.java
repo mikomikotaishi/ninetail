@@ -9,7 +9,7 @@ import bot.ninetail.audio.BotAudio;
 import bot.ninetail.core.LogLevel;
 import bot.ninetail.core.Logger;
 import bot.ninetail.structures.commands.AudioCommand;
-import bot.ninetail.utilities.Temporal;
+import bot.ninetail.utilities.TemporalFormatting;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
@@ -53,7 +53,7 @@ public final class CheckQueue implements AudioCommand {
             AudioTrack track = iterator.next();
             String trackName = track.getInfo().title;
             long songLength = track.getInfo().length;
-            fullList.append(String.format("%d. %s (%s)\n", currentIndex++, trackName, Temporal.getFormattedTime(songLength)));
+            fullList.append(String.format("%d. %s (%s)\n", currentIndex++, trackName, TemporalFormatting.getFormattedTime(songLength)));
         }
         Logger.log(LogLevel.INFO, "Queue completed parsing.");
         Logger.log(LogLevel.INFO, fullList.toString());

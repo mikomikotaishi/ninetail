@@ -5,6 +5,7 @@ import java.lang.invoke.MethodHandle;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import bot.ninetail.core.config.ConfigNames;
 import bot.ninetail.game.Engine;
 
 /**
@@ -28,7 +29,7 @@ public class PokerEngine extends Engine {
         super("poker");
         arena = Arena.ofShared();
         Linker linker = Linker.nativeLinker();
-        Path libPath = Paths.get("src/native/poker/lib/libpoker.so").toAbsolutePath();
+        Path libPath = Paths.get(ConfigNames.ENGINE_POKER_PATH).toAbsolutePath();
         SymbolLookup symbolLookup = SymbolLookup.libraryLookup(libPath.toString(), arena);
 
         createGameHandle = linker.downcallHandle(

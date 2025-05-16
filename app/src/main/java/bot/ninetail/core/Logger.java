@@ -7,24 +7,24 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
+import bot.ninetail.core.config.ConfigNames;
+import bot.ninetail.core.config.ConfigPaths;
+import bot.ninetail.utilities.TemporalFormatting;
 
 /**
  * Class to handle logging bot messages.
  */
 public class Logger {
-    private static final String LOG_DIR = "./logs";
-    private static final DateTimeFormatter FILE_NAME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
-    private static final DateTimeFormatter LOG_ENTRY_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static BufferedWriter writer;
 
     static {
         try {
-            File logDir = new File(LOG_DIR);
+            File logDir = new File(ConfigPaths.LOG_PATH);
             if (!logDir.exists())
                 logDir.mkdirs();
             
-            String fileName = String.format("log_%s.txt", LocalDateTime.now().format(FILE_NAME_FORMAT));
+            String fileName = String.format(ConfigNames.LOG_FILE_NAME, LocalDateTime.now().format(TemporalFormatting.FILE_NAME_FORMAT));
             File logFile = new File(logDir, fileName);
 
             writer = new BufferedWriter(new FileWriter(logFile, true));
@@ -42,7 +42,7 @@ public class Logger {
     public static void log(LogLevel level, String message) {
         try {
             if (writer != null) {
-                String timestamp = LocalDateTime.now().format(LOG_ENTRY_FORMAT);
+                String timestamp = LocalDateTime.now().format(TemporalFormatting.LOG_ENTRY_FORMAT);
                 writer.write(String.format("[%s] [%s] %s%n", timestamp, level, message));
                 writer.flush();
             } else {
@@ -69,7 +69,7 @@ public class Logger {
                 exception.printStackTrace(printWriter);
                 printWriter.flush();
 
-                String timestamp = LocalDateTime.now().format(LOG_ENTRY_FORMAT);
+                String timestamp = LocalDateTime.now().format(TemporalFormatting.LOG_ENTRY_FORMAT);
                 writer.write(String.format("[%s] [%s] %s%n", timestamp, level, stringWriter.toString()));
                 writer.flush();
             } else {

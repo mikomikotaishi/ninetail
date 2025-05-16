@@ -1,5 +1,8 @@
 package bot.ninetail.commands.webhook;
 
+import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+
 import jakarta.annotation.Nonnull;
 
 import bot.ninetail.core.LogLevel;
@@ -7,6 +10,7 @@ import bot.ninetail.core.Logger;
 import bot.ninetail.structures.commands.WebhookCommand;
 
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Icon;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -45,11 +49,28 @@ public final class UserWebhook implements WebhookCommand {
             return;
         }
 
+        Icon memberAvatar = null;
+        try {
+            memberAvatar = Icon.from(member.getEffectiveAvatar().download().get());
+            Logger.log(LogLevel.DEBUG, String.format("Successfully downloaded avatar for %s", member.getEffectiveName()));
+        } catch (IOException e) {
+            Logger.log(LogLevel.WARN, String.format("IO error while downloading avatar for %s: %s", member.getEffectiveName(), e.getMessage()));
+        } catch (InterruptedException e) {
+            Logger.log(LogLevel.WARN, String.format("Avatar download interrupted for %s: %s", member.getEffectiveName(), e.getMessage()));
+            Thread.currentThread().interrupt();
+        } catch (ExecutionException e) {
+            Logger.log(LogLevel.WARN, String.format("Failed to execute avatar download for %s: %s", member.getEffectiveName(), e.getMessage()));
+        }
+
         WebhookAction webhookAction = channel.createWebhook(member.getEffectiveName());
+        if (memberAvatar != null)
+            webhookAction = webhookAction.setAvatar(memberAvatar);
+        else
+            Logger.log(LogLevel.INFO, String.format("Using default avatar for webhook of %s", member.getEffectiveName()));
+
         webhookAction.queue(webhook -> {
             webhook.sendMessage(message)
                 .setUsername(member.getEffectiveName())
-                .setAvatarUrl(member.getEffectiveAvatarUrl())
                 .queue();
             event.reply(String.format("Webhook created and message sent as %s of guild %s", member.getEffectiveName(), guild.getName())).setEphemeral(true).queue();
             Logger.log(LogLevel.INFO, String.format("Created webhook for %s of guild %s", member.getEffectiveName(), guild.getName()));

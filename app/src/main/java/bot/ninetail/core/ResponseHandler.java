@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
-
+import bot.ninetail.core.config.ConfigNames;
 import bot.ninetail.structures.InteractionHandler;
 
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
@@ -44,12 +44,12 @@ public class ResponseHandler extends InteractionHandler {
     public static void reloadResponses() {
         Logger.log(LogLevel.INFO, "Emptying map");
         RESPONSES.clear();
-        try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("responses.json")) {
+        try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(ConfigNames.RESPONSES_FILE)) {
             if (inputStream == null) {
-                Logger.log(LogLevel.WARN, "responses.json not found. Skipping loading responses.");
+                Logger.log(LogLevel.WARN, ConfigNames.RESPONSES_FILE + " not found. Skipping loading responses.");
                 return;
             }
-            Logger.log(LogLevel.INFO, "Loading responses.json");
+            Logger.log(LogLevel.INFO, "Loading " + ConfigNames.RESPONSES_FILE);
             try (JsonReader jsonReader = Json.createReader(inputStream)) {
                 JsonObject responsesJSON = jsonReader.readObject();
                 for (String key: responsesJSON.keySet()) {

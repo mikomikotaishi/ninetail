@@ -40,7 +40,7 @@ public final class Shutdown implements JdaCommand {
             instance.shutdown();
         } else {
             Logger.log(LogLevel.INFO, String.format("Attempted (failed) shutdown attempt by %s (%s)", event.getUser().getGlobalName(), event.getUser().getId()));
-            event.reply("Incorrect shutdown password!").setEphemeral(true).queue();
+            event.reply("Incorrect master password!").setEphemeral(true).queue();
         }
     }
 }

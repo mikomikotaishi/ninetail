@@ -1,15 +1,19 @@
 package bot.ninetail.utilities;
 
 import java.time.Duration;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Utility class for temporal operations.
  */
-public class Temporal {
+public class TemporalFormatting {
     /**
      * Private constructor to prevent instantiation.
      */
-    private Temporal() {}
+    private TemporalFormatting() {}
+
+    public static final DateTimeFormatter FILE_NAME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+    public static final DateTimeFormatter LOG_ENTRY_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     /**
      * Gets a formatted time string.

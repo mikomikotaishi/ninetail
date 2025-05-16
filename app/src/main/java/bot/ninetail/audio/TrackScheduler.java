@@ -7,7 +7,7 @@ import jakarta.annotation.Nonnull;
 
 import bot.ninetail.core.LogLevel;
 import bot.ninetail.core.Logger;
-import bot.ninetail.utilities.Temporal;
+import bot.ninetail.utilities.TemporalFormatting;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
@@ -44,7 +44,7 @@ public class TrackScheduler extends AudioEventAdapter {
      * @param track The track that is currently playing.
      */
     private void sendNowPlayingMessage(@Nonnull AudioTrack track) {
-        String trackInfo = String.format("%s (%s)", track.getInfo().title, Temporal.getFormattedTime(track.getInfo().length));
+        String trackInfo = String.format("%s (%s)", track.getInfo().title, TemporalFormatting.getFormattedTime(track.getInfo().length));
         @Nonnull MessageChannel textChannel = botAudio.getTextChannel();
         textChannel.sendMessage(String.format("Now playing: **%s**", trackInfo)).queue();
     }
@@ -67,7 +67,7 @@ public class TrackScheduler extends AudioEventAdapter {
      * @param track The track to queue.
      */
     public void queue(@Nonnull AudioTrack track) {
-        String trackInfo = String.format("%s (%s)", track.getInfo().title, Temporal.getFormattedTime(track.getInfo().length));
+        String trackInfo = String.format("%s (%s)", track.getInfo().title, TemporalFormatting.getFormattedTime(track.getInfo().length));
         if (!player.startTrack(track, true)) {
             Logger.log(LogLevel.INFO, String.format("Queued track: %s", track.getInfo().title));
             @Nonnull MessageChannel textChannel = botAudio.getTextChannel();

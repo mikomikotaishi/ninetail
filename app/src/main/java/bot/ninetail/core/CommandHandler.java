@@ -114,6 +114,9 @@ public class CommandHandler extends InteractionHandler {
                 Rule34.invoke(event);
                 break;
             // System
+            case "listguilds":
+                ListGuilds.invoke(event, jda);
+                break;
             case "reloadconfig":
                 ReloadConfig.invoke(event, jda);
                 break;
