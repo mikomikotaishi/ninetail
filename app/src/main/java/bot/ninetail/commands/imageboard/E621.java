@@ -9,7 +9,7 @@ import jakarta.json.JsonObject;
 import bot.ninetail.clients.E621Client;
 import bot.ninetail.core.LogLevel;
 import bot.ninetail.core.Logger;
-import bot.ninetail.structures.commands.APICommand;
+import bot.ninetail.structures.commands.ApiCommand;
 import bot.ninetail.utilities.RandomNumberGenerator;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -19,7 +19,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  * 
  * @implements APICommand
  */
-public final class E621 implements APICommand {
+public final class E621 implements ApiCommand {
     /**
      * Private constructor to prevent instantiation.
      */

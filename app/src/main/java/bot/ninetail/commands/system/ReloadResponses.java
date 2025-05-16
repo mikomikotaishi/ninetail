@@ -5,7 +5,7 @@ import jakarta.annotation.Nonnull;
 import bot.ninetail.core.LogLevel;
 import bot.ninetail.core.Logger;
 import bot.ninetail.core.ResponseHandler;
-import bot.ninetail.structures.commands.JDACommand;
+import bot.ninetail.structures.commands.JdaCommand;
 import bot.ninetail.system.ConfigLoader;
 
 import net.dv8tion.jda.api.JDA;
@@ -16,7 +16,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  * 
  * @implements JDACommand
  */
-public final class ReloadResponses implements JDACommand {
+public final class ReloadResponses implements JdaCommand {
     /**
      * Private constructor to prevent instantiation.
      */

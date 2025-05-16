@@ -8,7 +8,7 @@ import jakarta.json.JsonObject;
 import bot.ninetail.clients.WeatherClient;
 import bot.ninetail.core.LogLevel;
 import bot.ninetail.core.Logger;
-import bot.ninetail.structures.commands.APICommand;
+import bot.ninetail.structures.commands.ApiCommand;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
@@ -17,7 +17,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  * 
  * @implements APICommand
  */
-public final class Weather implements APICommand {
+public final class Weather implements ApiCommand {
     /**
      * Private constructor to prevent instantiation.
      */

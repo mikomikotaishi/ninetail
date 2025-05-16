@@ -49,19 +49,19 @@ public class CommandHandler extends InteractionHandler {
                 break;
             // Cryptography
             case "encryptaes":
-                EncryptAES.invoke(event);
+                EncryptAes.invoke(event);
                 break;
             case "sha256":
-                SHA256.invoke(event);
+                Sha256.invoke(event);
                 break;
             case "sha512":
-                SHA512.invoke(event);
+                Sha512.invoke(event);
                 break;
             case "verifysha256":
-                VerifySHA256.invoke(event);
+                VerifySha256.invoke(event);
                 break;
             case "verifysha512":
-                VerifySHA512.invoke(event);
+                VerifySha512.invoke(event);
                 break;
             // Game
             case "magic8ball":

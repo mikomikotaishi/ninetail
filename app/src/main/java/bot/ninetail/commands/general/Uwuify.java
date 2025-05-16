@@ -7,7 +7,7 @@ import jakarta.annotation.Nonnull;
 import bot.ninetail.clients.UwuifyClient;
 import bot.ninetail.core.LogLevel;
 import bot.ninetail.core.Logger;
-import bot.ninetail.structures.commands.APICommand;
+import bot.ninetail.structures.commands.ApiCommand;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
@@ -16,7 +16,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  * 
  * @implements APICommand
  */
-public final class Uwuify implements APICommand {
+public final class Uwuify implements ApiCommand {
     /**
      * Private constructor to prevent instantiation.
      */

@@ -10,15 +10,15 @@ import bot.ninetail.utilities.cryptography.Hash;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 /**
- * Command to verify a SHA-512 hash.
+ * Command to hash a message using SHA-256.
  * 
  * @implements CryptographyCommand
  */
-public final class VerifySHA512 implements CryptographyCommand {
+public final class Sha256 implements CryptographyCommand {
     /**
      * Private constructor to prevent instantiation.
      */
-    private VerifySHA512() {}
+    private Sha256() {}
 
     /**
      * Invokes the command.
@@ -26,16 +26,15 @@ public final class VerifySHA512 implements CryptographyCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(SlashCommandInteractionEvent event) {
-        Logger.log(LogLevel.INFO, String.format("Verify SHA-512 command invoked by %s (%s) of guild %s (%s)", 
+        Logger.log(LogLevel.INFO, String.format("SHA-256 command invoked by %s (%s) of guild %s (%s)", 
                                                 event.getUser().getGlobalName(), 
                                                 event.getUser().getId(),
                                                 event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
                                                 event.getGuild() != null ? event.getGuild().getId() : "N/A"));
         String message = event.getOption("message").getAsString();
-        String hash = event.getOption("hash").getAsString();
         try {
-            boolean isValid = Hash.verifyHash(message, hash, "SHA-512");
-            event.reply("SHA-512 verification: " + (isValid ? "Valid" : "Invalid")).queue();
+            String hashedMessage = Hash.hash(message, "SHA-256");
+            event.reply("SHA-256 hash: " + hashedMessage).queue();
         } catch (NoSuchAlgorithmException e) {
             event.reply("Error: " + e.getMessage()).queue();
         }

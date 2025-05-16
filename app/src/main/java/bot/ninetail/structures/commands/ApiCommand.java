@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  * Interface for API commands.
  * This interface is used to define the structure of API commands.
  */
-public interface APICommand extends Command {
+public interface ApiCommand extends Command {
     /**
      * Invokes the command.
      *
