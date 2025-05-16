@@ -1,5 +1,7 @@
 package bot.ninetail.audio;
 
+import jakarta.annotation.Nonnull;
+
 import bot.ninetail.core.LogLevel;
 import bot.ninetail.core.Logger;
 
@@ -40,7 +42,7 @@ public class AudioPlayerLoadResultHandler implements AudioLoadResultHandler {
      * @param player The audio player.
      * @param scheduler The track scheduler.
      */
-    public AudioPlayerLoadResultHandler(MessageChannel textChannel, AudioPlayer player, TrackScheduler scheduler) {
+    public AudioPlayerLoadResultHandler(@Nonnull MessageChannel textChannel, @Nonnull AudioPlayer player, @Nonnull TrackScheduler scheduler) {
         this.textChannel = textChannel;
         this.player = player;
         this.scheduler = scheduler;
@@ -52,7 +54,7 @@ public class AudioPlayerLoadResultHandler implements AudioLoadResultHandler {
      * @param track The loaded audio track.
      */
     @Override
-    public void trackLoaded(AudioTrack track) {
+    public void trackLoaded(@Nonnull AudioTrack track) {
         Logger.log(LogLevel.INFO, "Loading track: " + track.getInfo().title);
         textChannel.sendMessage(String.format("Added to queue: **%s**", track.getInfo().title)).queue();
         scheduler.queue(track);
@@ -64,16 +66,15 @@ public class AudioPlayerLoadResultHandler implements AudioLoadResultHandler {
      * @param playlist The loaded audio playlist.
      */
     @Override
-    public void playlistLoaded(AudioPlaylist playlist) {
+    public void playlistLoaded(@Nonnull AudioPlaylist playlist) {
         Logger.log(LogLevel.INFO, "Loading playlist: " + playlist.getName());
         if (playlist.isSearchResult()) {
             AudioTrack firstTrack = playlist.getTracks().get(0);
             textChannel.sendMessage(String.format("Added to queue: **%s**", firstTrack.getInfo().title)).queue();
             scheduler.queue(firstTrack);
         } else {
-            for (AudioTrack track: playlist.getTracks()) {
+            for (AudioTrack track: playlist.getTracks())
                 scheduler.queue(track);
-            }
             textChannel.sendMessage(String.format("Added **%d** tracks to the queue.", playlist.getTracks().size())).queue();
         }
     }

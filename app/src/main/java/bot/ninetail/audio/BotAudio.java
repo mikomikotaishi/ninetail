@@ -2,6 +2,14 @@ package bot.ninetail.audio;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import jakarta.annotation.Nonnull;
+
+import bot.ninetail.core.LogLevel;
+import bot.ninetail.core.Logger;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
@@ -27,37 +35,68 @@ public class BotAudio {
     /**
      * The audio player manager.
      */
-    private final AudioPlayerManager manager;
+    private final @Nonnull AudioPlayerManager manager;
 
     /**
      * The audio player.
      */
-    private final AudioPlayer player;
+    private final @Nonnull AudioPlayer player;
 
     /**
      * The track scheduler.
      */
-    private final TrackScheduler scheduler;
+    private final @Nonnull TrackScheduler scheduler;
 
     /**
      * The audio manager.
      */
-    private AudioManager audioManager;
+    private @Nonnull AudioManager audioManager;
 
     /**
      * The text channel.
      */
-    private MessageChannel textChannel;
+    private @Nonnull MessageChannel textChannel;
 
     /**
      * The voice channel.
      */
-    private AudioChannel voiceChannel;
+    private @Nonnull AudioChannel voiceChannel;
 
     /**
      * Whether the bot audio is activated.
      */
     private boolean activated = false;
+
+    /**
+     * The last active time.
+     */
+    private long lastActiveTime;
+
+    /**
+     * Scheduled executor service for inactivity checking.
+     */
+    private static ScheduledExecutorService inactivityChecker;
+
+    /**
+     * Timeout for inactivity in milliseconds (10 * 60 * 1000).
+     */
+    private static final long INACTIVITY_TIMEOUT = 600000;
+
+    static {
+        inactivityChecker = Executors.newSingleThreadScheduledExecutor();
+        inactivityChecker.scheduleAtFixedRate(() -> {
+            for (BotAudio audio: instances.values()) {
+                if (audio.isActive() && System.currentTimeMillis() - audio.lastActiveTime > INACTIVITY_TIMEOUT) {
+                    String channelName = audio.getVoiceChannel() != null ? audio.getVoiceChannel().getName() : "unknown";
+                    String guildName = audio.getVoiceChannel() != null ? audio.getVoiceChannel().getGuild().getName() : "unknown";
+                    String guildId = audio.getVoiceChannel() != null ? audio.getVoiceChannel().getGuild().getId() : "unknown";
+                    
+                    audio.disconnect(String.format("Auto-disconnected from %s of server %s (%s) due to 10 minutes of inactivity", 
+                        channelName, guildName, guildId));
+                }
+            }
+        }, 1, 1, TimeUnit.MINUTES);
+    }
 
     /**
      * Private constructor to prevent instantiation.
@@ -70,6 +109,7 @@ public class BotAudio {
         this.scheduler = new TrackScheduler(this, player);
         player.addListener(scheduler);
         player.setVolume(100);
+        this.lastActiveTime = System.currentTimeMillis();
     }
 
     /**
@@ -168,6 +208,23 @@ public class BotAudio {
      */
     public void activate() {
         activated = true;
+    }
+
+    /**
+     * Updates the last active timestamp when an audio command is used.
+     */
+    public void updateLastActiveTime() {
+        this.lastActiveTime = System.currentTimeMillis();
+    }
+
+    /**
+     * Disconnects the bot audio with a reason.
+     *
+     * @param reason The reason for disconnection.
+     */
+    public void disconnect(String reason) {
+        Logger.log(LogLevel.INFO, reason);
+        disconnect();
     }
 
     /**

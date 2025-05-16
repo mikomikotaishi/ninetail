@@ -3,6 +3,8 @@ package bot.ninetail.audio;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import jakarta.annotation.Nonnull;
+
 import bot.ninetail.core.LogLevel;
 import bot.ninetail.core.Logger;
 import bot.ninetail.utilities.Temporal;
@@ -24,28 +26,27 @@ public class TrackScheduler extends AudioEventAdapter {
     /**
      * The bot audio instance.
      */
-    private final BotAudio botAudio;
+    private final @Nonnull BotAudio botAudio;
 
     /**
      * The audio player.
      */
-    private final AudioPlayer player;
+    private final @Nonnull AudioPlayer player;
 
     /**
      * The queue of audio tracks.
      */
-    private final Queue<AudioTrack> queue;
+    private final @Nonnull Queue<AudioTrack> queue;
 
     /**
      * Sends a message to the text channel indicating the currently playing track.
      *
      * @param track The track that is currently playing.
      */
-    private void sendNowPlayingMessage(AudioTrack track) {
+    private void sendNowPlayingMessage(@Nonnull AudioTrack track) {
         String trackInfo = String.format("%s (%s)", track.getInfo().title, Temporal.getFormattedTime(track.getInfo().length));
-        MessageChannel textChannel = botAudio.getTextChannel();
-        if (textChannel != null)
-            textChannel.sendMessage(String.format("Now playing: **%s**", trackInfo)).queue();
+        @Nonnull MessageChannel textChannel = botAudio.getTextChannel();
+        textChannel.sendMessage(String.format("Now playing: **%s**", trackInfo)).queue();
     }
 
     /**
@@ -54,7 +55,7 @@ public class TrackScheduler extends AudioEventAdapter {
      * @param botAudio The bot audio instance.
      * @param player The audio player.
      */
-    public TrackScheduler(BotAudio botAudio, AudioPlayer player) {
+    public TrackScheduler(@Nonnull BotAudio botAudio, @Nonnull AudioPlayer player) {
         this.botAudio = botAudio;
         this.player = player;
         this.queue = new LinkedList<>();
@@ -65,14 +66,13 @@ public class TrackScheduler extends AudioEventAdapter {
      *
      * @param track The track to queue.
      */
-    public void queue(AudioTrack track) {
+    public void queue(@Nonnull AudioTrack track) {
         String trackInfo = String.format("%s (%s)", track.getInfo().title, Temporal.getFormattedTime(track.getInfo().length));
         if (!player.startTrack(track, true)) {
             Logger.log(LogLevel.INFO, String.format("Queued track: %s", track.getInfo().title));
-            MessageChannel textChannel = botAudio.getTextChannel();
+            @Nonnull MessageChannel textChannel = botAudio.getTextChannel();
             queue.offer(track);
-            if (textChannel != null)
-                textChannel.sendMessage(String.format("Queued track: **%s**", trackInfo)).queue();
+            textChannel.sendMessage(String.format("Queued track: **%s**", trackInfo)).queue();
         } else {
             Logger.log(LogLevel.INFO, "Now playing: " + track.getInfo().title);
             sendNowPlayingMessage(track);
@@ -96,9 +96,8 @@ public class TrackScheduler extends AudioEventAdapter {
                 sendNowPlayingMessage(nextTrack);
             } else {
                 Logger.log(LogLevel.INFO, "Song queue empty.");
-                MessageChannel textChannel = botAudio.getTextChannel();
-                if (textChannel != null)
-                    textChannel.sendMessage("Queue is empty. Use `/play` to queue new songs.").queue();
+                @Nonnull MessageChannel textChannel = botAudio.getTextChannel();
+                textChannel.sendMessage("Queue is empty. Use `/play` to queue new songs.").queue();
             }
         }
     }
@@ -131,5 +130,13 @@ public class TrackScheduler extends AudioEventAdapter {
      */
     public Queue<AudioTrack> getQueue() {
         return queue;
+    }
+
+    /**
+     * Handles an automatic bot disconnection.
+     */
+    public void autoDisconnect() {
+        @Nonnull MessageChannel textChannel = botAudio.getTextChannel();
+        textChannel.sendMessage("Disconnecting from voice channel due to 10 minutes of inactivity.").queue();
     }
 }
