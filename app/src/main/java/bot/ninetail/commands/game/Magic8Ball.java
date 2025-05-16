@@ -16,6 +16,9 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  * @implements GameCommand
  */
 public final class Magic8Ball extends ContentResponder implements GameCommand {
+    /**
+     * Static block to load contents.
+     */
     static {
         setContents(Magic8Ball.class, 
             new String[]{

@@ -10,13 +10,17 @@ import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 
+import bot.ninetail.structures.InteractionHandler;
+
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 
 /**
  * Class to handle responses to messages.
  * This class is used to send responses to messages based on keywords.
+ * 
+ * @extends InteractionHandler
  */
-public class ResponseHandler {
+public class ResponseHandler extends InteractionHandler {
     /**
      * Private constructor to prevent instantiation.
      */

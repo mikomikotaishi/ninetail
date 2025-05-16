@@ -16,6 +16,9 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  * @implements BasicCommand
  */
 public final class Ping extends ContentResponder implements BasicCommand {
+    /**
+     * Static block to load contents.
+     */
     static {
         setContents(Ping.class, 
             new String[]{

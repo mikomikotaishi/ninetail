@@ -174,7 +174,7 @@ public class ChessEngine extends Engine {
                 return "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
             }
             
-            String resultStr = result.getUtf8String(0);
+            String resultStr = result.getString(0);
             Logger.log(LogLevel.INFO, "Java: getBoardState returned: " + resultStr);
             return resultStr;
         } catch (Throwable t) {
@@ -194,7 +194,7 @@ public class ChessEngine extends Engine {
             MemorySegment result = (MemorySegment) getBoardDisplayHandle.invoke();
             if (result.byteSize() == 0)
                 throw new RuntimeException("Failed to get board display: empty result");
-            return result.getUtf8String(0);
+            return result.getString(0);
         } catch (Throwable t) {
             throw new RuntimeException("Failed to get board display", t);
         }
@@ -209,7 +209,7 @@ public class ChessEngine extends Engine {
      */
     public int makeMove(String moveStr) {
         try {
-            MemorySegment moveStrSegment = arena.allocateUtf8String(moveStr);
+            MemorySegment moveStrSegment = arena.allocateFrom(moveStr);
             return (int) makeMoveHandle.invoke(moveStrSegment);
         } catch (Throwable t) {
             throw new RuntimeException("Failed to make move", t);
@@ -236,7 +236,7 @@ public class ChessEngine extends Engine {
      */
     public int loadPosition(String fen) {
         try {
-            MemorySegment fenSegment = arena.allocateUtf8String(fen);
+            MemorySegment fenSegment = arena.allocateFrom(fen);
             return (int) loadPositionHandle.invoke(fenSegment);
         } catch (Throwable t) {
             throw new RuntimeException("Failed to load position", t);
@@ -266,7 +266,7 @@ public class ChessEngine extends Engine {
     public String getBestMove(int depth) {
         try {
             MemorySegment result = (MemorySegment) getBestMoveHandle.invoke(depth);
-            return result.getUtf8String(0);
+            return result.getString(0);
         } catch (Throwable t) {
             throw new RuntimeException("Failed to get best move", t);
         }
@@ -281,7 +281,7 @@ public class ChessEngine extends Engine {
      */
     public boolean isInCheck(String colour) {
         try {
-            MemorySegment colourSegment = arena.allocateUtf8String(colour);
+            MemorySegment colourSegment = arena.allocateFrom(colour);
             return (int) isInCheckHandle.invoke(colourSegment) == 1;
         } catch (Throwable t) {
             throw new RuntimeException("Failed to check if in check", t);
