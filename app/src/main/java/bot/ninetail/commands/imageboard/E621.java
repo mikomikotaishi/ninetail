@@ -17,7 +17,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 /**
  * Command to retrieve an image from e621.
  * 
- * @implements APICommand
+ * @implements ApiCommand
  */
 public final class E621 implements ApiCommand {
     /**

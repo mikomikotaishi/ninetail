@@ -15,7 +15,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 /**
  * Command to retrieve the weather for a given location.
  * 
- * @implements APICommand
+ * @implements ApiCommand
  */
 public final class Weather implements ApiCommand {
     /**

@@ -13,7 +13,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 /**
  * Command to shut down the bot.
  * 
- * @implements JDACommand
+ * @implements JdaCommand
  */
 public final class Shutdown implements JdaCommand {
     /**

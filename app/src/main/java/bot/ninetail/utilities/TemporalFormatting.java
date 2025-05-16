@@ -4,7 +4,7 @@ import java.time.Duration;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Utility class for temporal operations.
+ * Utility class for temporal formatting operations.
  */
 public class TemporalFormatting {
     /**

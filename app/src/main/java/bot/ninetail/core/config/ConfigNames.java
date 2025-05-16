@@ -2,6 +2,9 @@ package bot.ninetail.core.config;
 
 import jakarta.annotation.Nonnull;
 
+/**
+ * Class containing file names used by the bot.
+ */
 public class ConfigNames {
     // Files
     public static final @Nonnull String CONFIG_PROPERTIES_FILE = "config.properties";

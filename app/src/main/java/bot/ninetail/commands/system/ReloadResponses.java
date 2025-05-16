@@ -14,7 +14,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 /**
  * Command to reload the response files.
  * 
- * @implements JDACommand
+ * @implements JdaCommand
  */
 public final class ReloadResponses implements JdaCommand {
     /**

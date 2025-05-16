@@ -13,7 +13,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 /**
  * Command to reload the config files.
  * 
- * @implements JDACommand
+ * @implements JdaCommand
  */
 public final class ReloadConfig implements JdaCommand {
     /**

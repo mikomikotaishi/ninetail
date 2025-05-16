@@ -17,7 +17,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 /**
  * Command to retrieve an image from Gyate Booru.
  * 
- * @implements APICommand
+ * @implements ApiCommand
  */
 public final class GyateBooru implements ApiCommand {
     /**

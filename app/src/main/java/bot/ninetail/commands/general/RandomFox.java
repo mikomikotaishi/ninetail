@@ -18,7 +18,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  * Command to retrieve a random fox image.
  *
  * @extends ContentResponder
- * @implements APICommand
+ * @implements ApiCommand
  */
 public final class RandomFox extends ContentResponder implements ApiCommand {
     /**

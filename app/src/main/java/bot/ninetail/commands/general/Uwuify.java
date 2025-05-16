@@ -14,7 +14,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 /**
  * Command to uwuify text.
  * 
- * @implements APICommand
+ * @implements ApiCommand
  */
 public final class Uwuify implements ApiCommand {
     /**
