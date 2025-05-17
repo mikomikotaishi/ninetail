@@ -33,6 +33,7 @@ public final class Skip implements AudioCommand {
                                                 event.getGuild() != null ? event.getGuild().getId() : "N/A"));
         long guildId = event.getGuild().getIdLong();
         BotAudio botAudio = BotAudio.getInstance(guildId);
+        botAudio.updateLastActiveTime();
 
         if (botAudio.getAudioPlayer().getPlayingTrack() == null) {
             event.reply("There is no track currently playing.").queue();

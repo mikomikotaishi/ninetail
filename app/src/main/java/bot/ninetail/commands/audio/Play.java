@@ -39,6 +39,7 @@ public final class Play implements AudioCommand {
         }
         long guildId = event.getGuild().getIdLong();
         BotAudio botAudio = BotAudio.getInstance(guildId);
+        botAudio.updateLastActiveTime();
         AudioManager audioManager = event.getGuild().getAudioManager();
 
         botAudio.setAudioManager(audioManager);

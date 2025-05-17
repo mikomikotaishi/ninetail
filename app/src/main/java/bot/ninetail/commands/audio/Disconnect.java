@@ -33,6 +33,7 @@ public final class Disconnect implements AudioCommand {
                                                 event.getGuild() != null ? event.getGuild().getId() : "N/A"));
         long guildId = event.getGuild().getIdLong();
         BotAudio botAudio = BotAudio.getInstance(guildId);
+        botAudio.updateLastActiveTime();
         botAudio.disconnect();
         event.reply("Disconnected from the voice channel.").queue();
     }

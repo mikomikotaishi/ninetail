@@ -33,6 +33,7 @@ public final class Clear implements AudioCommand {
                                                 event.getGuild() != null ? event.getGuild().getId() : "N/A"));
         long guildId = event.getGuild().getIdLong();
         BotAudio botAudio = BotAudio.getInstance(guildId);
+        botAudio.updateLastActiveTime();
         int queueSize = botAudio.getScheduler().getQueue().size();
 
         if (queueSize == 0) {

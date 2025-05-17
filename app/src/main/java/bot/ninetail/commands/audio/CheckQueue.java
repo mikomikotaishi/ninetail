@@ -37,6 +37,7 @@ public final class CheckQueue implements AudioCommand {
                                                 event.getUser().getId(),
                                                 event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
                                                 event.getGuild() != null ? event.getGuild().getId() : "N/A"));
+        BotAudio.getInstance(event.getGuild().getIdLong()).updateLastActiveTime();
         long guildId = event.getGuild().getIdLong();
         BotAudio botAudio = BotAudio.getInstance(guildId);
         Queue<AudioTrack> queue = botAudio.getScheduler().getQueue();
