@@ -29,8 +29,10 @@ public final class Skip implements AudioCommand {
         Logger.log(LogLevel.INFO, String.format("Skip command invoked by %s (%s) of guild %s (%s)", 
                                                 event.getUser().getGlobalName(), 
                                                 event.getUser().getId(),
-                                                event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
-                                                event.getGuild() != null ? event.getGuild().getId() : "N/A"));
+                                                event.getGuild().getName(),
+                                                event.getGuild().getId())
+        );
+        
         long guildId = event.getGuild().getIdLong();
         BotAudio botAudio = BotAudio.getInstance(guildId);
         botAudio.updateLastActiveTime();

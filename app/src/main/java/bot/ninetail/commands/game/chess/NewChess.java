@@ -30,7 +30,9 @@ public final class NewChess implements GameCommand {
                                                 event.getUser().getGlobalName(), 
                                                 event.getUser().getId(),
                                                 event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
-                                                event.getGuild() != null ? event.getGuild().getId() : "N/A"));
+                                                event.getGuild() != null ? event.getGuild().getId() : "N/A")
+        );
+        
         ChessGameManager.startNewGame();
         ChessEngine chessEngine = ChessGameManager.getChessEngine();
         

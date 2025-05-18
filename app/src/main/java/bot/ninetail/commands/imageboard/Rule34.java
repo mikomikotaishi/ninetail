@@ -40,7 +40,9 @@ public final class Rule34 implements ApiCommand {
                                                 event.getUser().getGlobalName(), 
                                                 event.getUser().getId(),
                                                 event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
-                                                event.getGuild() != null ? event.getGuild().getId() : "N/A"));
+                                                event.getGuild() != null ? event.getGuild().getId() : "N/A")
+        );
+        
         if (rule34Client.getApiKey() == null) {
             Logger.log(LogLevel.WARN, "Failed to invoke Rule34 command due to missing API token.");
             event.reply("Sorry, Rule34 API token was not provided, I cannot retrieve anything.").queue();

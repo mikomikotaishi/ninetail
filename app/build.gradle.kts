@@ -49,6 +49,12 @@ dependencies {
     implementation("org.slf4j:slf4j-api:2.0.17")
     implementation("org.slf4j:slf4j-simple:2.0.17")
 
+    // PostgreSQL JDBC driver
+    implementation("org.postgresql:postgresql:42.7.5")
+
+    // HikariCP for database connection pooling
+    implementation("com.zaxxer:HikariCP:6.3.0")
+
     // Testing
     implementation("org.mockito:mockito-core:5.17.0")
 }

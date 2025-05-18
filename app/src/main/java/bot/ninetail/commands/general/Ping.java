@@ -50,7 +50,9 @@ public final class Ping extends ContentResponder implements BasicCommand {
                                                 event.getUser().getGlobalName(), 
                                                 event.getUser().getId(),
                                                 event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
-                                                event.getGuild() != null ? event.getGuild().getId() : "N/A"));
+                                                event.getGuild() != null ? event.getGuild().getId() : "N/A")
+        );
+        
         long startTime = System.currentTimeMillis();
         final String pingMessage = getRandomContent();
         event.reply(pingMessage).queue(response -> {

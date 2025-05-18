@@ -40,7 +40,9 @@ public final class Danbooru implements ApiCommand {
                                                 event.getUser().getGlobalName(), 
                                                 event.getUser().getId(),
                                                 event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
-                                                event.getGuild() != null ? event.getGuild().getId() : "N/A"));
+                                                event.getGuild() != null ? event.getGuild().getId() : "N/A")
+        );
+        
         if (danbooruClient.getApiKey() == null) {
             Logger.log(LogLevel.WARN, "Failed to invoke Danbooru command due to missing API token.");
             event.reply("Sorry, Danbooru API token was not provided, I cannot reteventrieve anything.").queue();

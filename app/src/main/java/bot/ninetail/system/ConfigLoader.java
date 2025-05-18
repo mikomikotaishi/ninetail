@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import jakarta.annotation.Nonnull;
+
 import bot.ninetail.core.LogLevel;
 import bot.ninetail.core.Logger;
 import bot.ninetail.core.config.ConfigNames;
@@ -16,50 +18,55 @@ public class ConfigLoader {
     /**
      * Properties object to store configuration properties.
      */
-    private static final Properties PROPERTIES = new Properties();
+    @Nonnull private static final Properties PROPERTIES = new Properties();
 
     // System
     /**
      * The bot token.
      */
-    private static String botToken;
+    @Nonnull private static String botToken;
 
     /**
      * The master password.
      */
-    private static String masterPassword;
+    @Nonnull private static String masterPassword;
+
+    /**
+     * The bot master ID.
+     */
+    @Nonnull private static String botMasterId;
 
     // General
     /**
      * The weather token.
      */
-    private static String weatherToken;
+    @Nonnull private static String weatherToken;
 
     // Imageboards
     /**
      * The Danbooru token.
      */
-    private static String danbooruToken;
+    @Nonnull private static String danbooruToken;
 
     /**
      * The e621 token.
      */
-    private static String e621Token;
+    @Nonnull private static String e621Token;
 
     /**
      * The Gelbooru token.
      */
-    private static String gelbooruToken;
+    @Nonnull private static String gelbooruToken;
 
     /**
      * The Gyate Booru token.
      */
-    private static String gyatebooruToken;
+    @Nonnull private static String gyatebooruToken;
 
     /**
      * The Rule34 token.
      */
-    private static String rule34Token;
+    @Nonnull private static String rule34Token;
 
     /**
      * Static block to load properties from config.properties.
@@ -74,6 +81,7 @@ public class ConfigLoader {
             // System
             botToken = PROPERTIES.getProperty("BOT_TOKEN");
             masterPassword = PROPERTIES.getProperty("MASTER_PASSWORD");
+            botMasterId = PROPERTIES.getProperty("BOT_MASTER_ID");
             
             // General
             weatherToken = PROPERTIES.getProperty("WEATHER_TOKEN");
@@ -134,6 +142,15 @@ public class ConfigLoader {
      */
     public static String getMasterPassword() {
         return masterPassword;
+    }
+
+    /**
+     * Gets the bot master ID.
+     *
+     * @return The bot master ID.
+     */
+    public static String getBotMasterId() {
+        return botMasterId;
     }
 
     /**

@@ -38,7 +38,9 @@ public final class Weather implements ApiCommand {
                                                 event.getUser().getGlobalName(), 
                                                 event.getUser().getId(),
                                                 event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
-                                                event.getGuild() != null ? event.getGuild().getId() : "N/A"));
+                                                event.getGuild() != null ? event.getGuild().getId() : "N/A")
+        );
+        
         String location = event.getOption("location").getAsString();
         try {
             Logger.log(LogLevel.INFO, String.format("Attempting to retrieve data for location: %s", location));

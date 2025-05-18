@@ -36,7 +36,9 @@ public final class RandomFox extends ContentResponder implements ApiCommand {
                                                 event.getUser().getGlobalName(), 
                                                 event.getUser().getId(),
                                                 event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
-                                                event.getGuild() != null ? event.getGuild().getId() : "N/A"));
+                                                event.getGuild() != null ? event.getGuild().getId() : "N/A")
+        );
+        
         try {
             RandomFoxClient randomFoxClient = new RandomFoxClient();
             JsonArray imageData = randomFoxClient.getImage();

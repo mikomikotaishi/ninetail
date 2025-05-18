@@ -74,7 +74,6 @@ public class ResponseHandler extends InteractionHandler {
         Logger.log(LogLevel.INFO, "Parsing for responses");
         Logger.log(LogLevel.INFO, "Message: " + content);
         for (Map.Entry<String, String> entry: RESPONSES.entrySet()) {
-            Logger.log(LogLevel.INFO, "Checking response key: " + entry.getKey());
             String pattern = String.format("\\b%s\\b", Pattern.quote(entry.getKey()));
             if (Pattern.compile(pattern, Pattern.CASE_INSENSITIVE).matcher(content).find()) {
                 Logger.log(LogLevel.INFO, "Match found! Sending: " + entry.getValue());

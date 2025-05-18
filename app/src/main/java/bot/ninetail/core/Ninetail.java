@@ -94,6 +94,15 @@ public class Ninetail extends ListenerAdapter {
                 .addOptions(new OptionData(OptionType.STRING, "reason", "The ban reason to use (default: Banned by <user>)"))
                 .setContexts(InteractionContextType.GUILD)
                 .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.BAN_MEMBERS)),
+            // Kick command
+            Commands.slash("kick", "Kick a user from this server. Requires permission to kick users.")
+                .addOptions(new OptionData(OptionType.USER, "user", "The user to kick")
+                    .setRequired(true))
+                .addOptions(new OptionData(OptionType.INTEGER, "del_days", "Delete messages from the past days.")
+                    .setRequiredRange(0, 7))
+                .addOptions(new OptionData(OptionType.STRING, "reason", "The kick reason to use (default: Kicked by <user>)"))
+                .setContexts(InteractionContextType.GUILD)
+                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.KICK_MEMBERS)),
             
             // ====== Audio commands ======
             // Check queue command
@@ -145,6 +154,7 @@ public class Ninetail extends ListenerAdapter {
             Commands.slash("magic8ball", "Consults the Magic 8 Ball")
                 .addOptions(new OptionData(OptionType.STRING, "query", "The question to ask the magic 8 ball")
                     .setRequired(true)),
+            
             // === Chess ===
             // New chess command
             Commands.slash("newchess", "Begins a new chess game")
@@ -209,7 +219,11 @@ public class Ninetail extends ListenerAdapter {
 
             // ====== Social commands ======
 
-            // ====== System commands ======      
+            // ====== System commands ======     
+            // Delete all webhooks command
+            Commands.slash("deleteallwebhooks", "Deletes all webhooks across all guilds")
+                .addOptions(new OptionData(OptionType.STRING, "password", "The master password (specified in config.properties)")
+                    .setRequired(true)), 
             // List guilds command
             Commands.slash("listguilds", "List all guilds the bot is present in")
                 .addOptions(new OptionData(OptionType.STRING, "password", "The master pasword (specified in config.properties)")

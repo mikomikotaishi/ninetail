@@ -10,6 +10,8 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 /**
  * Interface for JDA commands.
  * This interface is used to define the structure of JDA commands.
+ * 
+ * @extends Command
  */
 public interface JdaCommand extends Command {
     /**

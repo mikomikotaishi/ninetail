@@ -7,7 +7,7 @@ import bot.ninetail.structures.ConfigFile;
 /**
  * Class containing file names used by the bot.
  */
-public class ConfigNames extends ConfigFile {
+public final class ConfigNames extends ConfigFile {
     /**
      * Private constructor to prevent instantiation.
      */

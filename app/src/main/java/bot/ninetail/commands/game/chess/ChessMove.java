@@ -30,7 +30,9 @@ public final class ChessMove implements GameCommand {
                                                 event.getUser().getGlobalName(), 
                                                 event.getUser().getId(),
                                                 event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
-                                                event.getGuild() != null ? event.getGuild().getId() : "N/A"));
+                                                event.getGuild() != null ? event.getGuild().getId() : "N/A")
+        );
+        
         ChessEngine chessEngine = ChessGameManager.getChessEngine();
         if (chessEngine == null) {
             event.reply("No game in progress. Use /newchess to start a new game.").queue();

@@ -31,8 +31,10 @@ public final class Play implements AudioCommand {
         Logger.log(LogLevel.INFO, String.format("Play command invoked by %s (%s) of guild %s (%s)", 
                                                 event.getUser().getGlobalName(), 
                                                 event.getUser().getId(),
-                                                event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
-                                                event.getGuild() != null ? event.getGuild().getId() : "N/A"));
+                                                event.getGuild().getName(),
+                                                event.getGuild().getId())
+        );
+        
         if (event.getMember().getVoiceState() == null || !event.getMember().getVoiceState().inAudioChannel()) {
             event.reply("You need to be in a voice channel to use this command!").queue();
             return;

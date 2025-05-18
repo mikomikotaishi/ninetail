@@ -30,7 +30,9 @@ public final class NewPoker implements GameCommand {
                                                 event.getUser().getGlobalName(), 
                                                 event.getUser().getId(),
                                                 event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
-                                                event.getGuild() != null ? event.getGuild().getId() : "N/A"));
+                                                event.getGuild() != null ? event.getGuild().getId() : "N/A")
+        );
+        
         PokerGameManager.startNewGame();
         Logger.log(LogLevel.INFO, String.format("A new poker game has been started by %s of guild %s", event.getUser(), event.getGuild()));
         event.reply("A new poker game has been started!").queue();

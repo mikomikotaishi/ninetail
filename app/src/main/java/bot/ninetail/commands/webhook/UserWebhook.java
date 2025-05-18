@@ -1,8 +1,5 @@
 package bot.ninetail.commands.webhook;
 
-import java.io.IOException;
-import java.util.concurrent.ExecutionException;
-
 import jakarta.annotation.Nonnull;
 
 import bot.ninetail.core.LogLevel;
@@ -10,11 +7,10 @@ import bot.ninetail.core.Logger;
 import bot.ninetail.structures.commands.WebhookCommand;
 
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Icon;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Webhook;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.requests.restaction.WebhookAction;
 
 /**
  * Command to create a webhook of a user.
@@ -22,6 +18,8 @@ import net.dv8tion.jda.api.requests.restaction.WebhookAction;
  * @implements Command
  */
 public final class UserWebhook implements WebhookCommand {
+    @Nonnull private static final String IMPERSONATOR_WEBHOOK_NAME = "NinetailImpersonator";
+
     /**
      * Private constructor to prevent instantiation.
      */
@@ -34,10 +32,12 @@ public final class UserWebhook implements WebhookCommand {
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
         Logger.log(LogLevel.INFO, String.format("User webhook command invoked by %s (%s) of guild %s (%s)", 
-                                                event.getUser().getGlobalName(), 
-                                                event.getUser().getId(),
-                                                event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
-                                                event.getGuild() != null ? event.getGuild().getId() : "N/A"));
+                                              event.getUser().getGlobalName(), 
+                                              event.getUser().getId(),
+                                              event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
+                                              event.getGuild() != null ? event.getGuild().getId() : "N/A")
+        );
+        
         Guild guild = event.getGuild();
         TextChannel channel = event.getChannel().asTextChannel();
         Member member = event.getOption("user").getAsMember();
@@ -49,34 +49,56 @@ public final class UserWebhook implements WebhookCommand {
             return;
         }
 
-        Icon memberAvatar = null;
-        try {
-            memberAvatar = Icon.from(member.getEffectiveAvatar().download().get());
-            Logger.log(LogLevel.DEBUG, String.format("Successfully downloaded avatar for %s", member.getEffectiveName()));
-        } catch (IOException e) {
-            Logger.log(LogLevel.WARN, String.format("IO error while downloading avatar for %s: %s", member.getEffectiveName(), e.getMessage()));
-        } catch (InterruptedException e) {
-            Logger.log(LogLevel.WARN, String.format("Avatar download interrupted for %s: %s", member.getEffectiveName(), e.getMessage()));
-            Thread.currentThread().interrupt();
-        } catch (ExecutionException e) {
-            Logger.log(LogLevel.WARN, String.format("Failed to execute avatar download for %s: %s", member.getEffectiveName(), e.getMessage()));
-        }
+        event.deferReply(true).queue();
 
-        WebhookAction webhookAction = channel.createWebhook(member.getEffectiveName());
-        if (memberAvatar != null)
-            webhookAction = webhookAction.setAvatar(memberAvatar);
-        else
-            Logger.log(LogLevel.INFO, String.format("Using default avatar for webhook of %s", member.getEffectiveName()));
+        channel.retrieveWebhooks().queue(webhooks -> {
+            Webhook existingWebhook = webhooks.stream()
+                .filter(webhook -> webhook.getName().equals(IMPERSONATOR_WEBHOOK_NAME))
+                .findFirst()
+                .orElse(null);
 
-        webhookAction.queue(webhook -> {
-            webhook.sendMessage(message)
-                .setUsername(member.getEffectiveName())
-                .queue();
-            event.reply(String.format("Webhook created and message sent as %s of guild %s", member.getEffectiveName(), guild.getName())).setEphemeral(true).queue();
-            Logger.log(LogLevel.INFO, String.format("Created webhook for %s of guild %s", member.getEffectiveName(), guild.getName()));
+            if (existingWebhook != null) {
+                Logger.log(LogLevel.DEBUG, String.format("Using existing webhook in channel %s of guild %s", 
+                                                        channel.getName(), guild.getName()));
+                sendImpersonatedMessage(event, existingWebhook, member, message, guild);
+            } else {
+                Logger.log(LogLevel.INFO, String.format("Creating new impersonation webhook in channel %s of guild %s", 
+                                                        channel.getName(), guild.getName()));
+                channel.createWebhook(IMPERSONATOR_WEBHOOK_NAME).queue(
+                    newWebhook -> sendImpersonatedMessage(event, newWebhook, member, message, guild),
+                    error -> {
+                        event.getHook().editOriginal(String.format("Failed to create webhook: %s", error.getMessage())).queue();
+                        Logger.log(LogLevel.ERROR, String.format("Failed to create webhook in guild %s: %s", guild.getName(), error.getMessage()));
+                    }
+                );
+            }
         }, error -> {
-            event.reply(String.format("Failed to create webhook: %s of guild %s", error.getMessage(), guild.getName())).setEphemeral(true).queue();
-            Logger.log(LogLevel.INFO, String.format("Failed to create webhook for %s of guild %s", member.getEffectiveName(), guild.getName()));
+            event.getHook().editOriginal("Failed to retrieve webhooks: " + error.getMessage()).queue();
+            Logger.log(LogLevel.ERROR, String.format("Failed to retrieve webhooks for guild %s: %s", guild.getName(), error.getMessage()));
         });
+    }
+
+    /**
+     * Sends a message through the webhook with the member's name and avatar
+     * 
+     * @param event
+     * @param webhook
+     * @param member
+     * @param message
+     * @param guild
+     */
+    private static void sendImpersonatedMessage(SlashCommandInteractionEvent event, Webhook webhook, Member member, String message, Guild guild) {
+        webhook.sendMessage(message)
+            .setUsername(member.getEffectiveName())
+            .setAvatarUrl(member.getEffectiveAvatarUrl())
+            .queue(success -> {
+                event.getHook().editOriginal(String.format("Message sent as %s", member.getEffectiveName())).queue();
+                Logger.log(LogLevel.INFO, String.format("Sent webhook message as %s in guild %s", 
+                                                    member.getEffectiveName(), guild.getName()));
+            }, error -> {
+                event.getHook().editOriginal("Failed to send message: " + error.getMessage()).queue();
+                Logger.log(LogLevel.ERROR, String.format("Failed to send webhook message in guild %s: %s", 
+                                                    guild.getName(), error.getMessage()));
+            });
     }
 }

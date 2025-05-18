@@ -30,7 +30,9 @@ public final class PokerMove implements GameCommand {
                                                 event.getUser().getGlobalName(), 
                                                 event.getUser().getId(),
                                                 event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
-                                                event.getGuild() != null ? event.getGuild().getId() : "N/A"));
+                                                event.getGuild() != null ? event.getGuild().getId() : "N/A")
+        );
+        
         String moveType = event.getOption("move").getAsString();
         int amount = event.getOption("amount") != null ? event.getOption("amount").getAsInt() : 0;
 

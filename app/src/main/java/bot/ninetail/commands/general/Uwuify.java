@@ -37,7 +37,9 @@ public final class Uwuify implements ApiCommand {
                                                 event.getUser().getGlobalName(), 
                                                 event.getUser().getId(),
                                                 event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
-                                                event.getGuild() != null ? event.getGuild().getId() : "N/A"));
+                                                event.getGuild() != null ? event.getGuild().getId() : "N/A")
+        );
+        
         if (uwuifyClient.getApiKey() == null) {
             Logger.log(LogLevel.INFO, "Failed to invoke Uwuify command due to missing API token.");
             event.reply("Sorry, the Uwuify API token was not provided. I cannot uwuify your text.").queue();

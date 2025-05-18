@@ -1,5 +1,8 @@
 package bot.ninetail.structures;
 
-public abstract class ConfigFile {
+import bot.ninetail.core.config.ConfigNames;
+import bot.ninetail.core.config.ConfigPaths;
+
+public sealed abstract class ConfigFile permits ConfigNames, ConfigPaths {
     
 }

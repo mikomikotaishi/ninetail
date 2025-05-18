@@ -64,7 +64,9 @@ public final class Magic8Ball extends ContentResponder implements GameCommand {
                                                 event.getUser().getGlobalName(), 
                                                 event.getUser().getId(),
                                                 event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
-                                                event.getGuild() != null ? event.getGuild().getId() : "N/A"));
+                                                event.getGuild() != null ? event.getGuild().getId() : "N/A")
+        );
+        
         event.reply(Magic8Ball.getRandomContent()).queue();
     }
 }
