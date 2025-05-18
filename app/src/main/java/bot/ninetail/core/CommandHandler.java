@@ -10,8 +10,8 @@ import bot.ninetail.commands.game.chess.*;
 import bot.ninetail.commands.game.poker.*;
 import bot.ninetail.commands.general.*;
 import bot.ninetail.commands.imageboard.*;
+import bot.ninetail.commands.social.*;
 import bot.ninetail.commands.system.*;
-import bot.ninetail.commands.system.Shutdown;
 import bot.ninetail.commands.webhook.*;
 import bot.ninetail.structures.InteractionHandler;
 
@@ -25,6 +25,12 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  * @extends InteractionHandler
  */
 public class CommandHandler extends InteractionHandler {
+    /**
+     * Handles slash commands for the bot.
+     * 
+     * @param jda The JDA instance
+     * @param event The slash command event
+     */
     public static void handleSlashCommand(@Nonnull JDA jda, @Nonnull SlashCommandInteractionEvent event) {
         switch (event.getName()) {
             // Admin
@@ -113,6 +119,8 @@ public class CommandHandler extends InteractionHandler {
             case "rule34":
                 Rule34.invoke(event);
                 break;
+            // Social
+
             // System
             case "listguilds":
                 ListGuilds.invoke(event, jda);

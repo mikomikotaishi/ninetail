@@ -27,7 +27,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  * @implements JdaCommand
  */
 public final class ListGuilds implements JdaCommand {
-        /**
+    /**
      * Private constructor to prevent instantiation.
      */
     private ListGuilds() {}

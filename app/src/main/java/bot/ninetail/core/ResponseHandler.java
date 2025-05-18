@@ -6,9 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import jakarta.annotation.Nonnull;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
+
 import bot.ninetail.core.config.ConfigNames;
 import bot.ninetail.structures.InteractionHandler;
 
@@ -29,7 +31,7 @@ public class ResponseHandler extends InteractionHandler {
     /**
      * Map of keywords to responses.
      */
-    private static Map<String, String> RESPONSES = new HashMap<>();
+    @Nonnull private static Map<String, String> RESPONSES = new HashMap<>();
 
     /**
      * Loads responses from responses.json.
@@ -51,10 +53,10 @@ public class ResponseHandler extends InteractionHandler {
             }
             Logger.log(LogLevel.INFO, "Loading " + ConfigNames.RESPONSES_FILE);
             try (JsonReader jsonReader = Json.createReader(inputStream)) {
-                JsonObject responsesJSON = jsonReader.readObject();
-                for (String key: responsesJSON.keySet()) {
+                JsonObject responsesJson = jsonReader.readObject();
+                for (String key: responsesJson.keySet()) {
                     Logger.log(LogLevel.INFO, "Loading response for key " + key);
-                    RESPONSES.put(key, responsesJSON.getString(key));
+                    RESPONSES.put(key, responsesJson.getString(key));
                 }
             }
         } catch (IOException e) {

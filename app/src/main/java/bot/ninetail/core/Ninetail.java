@@ -207,6 +207,8 @@ public class Ninetail extends ListenerAdapter {
                     .setRequired(true))
                 .addOptions(new OptionData(OptionType.STRING, "tag2", "The second tag to search")),
 
+            // ====== Social commands ======
+
             // ====== System commands ======      
             // List guilds command
             Commands.slash("listguilds", "List all guilds the bot is present in")

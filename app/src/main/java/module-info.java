@@ -5,7 +5,7 @@ module bot.ninetail {
     requires java.base;
     requires java.net.http;
     requires jakarta.annotation;
-    requires transitive jakarta.json;
+    requires jakarta.json;
     requires org.slf4j;
     requires org.mockito;
     requires transitive net.dv8tion.jda;
@@ -20,8 +20,12 @@ module bot.ninetail {
     exports bot.ninetail.commands.game;
     exports bot.ninetail.commands.general;
     exports bot.ninetail.commands.imageboard;
+    exports bot.ninetail.commands.social;
     exports bot.ninetail.commands.system;
+    exports bot.ninetail.commands.webhook;
     exports bot.ninetail.core;
+    exports bot.ninetail.core.config;
+    exports bot.ninetail.game;
     exports bot.ninetail.game.chess;
     exports bot.ninetail.game.poker;
     exports bot.ninetail.system;
