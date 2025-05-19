@@ -40,6 +40,7 @@ public class DanbooruClient extends ImageboardClient {
      * @param tag1 The first tag.
      * @param tag2 The second tag.
      * @return The posts.
+     * 
      * @throws IOException If an error occurs while retrieving the posts.
      * @throws InterruptedException If the operation is interrupted.
      */

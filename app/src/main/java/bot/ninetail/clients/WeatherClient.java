@@ -37,7 +37,9 @@ public class WeatherClient extends LocationInformationClient {
      * Retrieves the weather from OpenWeatherMap.
      *
      * @param location The location.
+     * 
      * @return The weather.
+     * 
      * @throws IOException If an error occurs while retrieving the weather.
      * @throws InterruptedException If the operation is interrupted.
      */

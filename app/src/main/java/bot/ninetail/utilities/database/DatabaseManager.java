@@ -10,6 +10,11 @@ import bot.ninetail.system.ConfigLoader;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+/**
+ * Manager for handling databases used by the bot.
+ * 
+ * @extends Manager
+ */
 public final class DatabaseManager extends Manager {
     /**
      * Private constructor to prevent instantiation.

@@ -2,10 +2,14 @@ package bot.ninetail.utilities.cryptography;
 
 import java.security.SecureRandom;
 
+import bot.ninetail.structures.Manager;
+
 /**
  * Random number generator.
+ * 
+ * @extends Manager
  */
-public class RandomNumberGenerator {
+public class RandomNumberGenerator extends Manager {
     /**
      * Private constructor to prevent instantiation.
      */

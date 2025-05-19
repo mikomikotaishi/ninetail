@@ -36,6 +36,7 @@ public class RandomFoxClient extends RandomImageClient {
      * Retrieves a random image of a fox.
      *
      * @return A JsonArray containing the API response.
+     * 
      * @throws IOException If an error occurs while retrieving the image.
      * @throws InterruptedException If the operation is interrupted.
      */

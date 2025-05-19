@@ -37,7 +37,9 @@ public class UwuifyClient extends TextManipulatorClient {
      * Converts a given text to its uwuified version.
      *
      * @param text The input text.
+     * 
      * @return The transformed text.
+     * 
      * @throws IOException If an error occurs while making the request.
      * @throws InterruptedException If the operation is interrupted.
      */
