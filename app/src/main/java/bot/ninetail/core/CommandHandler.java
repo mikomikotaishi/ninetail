@@ -12,7 +12,6 @@ import bot.ninetail.commands.general.*;
 import bot.ninetail.commands.imageboard.*;
 import bot.ninetail.commands.social.*;
 import bot.ninetail.commands.system.*;
-import bot.ninetail.commands.system.Shutdown;
 import bot.ninetail.commands.webhook.*;
 import bot.ninetail.structures.InteractionHandler;
 
