@@ -30,6 +30,9 @@ dependencies {
     implementation(libs.guava)
 
     implementation(kotlin("stdlib"))
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.9.23"))
+    implementation("org.jetbrains.kotlin:kotlin-stdlib")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
     // Jakarta
     implementation("jakarta.annotation:jakarta.annotation-api:3.0.0")
@@ -40,6 +43,11 @@ dependencies {
 
     // JDA
     implementation("net.dv8tion:JDA:5.5.1")
+
+    // Jackson dependencies (required by JDA)
+    implementation("com.fasterxml.jackson.core:jackson-core:2.19.0")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.19.0")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:2.19.0")
 
     // Audio
     implementation("dev.arbjerg:lavaplayer:2.2.3")
@@ -52,7 +60,7 @@ dependencies {
     // PostgreSQL JDBC driver
     implementation("org.postgresql:postgresql:42.7.5")
 
-    // HikariCP for database connection pooling
+    // HikariCP
     implementation("com.zaxxer:HikariCP:6.3.0")
 
     // Testing
@@ -62,7 +70,7 @@ dependencies {
 // Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(23)
+        languageVersion = JavaLanguageVersion.of(24)
     }
     modularity.inferModulePath = true 
 }
@@ -80,8 +88,13 @@ java {
 
 application {
     // Define the main class for the application.
-    // mainModule = "bot.ninetail"
+    mainModule = "bot.ninetail"
     mainClass = "bot.ninetail.core.Ninetail"
+    applicationDefaultJvmArgs = listOf(
+        "--enable-preview",
+        "--add-modules", "ALL-MODULE-PATH",
+        "--add-reads", "bot.ninetail=ALL-UNNAMED"
+    )
 }
 
 tasks.withType<JavaCompile> {
@@ -96,5 +109,8 @@ tasks.named<Test>("test") {
 }
 
 tasks.withType<JavaExec> {
-    jvmArgs = listOf("--enable-preview", "--add-reads", "bot.ninetail=ALL-UNNAMED")
+    jvmArgs = listOf(
+        "--enable-preview", "--add-reads", "bot.ninetail=ALL-UNNAMED",
+        "--patch-module", "bot.ninetail=./build/classes/java/main"
+    )
 }

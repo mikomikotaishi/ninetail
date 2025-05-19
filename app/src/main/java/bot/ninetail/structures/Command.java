@@ -1,6 +1,7 @@
 package bot.ninetail.structures;
 
 import jakarta.annotation.Nonnull;
+
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 /**

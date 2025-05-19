@@ -1,8 +1,18 @@
 package bot.ninetail.social;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import javax.sql.DataSource;
 
 import jakarta.annotation.Nonnull;
+
+import bot.ninetail.core.LogLevel;
+import bot.ninetail.core.Logger;
+
+import org.postgresql.util.PSQLException;
+import org.postgresql.util.PSQLState;
 
 /**
  * Registry for managing user coins.
@@ -27,36 +37,66 @@ public class CoinsRegistry {
     private CoinsRegistry(@Nonnull DataSource db) {
         this.db = db;
     }
-    
+
     /**
-     * Gets the singleton instance of CoinsRegistry.
+     * Initialises the database used by the coin registry.
      * 
-     * @param db The data source to use if creating a new instance
-     * @return The singleton instance
+     * @param dataSource
+     * 
+     * @throws SQLException
      */
-    public static synchronized CoinsRegistry getInstance(@Nonnull DataSource db) {
-        if (instance == null)
-            instance = new CoinsRegistry(db);
-        return instance;
+    public static void initDatabase(DataSource dataSource) throws SQLException {
+        try (Connection conn = dataSource.getConnection();
+            Statement statement = conn.createStatement()) {
+            
+            statement.execute("""
+                CREATE TABLE IF NOT EXISTS user_wallet (
+                    user_id BIGINT PRIMARY KEY,
+                    balance BIGINT NOT NULL DEFAULT 0,
+                    last_claim TIMESTAMP NOT NULL DEFAULT NOW()
+                )
+            """);
+            
+            Logger.log(LogLevel.INFO, "Database tables initialised successfully");
+        } catch (PSQLException e) {
+            if (PSQLState.CONNECTION_FAILURE.getState().equals(e.getSQLState()))
+                Logger.log(LogLevel.ERROR, "Database connection failed: " + e.getMessage());
+            else
+                Logger.log(LogLevel.ERROR, "PostgreSQL error: " + e.getMessage() + " (SQL State: " + e.getSQLState() + ")");
+            throw e;
+        }
     }
     
     /**
-     * Gets the singleton instance of CoinsRegistry.
-     * Note: This method should only be called after the registry has been initialised with a data source.
+     * Initialises the singleton instance. Should be called once at application startup.
      * 
-     * @return The singleton instance
-     * @throws IllegalStateException if the registry has not been initialised
+     * @param db The DataSource to use
+     * 
+     * @throws IllegalStateException if the instance is already initialised
+     */
+    public static synchronized void init(@Nonnull DataSource db) {
+        if (instance != null)
+            throw new IllegalStateException("CoinsRegistry is already initialised");
+        instance = new CoinsRegistry(db);
+    }
+
+    /**
+     * Returns the singleton instance.
+     * 
+     * @return The initialised CoinsRegistry
+     * 
+     * @throws IllegalStateException if called before initialisation
      */
     public static CoinsRegistry getInstance() {
         if (instance == null)
-            throw new IllegalStateException("CoinsRegistry has not been initialized with a data source");
+            throw new IllegalStateException("CoinsRegistry has not been initialized");
         return instance;
     }
 
     /**
-     * Obtains the DataSource
+     * Obtains the DataSource.
      * 
-     * @return 
+     * @return The data source itself.
      */
     public DataSource getData() {
         return db;

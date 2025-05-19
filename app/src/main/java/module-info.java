@@ -5,10 +5,19 @@ module bot.ninetail {
     requires java.base;
     requires java.net.http;
     requires java.sql;
+
     requires jakarta.annotation;
     requires jakarta.json;
-    requires org.slf4j;
+
+    requires kotlin.stdlib;
+
+    requires com.fasterxml.jackson.core;
+    requires com.fasterxml.jackson.databind;
+    requires com.fasterxml.jackson.annotation;
+    requires com.zaxxer.hikari;
     requires org.mockito;
+    requires org.postgresql.jdbc;
+    requires org.slf4j;
     requires transitive net.dv8tion.jda;
 
     opens bot.ninetail.core to jakarta.json;

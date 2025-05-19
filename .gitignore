@@ -10,6 +10,7 @@ app/src/main/resources/responses.json
 app/bin
 app/build
 app/logs
+send-to-server-sftp.sh
 
 # Ignore Maven build directory
 .settings

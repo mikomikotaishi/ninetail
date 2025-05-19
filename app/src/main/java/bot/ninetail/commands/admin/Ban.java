@@ -2,11 +2,11 @@ package bot.ninetail.commands.admin;
 
 import java.util.concurrent.TimeUnit;
 
+import jakarta.annotation.Nonnull;
+
 import bot.ninetail.core.LogLevel;
 import bot.ninetail.core.Logger;
 import bot.ninetail.structures.commands.BasicCommand;
-
-import jakarta.annotation.Nonnull;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;

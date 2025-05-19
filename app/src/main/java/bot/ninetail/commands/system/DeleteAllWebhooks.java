@@ -48,29 +48,26 @@ public final class DeleteAllWebhooks implements JdaCommand {
             
             event.deferReply(true).queue();
             
-            Logger.log(LogLevel.INFO, String.format("Successful webhook wipe initiated by %s (%s)", 
-                                                    event.getUser().getGlobalName(), event.getUser().getId()));
+            Logger.log(LogLevel.INFO, String.format("Successful webhook wipe initiated by %s (%s)", event.getUser().getGlobalName(), event.getUser().getId()));
             
-            int[] guildCounts = {0, 0}; // [processed, skipped]
+            // [processed, skipped]
+            int[] guildCounts = {0, 0};
             
             for (Guild guild : instance.getGuilds()) {
                 if (guild.getSelfMember().hasPermission(Permission.MANAGE_WEBHOOKS)) {
-                    guildCounts[0]++;
+                    ++guildCounts[0];
                     guild.retrieveWebhooks().queue(webhooks -> {
-                        for (Webhook webhook : webhooks) {
+                        for (Webhook webhook: webhooks) {
                             webhook.delete().queue(
-                                success -> Logger.log(LogLevel.INFO, String.format("Deleted webhook: %s in guild: %s (%s)", 
-                                                                                 webhook.getName(), guild.getName(), guild.getId())),
+                                success -> Logger.log(LogLevel.INFO, String.format("Deleted webhook: %s in guild: %s (%s)", webhook.getName(), guild.getName(), guild.getId())),
                                 error -> Logger.log(LogLevel.ERROR, String.format("Failed to delete webhook: %s in guild: %s (%s) - %s", 
-                                                                                  webhook.getName(), guild.getName(), guild.getId(), error.getMessage()))
+                                                                                webhook.getName(), guild.getName(), guild.getId(), error.getMessage()))
                             );
                         }
-                    }, error -> Logger.log(LogLevel.ERROR, String.format("Failed to retrieve webhooks for guild: %s (%s) - %s", 
-                                                                      guild.getName(), guild.getId(), error.getMessage())));
+                    }, error -> Logger.log(LogLevel.ERROR, String.format("Failed to retrieve webhooks for guild: %s (%s) - %s", guild.getName(), guild.getId(), error.getMessage())));
                 } else {
-                    guildCounts[1]++;
-                    Logger.log(LogLevel.INFO, String.format("Skipped guild: %s (%s) - Missing MANAGE_WEBHOOKS permission", 
-                                                          guild.getName(), guild.getId()));
+                    ++guildCounts[1];
+                    Logger.log(LogLevel.INFO, String.format("Skipped guild: %s (%s) - Missing MANAGE_WEBHOOKS permission", guild.getName(), guild.getId()));
                 }
             }
             

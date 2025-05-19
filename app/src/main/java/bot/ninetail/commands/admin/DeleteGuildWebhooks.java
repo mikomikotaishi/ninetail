@@ -1,5 +1,7 @@
 package bot.ninetail.commands.admin;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import jakarta.annotation.Nonnull;
 
 import bot.ninetail.core.LogLevel;
@@ -12,8 +14,6 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Webhook;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.InteractionHook;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Command to delete all webhooks in a guild.

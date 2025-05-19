@@ -127,7 +127,9 @@ public class CommandHandler extends InteractionHandler {
                 Rule34.invoke(event);
                 break;
             // Social
-
+            case "daily":
+                Daily.invoke(event);
+                break;
             // System
             case "wipeallwebhooks":
                 DeleteAllWebhooks.invoke(event, jda);

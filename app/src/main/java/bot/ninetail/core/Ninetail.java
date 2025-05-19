@@ -1,13 +1,16 @@
 package bot.ninetail.core;
 
+import java.sql.SQLException;
 import java.util.EnumSet;
 
 import javax.security.auth.login.LoginException;
+import javax.sql.DataSource;
 
 import jakarta.annotation.Nonnull;
 
+import bot.ninetail.social.CoinsRegistry;
 import bot.ninetail.system.*;
-
+import bot.ninetail.utilities.database.DatabaseManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.Permission;
@@ -218,6 +221,8 @@ public class Ninetail extends ListenerAdapter {
                 .addOptions(new OptionData(OptionType.STRING, "tag2", "The second tag to search")),
 
             // ====== Social commands ======
+            // Daily credits command
+            Commands.slash("daily", "Get daily credits"),
 
             // ====== System commands ======     
             // Delete all webhooks command
@@ -256,6 +261,17 @@ public class Ninetail extends ListenerAdapter {
             Logger.log(LogLevel.INFO, "Invoking shutdown hook");
             Logger.close();
         }));
+
+        try {
+            Logger.log(LogLevel.INFO, "Initialising database connection...");
+            DataSource dataSource = DatabaseManager.loadCoinsRegistry();
+            CoinsRegistry.initDatabase(dataSource);
+            CoinsRegistry.init(dataSource);
+            Logger.log(LogLevel.INFO, "Database connection successful");
+        } catch (SQLException e) {
+            Logger.log(LogLevel.ERROR, "Failed to initialise database: " + e.getMessage());
+            Logger.log(LogLevel.WARN, "Social commands that require the database will be unavailable!");
+        }
 
         Logger.log(LogLevel.INFO, "Instantiating instance.");
         Ninetail botInstance = new Ninetail(api);

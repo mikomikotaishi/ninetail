@@ -36,6 +36,21 @@ public class ConfigLoader {
      */
     @Nonnull private static String botMasterId;
 
+    /**
+     * The username to the coins registry database.
+     */
+    @Nonnull private static String coinsRegistryDbUsername;
+
+    /**
+     * The password to the coins registry database.
+     */
+    @Nonnull private static String coinsRegistryDbPassword;
+
+    /**
+     * The URL of the coins registry database.
+     */
+    @Nonnull private static String coinsRegistryDbUrl;
+
     // General
     /**
      * The weather token.
@@ -82,7 +97,10 @@ public class ConfigLoader {
             botToken = PROPERTIES.getProperty("BOT_TOKEN");
             masterPassword = PROPERTIES.getProperty("MASTER_PASSWORD");
             botMasterId = PROPERTIES.getProperty("BOT_MASTER_ID");
-            
+            coinsRegistryDbUsername = PROPERTIES.getProperty("COINS_REGISTRY_DB_USERNAME");
+            coinsRegistryDbPassword = PROPERTIES.getProperty("COINS_REGISTRY_DB_PASSWORD");
+            coinsRegistryDbUrl = PROPERTIES.getProperty("COINS_REGISTRY_DB_URL");
+
             // General
             weatherToken = PROPERTIES.getProperty("WEATHER_TOKEN");
 
@@ -151,6 +169,33 @@ public class ConfigLoader {
      */
     public static String getBotMasterId() {
         return botMasterId;
+    }
+
+    /**
+     * Gets the coins registry database username.
+     * 
+     * @return The coins registry database username.
+     */
+    public static String getCoinsRegistryDbUsername() {
+        return coinsRegistryDbUsername;
+    }
+
+    /**
+     * Gets the coins registry database password.
+     * 
+     * @return The coins registry database password.
+     */
+    public static String getCoinsRegistryDbPassword() {
+        return coinsRegistryDbPassword;
+    }
+
+    /**
+     * Gets the coins registry database URL.
+     * 
+     * @return The coins registry database URL.
+     */
+    public static String getCoinsRegistryDbUrl() {
+        return coinsRegistryDbUrl;
     }
 
     /**
