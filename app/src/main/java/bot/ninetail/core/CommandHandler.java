@@ -74,7 +74,7 @@ public final class CommandHandler extends InteractionHandler {
             // Clear command
             Commands.slash("clear", "Clears all music in the current queue")
                 .setContexts(InteractionContextType.GUILD),
-            // Disconnect command
+            // Disconnect command.setContexts(InteractionContextType.GUILD)
             Commands.slash("disconnect", "Disconnects the bot from voice channel")
                 .setContexts(InteractionContextType.GUILD),
             // Play command
@@ -186,23 +186,23 @@ public final class CommandHandler extends InteractionHandler {
 
             // ====== System commands ======     
             // Delete all webhooks command
-            Commands.slash("deleteallwebhooks", "Deletes all webhooks across all guilds")
+            Commands.slash("deleteallwebhooks", "(Bot master only) Deletes all webhooks across all guilds")
                 .addOptions(new OptionData(OptionType.STRING, "password", "The master password (specified in config.properties)")
                     .setRequired(true)), 
             // List guilds command
-            Commands.slash("listguilds", "List all guilds the bot is present in")
+            Commands.slash("listguilds", "(Bot master only) List all guilds the bot is present in")
                 .addOptions(new OptionData(OptionType.STRING, "password", "The master pasword (specified in config.properties)")
                     .setRequired(true)),      
             // Reload config command
-            Commands.slash("reloadconfig", "Reloads config.properties")
+            Commands.slash("reloadconfig", "(Bot master only) Reloads config.properties")
                 .addOptions(new OptionData(OptionType.STRING, "password", "The master pasword (specified in config.properties)")
                     .setRequired(true)),
             // Reload responses command
-            Commands.slash("reloadresponses", "Reloads responses.json")
+            Commands.slash("reloadresponses", "(Bot master only) Reloads responses.json")
                 .addOptions(new OptionData(OptionType.STRING, "password", "The master pasword (specified in config.properties)")
                     .setRequired(true)),
             // Shutdown command
-            Commands.slash("shutdown", "Shuts down the bot")
+            Commands.slash("shutdown", "(Bot master only) Shuts down the bot")
                 .addOptions(new OptionData(OptionType.STRING, "password", "The master password (specified in config.properties)")
                     .setRequired(true)),
 

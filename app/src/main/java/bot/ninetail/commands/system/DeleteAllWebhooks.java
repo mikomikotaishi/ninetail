@@ -16,6 +16,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 
 /**
  * Command to wipe all existing webhooks on the bot.
+ * Can only be called by the bot master.
  * 
  * @implements JdaCommand
  */

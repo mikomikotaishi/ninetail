@@ -37,8 +37,8 @@ public final class ImpersonateUser implements WebhookCommand {
         Logger.log(LogLevel.INFO, String.format("User webhook command invoked by %s (%s) of guild %s (%s)", 
                                               event.getUser().getGlobalName(), 
                                               event.getUser().getId(),
-                                              event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
-                                              event.getGuild() != null ? event.getGuild().getId() : "N/A")
+                                              event.getGuild().getName(),
+                                              event.getGuild().getId())
         );
         
         Guild guild = event.getGuild();

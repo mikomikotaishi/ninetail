@@ -14,6 +14,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 
 /**
  * Command to reload the response files.
+ * Can only be called by the bot master.
  * 
  * @implements JdaCommand
  */
