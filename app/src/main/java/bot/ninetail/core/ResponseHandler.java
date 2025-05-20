@@ -22,7 +22,7 @@ import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
  * 
  * @extends InteractionHandler
  */
-public class ResponseHandler extends InteractionHandler {
+public final class ResponseHandler extends InteractionHandler {
     /**
      * Private constructor to prevent instantiation.
      */
@@ -71,12 +71,9 @@ public class ResponseHandler extends InteractionHandler {
      * @param textChannel The channel to send the response to.
      */
     public static void handleMessage(String content, MessageChannel textChannel) {
-        Logger.log(LogLevel.INFO, "Parsing for responses");
-        Logger.log(LogLevel.INFO, "Message: " + content);
         for (Map.Entry<String, String> entry: RESPONSES.entrySet()) {
             String pattern = String.format("\\b%s\\b", Pattern.quote(entry.getKey()));
             if (Pattern.compile(pattern, Pattern.CASE_INSENSITIVE).matcher(content).find()) {
-                Logger.log(LogLevel.INFO, "Match found! Sending: " + entry.getValue());
                 textChannel.sendMessage(entry.getValue()).queue();
                 break;
             }

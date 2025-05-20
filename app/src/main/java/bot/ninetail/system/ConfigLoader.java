@@ -92,6 +92,7 @@ public class ConfigLoader {
                 Logger.log(LogLevel.ERROR, String.format("Unable to find %s!", ConfigNames.CONFIG_PROPERTIES_FILE));
                 throw new FileNotFoundException(String.format("Unable to find %s", ConfigNames.CONFIG_PROPERTIES_FILE));
             }
+            
             PROPERTIES.load(input);
             // System
             botToken = PROPERTIES.getProperty("BOT_TOKEN");
@@ -132,8 +133,6 @@ public class ConfigLoader {
                 Logger.log(LogLevel.WARN, "No Gyate Booru token found!");
             if (rule34Token == null)
                 Logger.log(LogLevel.WARN, "No Rule34 token found!");
-            
-                
         } catch (IOException e) {
             Logger.logException(LogLevel.ERROR, e);
         }
@@ -261,6 +260,7 @@ public class ConfigLoader {
                 Logger.log(LogLevel.ERROR, String.format("Unable to find %s!", ConfigNames.CONFIG_PROPERTIES_FILE));
                 throw new FileNotFoundException(String.format("Unable to find %s!", ConfigNames.CONFIG_PROPERTIES_FILE));
             }
+
             PROPERTIES.load(input);
             weatherToken = PROPERTIES.getProperty("WEATHER_TOKEN");
             danbooruToken = PROPERTIES.getProperty("DANBOORU_TOKEN");
@@ -281,6 +281,7 @@ public class ConfigLoader {
                 Logger.log(LogLevel.WARN, "No Gyate Booru token found!");
             if (rule34Token == null)
                 Logger.log(LogLevel.WARN, "No Rule34 token found!");
+                
         } catch (IOException e) {
             Logger.logException(LogLevel.ERROR, e);
         }

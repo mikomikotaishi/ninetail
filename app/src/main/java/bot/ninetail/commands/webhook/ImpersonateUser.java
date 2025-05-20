@@ -17,13 +17,16 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  * 
  * @implements Command
  */
-public final class UserWebhook implements WebhookCommand {
+public final class ImpersonateUser implements WebhookCommand {
+    /**
+     * The webhook name used for impersonating users.
+     */
     @Nonnull private static final String IMPERSONATOR_WEBHOOK_NAME = "NinetailImpersonator";
 
     /**
      * Private constructor to prevent instantiation.
      */
-    private UserWebhook() {}
+    private ImpersonateUser() {}
 
     /**
      * Invokes the command.
