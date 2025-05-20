@@ -20,9 +20,7 @@ module bot.ninetail {
     requires org.postgresql.jdbc;
     requires org.slf4j;
     requires transitive net.dv8tion.jda;
-
-    opens bot.ninetail.core to jakarta.json;
-
+    
     exports bot.ninetail.audio;
     exports bot.ninetail.clients;
     exports bot.ninetail.commands.admin;
