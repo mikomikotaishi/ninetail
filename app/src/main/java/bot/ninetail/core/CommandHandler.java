@@ -74,7 +74,7 @@ public final class CommandHandler extends InteractionHandler {
             // Clear command
             Commands.slash("clear", "Clears all music in the current queue")
                 .setContexts(InteractionContextType.GUILD),
-            // Disconnect command.setContexts(InteractionContextType.GUILD)
+            // Disconnect command
             Commands.slash("disconnect", "Disconnects the bot from voice channel")
                 .setContexts(InteractionContextType.GUILD),
             // Play command
