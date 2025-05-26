@@ -82,7 +82,7 @@ java {
 application {
     // Define the main class for the application.
     mainModule = "bot.ninetail"
-    mainClass = "bot.ninetail.core.Ninetail"
+    mainClass = "bot.ninetail.core.Main"
     applicationDefaultJvmArgs = listOf(
         "--enable-preview",
         "--add-modules", "ALL-MODULE-PATH",
