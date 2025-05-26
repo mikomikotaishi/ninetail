@@ -29,14 +29,18 @@ dependencies {
     // This dependency is used by the application.
     implementation(libs.guava)
 
+    // Jakarta
+    implementation("jakarta.annotation:jakarta.annotation-api:3.0.0")
+    implementation("jakarta.json:jakarta.json-api:2.1.3")
+
+    // Kotlin
     implementation(kotlin("stdlib"))
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.9.23"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
-    // Jakarta
-    implementation("jakarta.annotation:jakarta.annotation-api:3.0.0")
-    implementation("jakarta.json:jakarta.json-api:2.1.3")
+    // Lombok
+    implementation("org.projectlombok:lombok:1.18.38")
 
     // JSON
     implementation("org.eclipse.parsson:parsson:1.1.7")

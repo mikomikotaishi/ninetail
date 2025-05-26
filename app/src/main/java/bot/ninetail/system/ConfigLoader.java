@@ -11,90 +11,117 @@ import bot.ninetail.core.LogLevel;
 import bot.ninetail.core.Logger;
 import bot.ninetail.core.config.ConfigNames;
 
+import lombok.Getter;
+import lombok.experimental.UtilityClass;
+
 /**
  * Loads configuration properties from config.properties.
  */
+@UtilityClass
 public class ConfigLoader {
     /**
      * Properties object to store configuration properties.
      */
-    @Nonnull private static final Properties PROPERTIES = new Properties();
+    @Getter @Nonnull private final Properties PROPERTIES = new Properties();
 
-    // System
+    // === System ===
     /**
      * The bot token.
      */
-    @Nonnull private static String botToken;
+    @Getter @Nonnull private String botToken;
 
     /**
      * The master password.
      */
-    @Nonnull private static String masterPassword;
+    @Getter @Nonnull private String masterPassword;
+
 
     /**
      * The bot master ID.
      */
-    @Nonnull private static String botMasterId;
+    @Getter @Nonnull private String botMasterId;
 
     /**
      * The username to the coins registry database.
      */
-    @Nonnull private static String coinsRegistryDbUsername;
+    @Getter @Nonnull private String coinsRegistryDbUsername;
 
     /**
      * The password to the coins registry database.
      */
-    @Nonnull private static String coinsRegistryDbPassword;
+    @Getter @Nonnull private String coinsRegistryDbPassword;
 
     /**
      * The URL of the coins registry database.
      */
-    @Nonnull private static String coinsRegistryDbUrl;
+    @Getter @Nonnull private String coinsRegistryDbUrl;
 
-    // General
+    // === General ===
     /**
      * The weather token.
      */
-    @Nonnull private static String weatherToken;
+    @Getter @Nonnull private String weatherToken;
 
-    // Imageboards
+    // === Imageboards ===
     /**
      * The Danbooru token.
      */
-    @Nonnull private static String danbooruToken;
+    @Getter @Nonnull private String danbooruToken;
 
     /**
      * The e621 token.
      */
-    @Nonnull private static String e621Token;
+    @Getter @Nonnull private String e621Token;
 
     /**
      * The Gelbooru token.
      */
-    @Nonnull private static String gelbooruToken;
+    @Getter @Nonnull private String gelbooruToken;
 
     /**
      * The Gyate Booru token.
      */
-    @Nonnull private static String gyatebooruToken;
+    @Getter @Nonnull private String gyatebooruToken;
 
     /**
      * The Rule34 token.
      */
-    @Nonnull private static String rule34Token;
+    @Getter @Nonnull private String rule34Token;
 
     /**
      * Static block to load properties from config.properties.
      */
     static {
-        try (InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream(ConfigNames.CONFIG_PROPERTIES_FILE)) {
+        load(false);
+    }
+
+    /**
+     * Reloads (or initially loads) configuration values.
+     *
+     * @param verbose if {@code true}, also re-validate the mandatory keys and issue warnings.
+     */
+    public static void reloadConfig() {
+        load(true);
+    }
+
+    /**
+     * Load the contents from content.properties.
+     * 
+     * @param verbose
+     */
+    private static void load(boolean verbose) {
+        try (InputStream input = Thread.currentThread()
+                .getContextClassLoader()
+                .getResourceAsStream(ConfigNames.CONFIG_PROPERTIES_FILE)) {
+
             if (input == null) {
-                Logger.log(LogLevel.ERROR, String.format("Unable to find %s!", ConfigNames.CONFIG_PROPERTIES_FILE));
-                throw new FileNotFoundException(String.format("Unable to find %s", ConfigNames.CONFIG_PROPERTIES_FILE));
+                String msg = "Unable to find " + ConfigNames.CONFIG_PROPERTIES_FILE;
+                Logger.log(LogLevel.ERROR, msg);
+                throw new FileNotFoundException(msg);
             }
-            
+
             PROPERTIES.load(input);
-            // System
+
             botToken = PROPERTIES.getProperty("BOT_TOKEN");
             masterPassword = PROPERTIES.getProperty("MASTER_PASSWORD");
             botMasterId = PROPERTIES.getProperty("BOT_MASTER_ID");
@@ -102,188 +129,50 @@ public class ConfigLoader {
             coinsRegistryDbPassword = PROPERTIES.getProperty("COINS_REGISTRY_DB_PASSWORD");
             coinsRegistryDbUrl = PROPERTIES.getProperty("COINS_REGISTRY_DB_URL");
 
-            // General
             weatherToken = PROPERTIES.getProperty("WEATHER_TOKEN");
 
-            // Imageboards
             danbooruToken = PROPERTIES.getProperty("DANBOORU_TOKEN");
             e621Token = PROPERTIES.getProperty("E621_TOKEN");
             gelbooruToken = PROPERTIES.getProperty("GELBOORU_TOKEN");
             gyatebooruToken = PROPERTIES.getProperty("GYATEBOORU_TOKEN");
             rule34Token = PROPERTIES.getProperty("RULE34_TOKEN");
 
+            if (!verbose) 
+                return;
 
-            if (botToken == null) {
-                Logger.log(LogLevel.ERROR, "No bot token found!");
-                throw new IllegalArgumentException("No bot token found!");
-            }
-            if (masterPassword == null) {
-                Logger.log(LogLevel.ERROR, "No shutdown password found!");
-                throw new IllegalArgumentException("No shutdown password found!");
-            }
-            if (weatherToken == null)
-                Logger.log(LogLevel.WARN, "No Weather token found!");
-            if (danbooruToken == null)
-                Logger.log(LogLevel.WARN, "No Danbooru token found!");
-            if (e621Token == null)
-                Logger.log(LogLevel.WARN, "No e621 token found!");
-            if (gelbooruToken == null)
-                Logger.log(LogLevel.WARN, "No Gelbooru token found!");
-            if (gyatebooruToken == null)
-                Logger.log(LogLevel.WARN, "No Gyate Booru token found!");
-            if (rule34Token == null)
-                Logger.log(LogLevel.WARN, "No Rule34 token found!");
+            if (botToken == null)
+                throwRequired("bot token");
+            if (masterPassword == null)
+                throwRequired("master password");
+
+            warnIfNull(weatherToken, "Weather");
+            warnIfNull(danbooruToken, "Danbooru");
+            warnIfNull(e621Token, "e621");
+            warnIfNull(gelbooruToken, "Gelbooru");
+            warnIfNull(gyatebooruToken ,"Gyate Booru");
+            warnIfNull(rule34Token, "Rule34");
+
         } catch (IOException e) {
             Logger.logException(LogLevel.ERROR, e);
         }
     }
 
     /**
-     * Private constructor to prevent instantiation.
-     */
-    private ConfigLoader() {}
-
-    /**
-     * Gets the bot token.
-     *
-     * @return The bot token.
-     */
-    public static String getBotToken() {
-        return botToken;
-    }
-
-    /**
-     * Gets the master password.
-     *
-     * @return The master password.
-     */
-    public static String getMasterPassword() {
-        return masterPassword;
-    }
-
-    /**
-     * Gets the bot master ID.
-     *
-     * @return The bot master ID.
-     */
-    public static String getBotMasterId() {
-        return botMasterId;
-    }
-
-    /**
-     * Gets the coins registry database username.
      * 
-     * @return The coins registry database username.
+     * @param what
      */
-    public static String getCoinsRegistryDbUsername() {
-        return coinsRegistryDbUsername;
+    private static void throwRequired(String what) {
+        Logger.log(LogLevel.ERROR, String.format("No %s found!", what));
+        throw new IllegalArgumentException(String.format("No %s found!", what));
     }
 
     /**
-     * Gets the coins registry database password.
      * 
-     * @return The coins registry database password.
+     * @param token
+     * @param name
      */
-    public static String getCoinsRegistryDbPassword() {
-        return coinsRegistryDbPassword;
-    }
-
-    /**
-     * Gets the coins registry database URL.
-     * 
-     * @return The coins registry database URL.
-     */
-    public static String getCoinsRegistryDbUrl() {
-        return coinsRegistryDbUrl;
-    }
-
-    /**
-     * Gets the weather token.
-     *
-     * @return The weather token.
-     */
-    public static String getWeatherToken() {
-        return weatherToken;
-    }
-
-    /**
-     * Gets the Danbooru token.
-     *
-     * @return The Danbooru token.
-     */
-    public static String getDanbooruToken() {
-        return danbooruToken;
-    }
-
-    /**
-     * Gets the e621 token.
-     *
-     * @return The e621 token.
-     */
-    public static String getE621Token() {
-        return e621Token;
-    }
-
-    /**
-     * Gets the Gelbooru token.
-     *
-     * @return The Gelbooru token.
-     */
-    public static String getGelbooruToken() {
-        return gelbooruToken;
-    }
-
-    /**
-     * Gets the Gyate Booru token.
-     *
-     * @return The Gyate Booru token.
-     */
-    public static String getGyateBooruToken() {
-        return gyatebooruToken;
-    }
-
-    /**
-     * Gets the Rule34 token.
-     *
-     * @return The Rule34 token.
-     */
-    public static String getRule34Token() {
-        return rule34Token;
-    }
-
-    /**
-     * Reloads the configuration.
-     */
-    public static void reloadConfig() {
-        try (InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream(ConfigNames.CONFIG_PROPERTIES_FILE)) {
-            if (input == null) {
-                Logger.log(LogLevel.ERROR, String.format("Unable to find %s!", ConfigNames.CONFIG_PROPERTIES_FILE));
-                throw new FileNotFoundException(String.format("Unable to find %s!", ConfigNames.CONFIG_PROPERTIES_FILE));
-            }
-
-            PROPERTIES.load(input);
-            weatherToken = PROPERTIES.getProperty("WEATHER_TOKEN");
-            danbooruToken = PROPERTIES.getProperty("DANBOORU_TOKEN");
-            e621Token = PROPERTIES.getProperty("E621_TOKEN");
-            gelbooruToken = PROPERTIES.getProperty("GELBOORU_TOKEN");
-            gyatebooruToken = PROPERTIES.getProperty("GYATEBOORU_TOKEN");
-            rule34Token = PROPERTIES.getProperty("RULE34_TOKEN");
-            
-            if (weatherToken == null)
-                Logger.log(LogLevel.WARN, "No weather token found!");
-            if (danbooruToken == null)
-                Logger.log(LogLevel.WARN, "No Danbooru token found!");
-            if (e621Token == null)
-                Logger.log(LogLevel.WARN, "No e621 token found!");
-            if (gelbooruToken == null)
-                Logger.log(LogLevel.WARN, "No Gelbooru token found!");
-            if (gyatebooruToken == null)
-                Logger.log(LogLevel.WARN, "No Gyate Booru token found!");
-            if (rule34Token == null)
-                Logger.log(LogLevel.WARN, "No Rule34 token found!");
-                
-        } catch (IOException e) {
-            Logger.logException(LogLevel.ERROR, e);
-        }
+    private static void warnIfNull(String token, String name) {
+        if (token == null)
+            Logger.log(LogLevel.WARN, String.format("No %s token found!", name));
     }
 }

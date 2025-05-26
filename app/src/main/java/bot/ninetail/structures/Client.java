@@ -4,10 +4,13 @@ import java.net.http.HttpClient;
 
 import jakarta.annotation.Nonnull;
 
+import lombok.Getter;
+
 /**
  * Abstract class for clients.
  * This class provides a base structure for clients that interact with external services.
  */
+@Getter
 public abstract class Client {
     /**
      * The base URL of the client.

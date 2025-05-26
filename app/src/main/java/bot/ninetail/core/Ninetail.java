@@ -80,6 +80,7 @@ public final class Ninetail extends ListenerAdapter {
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             Logger.log(LogLevel.INFO, "Invoking shutdown hook");
+            System.out.println("Shutting down bot.");
             Logger.close();
         }));
 

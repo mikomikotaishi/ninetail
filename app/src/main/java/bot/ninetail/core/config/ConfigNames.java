@@ -4,9 +4,12 @@ import jakarta.annotation.Nonnull;
 
 import bot.ninetail.structures.ConfigFile;
 
+import lombok.Getter;
+
 /**
  * Class containing file names used by the bot.
  */
+@Getter
 public final class ConfigNames extends ConfigFile {
     /**
      * Private constructor to prevent instantiation.
