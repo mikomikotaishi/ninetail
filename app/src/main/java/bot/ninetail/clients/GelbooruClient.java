@@ -25,6 +25,7 @@ public class GelbooruClient extends ImageboardClient {
     /**
      * The base URL for Gelbooru.
      */
+    @Nonnull
     private static final String BASE_URL = "https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1&tags=%s&api_key=%s";
 
     /**

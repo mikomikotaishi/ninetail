@@ -4,17 +4,15 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import bot.ninetail.structures.Manager;
 
+import lombok.experimental.UtilityClass;
+
 /**
  * Utility class for generating random numbers.
  * 
  * @extends Manager
  */
+@UtilityClass
 public class RandomNumberGenerator extends Manager {
-    /**
-     * Private constructor to prevent instantiation.
-     */
-    private RandomNumberGenerator() {}
-
     /**
      * Generates a random number.
      *

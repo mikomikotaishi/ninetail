@@ -1,19 +1,23 @@
 package bot.ninetail.game.poker;
 
+import jakarta.annotation.Nonnull;
+
 import bot.ninetail.game.GameManager;
+
+import lombok.experimental.UtilityClass;
 
 /**
  * Poker game manager class
  * 
  * @extends GameManager
  */
+@UtilityClass
 public class PokerGameManager extends GameManager {
-    private static PokerEngine pokerEngine;
-    
     /**
-     * Private constructor to prevent instantiation.
+     * The poker engine instance.
      */
-    private PokerGameManager() {}
+    @Nonnull
+    private static PokerEngine pokerEngine;
 
     /**
      * Initialises a new poker game.

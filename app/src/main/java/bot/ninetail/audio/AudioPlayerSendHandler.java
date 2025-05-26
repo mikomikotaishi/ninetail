@@ -2,6 +2,8 @@ package bot.ninetail.audio;
 
 import java.nio.ByteBuffer;
 
+import jakarta.annotation.Nonnull;
+
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.playback.AudioFrame;
 
@@ -17,11 +19,13 @@ public class AudioPlayerSendHandler implements AudioSendHandler {
     /**
      * The audio player.
      */
+    @Nonnull
     private final AudioPlayer audioPlayer;
 
     /**
      * The last frame.
      */
+    @Nonnull
     private AudioFrame lastFrame;
 
     /**

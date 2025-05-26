@@ -7,6 +7,8 @@ import bot.ninetail.core.Logger;
 import bot.ninetail.game.poker.*;
 import bot.ninetail.structures.commands.GameCommand;
 
+import lombok.experimental.UtilityClass;
+
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 /**
@@ -14,12 +16,8 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  * 
  * @implements GameCommand
  */
+@UtilityClass
 public final class NewPoker implements GameCommand {
-    /**
-     * Private constructor to prevent instantiation.
-     */
-    private NewPoker() {}
-
     /**
      * Invokes the command.
      *

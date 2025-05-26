@@ -5,6 +5,8 @@ import java.lang.invoke.MethodHandle;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import jakarta.annotation.Nonnull;
+
 import bot.ninetail.core.config.ConfigNames;
 import bot.ninetail.game.Engine;
 
@@ -14,12 +16,22 @@ import bot.ninetail.game.Engine;
  * @extends Engine
  */
 public class PokerEngine extends Engine {
+    @Nonnull
     private final MethodHandle createGameHandle;
+    
+    @Nonnull
     private final MethodHandle destroyGameHandle;
+
+    @Nonnull
     private final MethodHandle startHandHandle;
+
+    @Nonnull
     private final MethodHandle getGameStateHandle;
+    
+    @Nonnull
     private final MethodHandle executeActionHandle;
 
+    @Nonnull
     private final Arena arena;
 
     /**

@@ -1,19 +1,23 @@
 package bot.ninetail.game.chess;
 
+import jakarta.annotation.Nonnull;
+
 import bot.ninetail.game.GameManager;
+
+import lombok.experimental.UtilityClass;
 
 /**
  * Chess game manager class
  * 
  * @extends GameManager
  */
+@UtilityClass
 public class ChessGameManager extends GameManager {
-    private static ChessEngine chessEngine;
-    
     /**
-     * Private constructor to prevent instantiation.
+     * The chess engine instance.
      */
-    private ChessGameManager() {}
+    @Nonnull
+    private static ChessEngine chessEngine;
 
     /**
      * Initialises a new chess game.

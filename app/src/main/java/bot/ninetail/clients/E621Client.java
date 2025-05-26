@@ -25,6 +25,7 @@ public class E621Client extends ImageboardClient {
     /**
      * The base URL for e621.
      */
+    @Nonnull
     private static final String BASE_URL = "https://e621.net/posts.json?tags=%s&api_key=%s";
 
     /**

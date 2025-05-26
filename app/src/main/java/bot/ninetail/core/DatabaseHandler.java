@@ -8,18 +8,16 @@ import bot.ninetail.social.CoinsRegistry;
 import bot.ninetail.structures.InteractionHandler;
 import bot.ninetail.utilities.database.DatabaseManager;
 
+import lombok.experimental.UtilityClass;
+
 /**
  * Class to handle operations with databases.
  * This class is used to handle operations with databases used by the bot.
  * 
  * @extends InteractionHandler
  */
+@UtilityClass
 public final class DatabaseHandler extends InteractionHandler {
-    /**
-     * Private constructor to prevent instantiation.
-     */
-    private DatabaseHandler() {}
-
     /**
      * Loads the database for all resources used by the bot.
      */

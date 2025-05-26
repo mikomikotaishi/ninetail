@@ -7,6 +7,8 @@ import bot.ninetail.core.Logger;
 import bot.ninetail.structures.commands.ContentResponder;
 import bot.ninetail.structures.commands.GameCommand;
 
+import lombok.experimental.UtilityClass;
+
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 /**
@@ -15,6 +17,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  * @extends ContentResponder
  * @implements GameCommand
  */
+@UtilityClass
 public final class Magic8Ball extends ContentResponder implements GameCommand {
     /**
      * Static block to load contents.
@@ -48,11 +51,6 @@ public final class Magic8Ball extends ContentResponder implements GameCommand {
             }
         );
     }
-
-    /**
-     * Private constructor to prevent instantiation.
-     */
-    private Magic8Ball() {};
 
     /**
      * Invokes the command.

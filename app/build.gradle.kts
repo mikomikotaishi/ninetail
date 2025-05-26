@@ -10,7 +10,7 @@ plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
     kotlin("jvm") version "2.1.10"
-    // id("org.openjfx.javafxplugin") version "0.1.0"
+    id("io.freefair.lombok") version "8.13.1"
 }
 
 repositories {
@@ -74,21 +74,10 @@ dependencies {
 // Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(24)
+        languageVersion = JavaLanguageVersion.of(23)
     }
     modularity.inferModulePath = true 
 }
-
-// javafx {
-//     version = "22"
-//     modules = listOf(
-//         "javafx.base",
-//         "javafx.controls",
-//         "javafx.fxml",
-//         "javafx.media",
-//         "javafx.web"
-//     )
-// }
 
 application {
     // Define the main class for the application.
@@ -101,9 +90,10 @@ application {
     )
 }
 
-tasks.withType<JavaCompile> {
+tasks.withType<JavaCompile>().configureEach {
     options.compilerArgs.addAll(listOf(
-        "--enable-preview", "--add-reads", "bot.ninetail=ALL-UNNAMED"
+        "--enable-preview",
+        "--add-reads", "bot.ninetail=ALL-UNNAMED"
     ))
 }
 

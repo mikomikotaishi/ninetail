@@ -24,6 +24,7 @@ public class WeatherClient extends LocationInformationClient {
     /**
      * The base URL for OpenWeatherMap.
      */
+    @Nonnull
     private static final String BASE_URL = "https://api.openweathermap.org/data/2.5/weather?q=%s&appid=%s&units=metric";
 
     /**

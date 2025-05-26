@@ -2,22 +2,23 @@ package bot.ninetail.utilities.cryptography;
 
 import java.security.SecureRandom;
 
+import jakarta.annotation.Nonnull;
+
 import bot.ninetail.structures.Manager;
+
+import lombok.experimental.UtilityClass;
 
 /**
  * Random number generator.
  * 
  * @extends Manager
  */
+@UtilityClass
 public class RandomNumberGenerator extends Manager {
-    /**
-     * Private constructor to prevent instantiation.
-     */
-    private RandomNumberGenerator() {}
-
     /**
      * Thread-local random number generator.
      */
+    @Nonnull
     private static final ThreadLocal<SecureRandom> rng = ThreadLocal.withInitial(SecureRandom::new);
 
     /**

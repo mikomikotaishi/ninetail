@@ -11,6 +11,8 @@ import bot.ninetail.core.Logger;
 import bot.ninetail.structures.commands.AudioCommand;
 import bot.ninetail.utilities.TemporalFormatting;
 
+import lombok.experimental.UtilityClass;
+
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -20,12 +22,8 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  * 
  * @implements AudioCommand
  */
+@UtilityClass
 public final class CheckQueue implements AudioCommand {
-    /**
-     * Private constructor to prevent instantiation.
-     */
-    private CheckQueue() {}
-
     /**
      * Invokes the command.
      *

@@ -31,7 +31,8 @@ public final class Ninetail extends ListenerAdapter {
     /**
      * The JDA instance to use.
      */
-    @Nonnull private final JDA jda;
+    @Nonnull 
+    private final JDA jda;
 
     /**
      * Constructor for the bot.

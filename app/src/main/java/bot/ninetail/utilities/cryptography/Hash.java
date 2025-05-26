@@ -4,15 +4,13 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
+import lombok.experimental.UtilityClass;
+
 /**
  * Hashing utility.
  */
+@UtilityClass
 public class Hash {
-    /**
-     * Private constructor to prevent instantiation.
-     */
-    private Hash() {}
-
     /**
      * Hashes a message.
      *

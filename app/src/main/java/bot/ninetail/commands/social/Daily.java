@@ -12,6 +12,8 @@ import bot.ninetail.core.Logger;
 import bot.ninetail.social.CoinsRegistry;
 import bot.ninetail.structures.commands.SocialCommand;
 
+import lombok.experimental.UtilityClass;
+
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 /**
@@ -19,12 +21,8 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  * 
  * @implements SocialCommand
  */
+@UtilityClass
 public final class Daily implements SocialCommand {
-    /**
-     * Private constructor to prevent instantiation.
-     */
-    private Daily() {}
-
     /**
      * Invokes the command.
      *

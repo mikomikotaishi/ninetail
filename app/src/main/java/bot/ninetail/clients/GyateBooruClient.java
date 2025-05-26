@@ -25,6 +25,7 @@ public class GyateBooruClient extends ImageboardClient {
     /**
      * The base URL for Gyate Booru.
      */
+    @Nonnull
     private static final String BASE_URL = "https://gyate.net/posts.json?tags=%s&api_key=%s";
 
     /**

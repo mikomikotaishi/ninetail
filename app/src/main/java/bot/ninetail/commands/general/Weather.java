@@ -10,6 +10,8 @@ import bot.ninetail.core.LogLevel;
 import bot.ninetail.core.Logger;
 import bot.ninetail.structures.commands.ApiCommand;
 
+import lombok.experimental.UtilityClass;
+
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 /**
@@ -17,15 +19,12 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  * 
  * @implements ApiCommand
  */
+@UtilityClass
 public final class Weather implements ApiCommand {
-    /**
-     * Private constructor to prevent instantiation.
-     */
-    private Weather() {}
-
     /**
      * The weather client.
      */
+    @Nonnull
     private static final WeatherClient weatherClient = new WeatherClient();
 
     /**

@@ -6,6 +6,8 @@ import bot.ninetail.core.LogLevel;
 import bot.ninetail.core.Logger;
 import bot.ninetail.structures.commands.WebhookCommand;
 
+import lombok.experimental.UtilityClass;
+
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Webhook;
@@ -17,16 +19,13 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  * 
  * @implements Command
  */
+@UtilityClass
 public final class ImpersonateUser implements WebhookCommand {
     /**
      * The webhook name used for impersonating users.
      */
-    @Nonnull private static final String IMPERSONATOR_WEBHOOK_NAME = "NinetailImpersonator";
-
-    /**
-     * Private constructor to prevent instantiation.
-     */
-    private ImpersonateUser() {}
+    @Nonnull 
+    private static final String IMPERSONATOR_WEBHOOK_NAME = "NinetailImpersonator";
 
     /**
      * Invokes the command.

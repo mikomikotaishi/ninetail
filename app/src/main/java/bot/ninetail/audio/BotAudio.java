@@ -30,37 +30,49 @@ public class BotAudio {
     /**
      * Map of guild IDs to bot audio instances.
      */
+    @Nonnull
     private static final Map<Long, BotAudio> instances = new HashMap<>();
+
+    /**
+     * Timeout for inactivity in milliseconds (10 * 60 * 1000).
+     */
+    private static final long INACTIVITY_TIMEOUT = 600000;
 
     /**
      * The audio player manager.
      */
-    private final @Nonnull AudioPlayerManager manager;
+    @Nonnull
+    private final AudioPlayerManager manager;
 
     /**
      * The audio player.
      */
-    private final @Nonnull AudioPlayer player;
+    @Nonnull
+    private final AudioPlayer player;
 
     /**
      * The track scheduler.
      */
-    private final @Nonnull TrackScheduler scheduler;
+    @Nonnull
+    private final TrackScheduler scheduler;
 
     /**
      * The audio manager.
      */
-    private @Nonnull AudioManager audioManager;
+    @Nonnull
+    private AudioManager audioManager;
 
     /**
      * The text channel.
      */
-    private @Nonnull MessageChannel textChannel;
+    @Nonnull
+    private MessageChannel textChannel;
 
     /**
      * The voice channel.
      */
-    private @Nonnull AudioChannel voiceChannel;
+    @Nonnull
+    private AudioChannel voiceChannel;
 
     /**
      * Whether the bot audio is activated.
@@ -76,11 +88,6 @@ public class BotAudio {
      * Scheduled executor service for inactivity checking.
      */
     private static ScheduledExecutorService inactivityChecker;
-
-    /**
-     * Timeout for inactivity in milliseconds (10 * 60 * 1000).
-     */
-    private static final long INACTIVITY_TIMEOUT = 600000;
 
     static {
         inactivityChecker = Executors.newSingleThreadScheduledExecutor();

@@ -5,6 +5,7 @@ import java.io.StringReader;
 import java.net.URI;
 import java.net.http.*;
 
+import jakarta.annotation.Nonnull;
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
@@ -23,6 +24,7 @@ public class RandomFoxClient extends RandomImageClient {
     /**
      * The base URL for the RandomFox API.
      */
+    @Nonnull
     private static final String BASE_URL = "https://randomfox.ca/floof/";
 
     /**

@@ -8,6 +8,8 @@ import bot.ninetail.core.LogLevel;
 import bot.ninetail.core.Logger;
 import bot.ninetail.structures.commands.BasicCommand;
 
+import lombok.experimental.UtilityClass;
+
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
@@ -20,12 +22,8 @@ import net.dv8tion.jda.api.interactions.commands.OptionMapping;
  * 
  * @implements BasicCommand
  */
+@UtilityClass
 public final class Ban implements BasicCommand {
-    /**
-     * Private constructor to prevent instantiation.
-     */
-    private Ban() {}
-
     /**
      * Invokes the command.
      *

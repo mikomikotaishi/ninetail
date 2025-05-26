@@ -6,7 +6,10 @@ import bot.ninetail.core.LogLevel;
 import bot.ninetail.core.Logger;
 import bot.ninetail.structures.commands.JdaCommand;
 import bot.ninetail.system.ConfigLoader;
-import bot.ninetail.utilities.exceptions.*;
+import bot.ninetail.utilities.exceptions.IncorrectMasterIdException;
+import bot.ninetail.utilities.exceptions.IncorrectPasswordException;
+
+import lombok.experimental.UtilityClass;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
@@ -20,12 +23,8 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  * 
  * @implements JdaCommand
  */
+@UtilityClass
 public final class DeleteAllWebhooks implements JdaCommand {
-    /**
-     * Private constructor to prevent instantiation.
-     */
-    private DeleteAllWebhooks() {}
-
     /**
      * Invokes the command.
      *

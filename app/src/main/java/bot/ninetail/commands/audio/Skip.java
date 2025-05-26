@@ -7,6 +7,8 @@ import bot.ninetail.core.LogLevel;
 import bot.ninetail.core.Logger;
 import bot.ninetail.structures.commands.AudioCommand;
 
+import lombok.experimental.UtilityClass;
+
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 /**
@@ -14,12 +16,8 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  * 
  * @implements AudioCommand
  */
+@UtilityClass
 public final class Skip implements AudioCommand {
-    /**
-     * Private constructor to prevent instantiation.
-     */
-    private Skip() {}
-
     /**
      * Invokes the command.
      *

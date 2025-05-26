@@ -14,7 +14,11 @@ import bot.ninetail.core.config.*;
  * This class is used to load libraries for engines.
  */
 public abstract class Engine {
-    @Nonnull private final String libraryName;
+    /**
+     * The name of the library used by the engine.
+     */
+    @Nonnull 
+    private final String libraryName;
 
     /**
      * Constructor for an Engine

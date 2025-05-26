@@ -7,6 +7,8 @@ import bot.ninetail.core.Logger;
 import bot.ninetail.structures.commands.CryptographyCommand;
 import bot.ninetail.utilities.cryptography.Hash;
 
+import lombok.experimental.UtilityClass;
+
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 /**
@@ -14,12 +16,8 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  * 
  * @implements CryptographyCommand
  */
+@UtilityClass
 public final class VerifySha512 implements CryptographyCommand {
-    /**
-     * Private constructor to prevent instantiation.
-     */
-    private VerifySha512() {}
-
     /**
      * Invokes the command.
      *

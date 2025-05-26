@@ -9,6 +9,8 @@ import bot.ninetail.core.Logger;
 import bot.ninetail.structures.commands.AdminCommand;
 import bot.ninetail.structures.commands.WebhookCommand;
 
+import lombok.experimental.UtilityClass;
+
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Webhook;
@@ -21,12 +23,8 @@ import net.dv8tion.jda.api.interactions.InteractionHook;
  * @implements AdminCommand
  * @implements WebhookCommand
  */
+@UtilityClass
 public final class DeleteGuildWebhooks implements AdminCommand, WebhookCommand {
-    /**
-     * Private constructor to prevent instantiation.
-     */
-    private DeleteGuildWebhooks() {}
-
     /**
      * Invokes the command.
      *
@@ -40,7 +38,7 @@ public final class DeleteGuildWebhooks implements AdminCommand, WebhookCommand {
                                                 event.getGuild().getId())
         );
 
-        Guild guild = event.getGuild();
+        @Nonnull Guild guild = event.getGuild();
         
         event.deferReply(true).queue();
         InteractionHook hook = event.getHook();

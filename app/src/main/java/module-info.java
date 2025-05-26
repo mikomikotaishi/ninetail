@@ -12,7 +12,7 @@ module bot.ninetail {
 
     requires kotlin.stdlib;
 
-    requires lombok;
+    requires static lombok;
 
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;

@@ -22,71 +22,96 @@ public class ConfigLoader {
     /**
      * Properties object to store configuration properties.
      */
-    @Getter @Nonnull private final Properties PROPERTIES = new Properties();
+    @Nonnull 
+    private final Properties PROPERTIES = new Properties();
 
     // === System ===
     /**
      * The bot token.
      */
-    @Getter @Nonnull private String botToken;
+    @Getter 
+    @Nonnull 
+    private String botToken;
 
     /**
      * The master password.
      */
-    @Getter @Nonnull private String masterPassword;
+    @Getter 
+    @Nonnull 
+    private String masterPassword;
 
 
     /**
      * The bot master ID.
      */
-    @Getter @Nonnull private String botMasterId;
+    @Getter 
+    @Nonnull 
+    private String botMasterId;
 
     /**
      * The username to the coins registry database.
      */
-    @Getter @Nonnull private String coinsRegistryDbUsername;
+    @Getter 
+    @Nonnull 
+    private String coinsRegistryDbUsername;
 
     /**
      * The password to the coins registry database.
      */
-    @Getter @Nonnull private String coinsRegistryDbPassword;
+    @Getter 
+    @Nonnull 
+    private String coinsRegistryDbPassword;
 
     /**
      * The URL of the coins registry database.
      */
-    @Getter @Nonnull private String coinsRegistryDbUrl;
+    @Getter 
+    @Nonnull 
+    private String coinsRegistryDbUrl;
 
     // === General ===
     /**
      * The weather token.
      */
-    @Getter @Nonnull private String weatherToken;
+    @Getter 
+    @Nonnull 
+    private String weatherToken;
 
     // === Imageboards ===
     /**
      * The Danbooru token.
      */
-    @Getter @Nonnull private String danbooruToken;
+    @Getter 
+    @Nonnull 
+    private String danbooruToken;
 
     /**
      * The e621 token.
      */
-    @Getter @Nonnull private String e621Token;
+    @Getter 
+    @Nonnull 
+    private String e621Token;
 
     /**
      * The Gelbooru token.
      */
-    @Getter @Nonnull private String gelbooruToken;
+    @Getter 
+    @Nonnull 
+    private String gelbooruToken;
 
     /**
      * The Gyate Booru token.
      */
-    @Getter @Nonnull private String gyatebooruToken;
+    @Getter 
+    @Nonnull 
+    private String gyateBooruToken;
 
     /**
      * The Rule34 token.
      */
-    @Getter @Nonnull private String rule34Token;
+    @Getter 
+    @Nonnull 
+    private String rule34Token;
 
     /**
      * Static block to load properties from config.properties.
@@ -134,7 +159,7 @@ public class ConfigLoader {
             danbooruToken = PROPERTIES.getProperty("DANBOORU_TOKEN");
             e621Token = PROPERTIES.getProperty("E621_TOKEN");
             gelbooruToken = PROPERTIES.getProperty("GELBOORU_TOKEN");
-            gyatebooruToken = PROPERTIES.getProperty("GYATEBOORU_TOKEN");
+            gyateBooruToken = PROPERTIES.getProperty("GYATEBOORU_TOKEN");
             rule34Token = PROPERTIES.getProperty("RULE34_TOKEN");
 
             if (!verbose) 
@@ -149,7 +174,7 @@ public class ConfigLoader {
             warnIfNull(danbooruToken, "Danbooru");
             warnIfNull(e621Token, "e621");
             warnIfNull(gelbooruToken, "Gelbooru");
-            warnIfNull(gyatebooruToken ,"Gyate Booru");
+            warnIfNull(gyateBooruToken ,"Gyate Booru");
             warnIfNull(rule34Token, "Rule34");
 
         } catch (IOException e) {
@@ -158,8 +183,9 @@ public class ConfigLoader {
     }
 
     /**
+     * Throws an exception due to an illegal argument/missing item.
      * 
-     * @param what
+     * @param what The missing item.
      */
     private static void throwRequired(String what) {
         Logger.log(LogLevel.ERROR, String.format("No %s found!", what));
@@ -167,9 +193,10 @@ public class ConfigLoader {
     }
 
     /**
+     * Issues a warning to the logger about a potentially null field.
      * 
-     * @param token
-     * @param name
+     * @param token The token to check for null.
+     * @param name The name of the token.
      */
     private static void warnIfNull(String token, String name) {
         if (token == null)

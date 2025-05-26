@@ -8,14 +8,23 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.time.LocalDateTime;
 
+import jakarta.annotation.Nonnull;
+
 import bot.ninetail.core.config.ConfigNames;
 import bot.ninetail.core.config.ConfigPaths;
 import bot.ninetail.utilities.TemporalFormatting;
 
+import lombok.experimental.UtilityClass;
+
 /**
  * Class to handle logging bot messages.
  */
+@UtilityClass
 public class Logger {
+    /**
+     * The BufferedWriter of the logger.
+     */
+    @Nonnull
     private static BufferedWriter writer;
 
     static {

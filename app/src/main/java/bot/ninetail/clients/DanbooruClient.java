@@ -25,6 +25,7 @@ public class DanbooruClient extends ImageboardClient {
     /**
      * The base URL for Danbooru.
      */
+    @Nonnull
     private static final String BASE_URL = "https://danbooru.donmai.us/posts.json?tags=%s&api_key=%s";
 
     /**

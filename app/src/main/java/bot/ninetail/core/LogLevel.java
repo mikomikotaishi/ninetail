@@ -26,27 +26,27 @@ public enum LogLevel {
     }
     
     /**
+     * Obtain the priority of a LogLevel.
      * 
-     * 
-     * @return
+     * @return The priority
      */
     public int getPriority() {
         return priority;
     }
     
     /**
+     * Obtain the display name of a LogLevel.
      * 
-     * 
-     * @return
+     * @return The display name
      */
     public String getDisplayName() {
         return displayName;
     }
     
     /**
+     * Compare a LogLevel's seriousness/level.
      * 
-     * 
-     * @param other The other
+     * @param other The other LogLevel
      * 
      * @return True if other.priority is at least as serious, false otherwise
      */

@@ -22,6 +22,7 @@ public class CoinsRegistry {
     /**
      * The singleton instance of CoinsRegistry.
      */
+    @Nonnull
     private static volatile CoinsRegistry instance;
     
     /**

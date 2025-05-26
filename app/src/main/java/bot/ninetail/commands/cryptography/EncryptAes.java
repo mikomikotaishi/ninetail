@@ -1,8 +1,11 @@
+
 package bot.ninetail.commands.cryptography;
 
 import bot.ninetail.core.LogLevel;
 import bot.ninetail.core.Logger;
 import bot.ninetail.structures.commands.CryptographyCommand;
+
+import lombok.experimental.UtilityClass;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
@@ -11,12 +14,8 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  * 
  * @implements CryptographyCommand
  */
+@UtilityClass
 public final class EncryptAes implements CryptographyCommand {
-    /**
-     * Private constructor to prevent instantiation.
-     */
-    private EncryptAes() {}
-
     /**
      * Invokes the command.
      *

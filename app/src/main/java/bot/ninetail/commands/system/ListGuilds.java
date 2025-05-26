@@ -16,7 +16,10 @@ import bot.ninetail.core.config.ConfigPaths;
 import bot.ninetail.structures.commands.JdaCommand;
 import bot.ninetail.system.ConfigLoader;
 import bot.ninetail.utilities.TemporalFormatting;
-import bot.ninetail.utilities.exceptions.*;
+import bot.ninetail.utilities.exceptions.IncorrectMasterIdException;
+import bot.ninetail.utilities.exceptions.IncorrectPasswordException;
+
+import lombok.experimental.UtilityClass;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
@@ -28,12 +31,8 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  * 
  * @implements JdaCommand
  */
+@UtilityClass
 public final class ListGuilds implements JdaCommand {
-    /**
-     * Private constructor to prevent instantiation.
-     */
-    private ListGuilds() {}
-
     /**
      * Invokes the command.
      *

@@ -15,6 +15,8 @@ import bot.ninetail.commands.system.*;
 import bot.ninetail.commands.webhook.*;
 import bot.ninetail.structures.InteractionHandler;
 
+import lombok.experimental.UtilityClass;
+
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -31,12 +33,8 @@ import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
  * 
  * @extends InteractionHandler
  */
+@UtilityClass
 public final class CommandHandler extends InteractionHandler {
-    /**
-     * Private constructor to prevent instantiation.
-     */
-    private CommandHandler() {}
-
     /**
      * Updates the list of commands to Discord and loads them on to the bot.
      * 

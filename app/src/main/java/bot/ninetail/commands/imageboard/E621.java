@@ -12,6 +12,8 @@ import bot.ninetail.core.Logger;
 import bot.ninetail.structures.commands.ApiCommand;
 import bot.ninetail.utilities.RandomNumberGenerator;
 
+import lombok.experimental.UtilityClass;
+
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 /**
@@ -19,15 +21,12 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  * 
  * @implements ApiCommand
  */
+@UtilityClass
 public final class E621 implements ApiCommand {
-    /**
-     * Private constructor to prevent instantiation.
-     */
-    private E621() {}
-
     /**
      * The e621 client.
      */
+    @Nonnull
     private static final E621Client e621Client = new E621Client();
 
     /**

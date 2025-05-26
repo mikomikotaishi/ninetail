@@ -16,15 +16,13 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import lombok.experimental.UtilityClass;
+
 /**
  * RSA encryption utility.
  */
+@UtilityClass
 public class RSA {
-    /**
-     * Private constructor to prevent instantiation.
-     */
-    private RSA() {}
-
     /**
      * Thread-local cipher.
      */

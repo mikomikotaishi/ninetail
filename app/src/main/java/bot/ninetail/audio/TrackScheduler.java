@@ -26,17 +26,20 @@ public class TrackScheduler extends AudioEventAdapter {
     /**
      * The bot audio instance.
      */
-    private final @Nonnull BotAudio botAudio;
+    @Nonnull
+    private final BotAudio botAudio;
 
     /**
      * The audio player.
      */
-    private final @Nonnull AudioPlayer player;
+    @Nonnull
+    private final AudioPlayer player;
 
     /**
      * The queue of audio tracks.
      */
-    private final @Nonnull Queue<AudioTrack> queue;
+    @Nonnull
+    private final Queue<AudioTrack> queue;
 
     /**
      * Sends a message to the text channel indicating the currently playing track.

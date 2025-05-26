@@ -23,16 +23,19 @@ public class AudioPlayerLoadResultHandler implements AudioLoadResultHandler {
     /**
      * The text channel.
      */
+    @Nonnull
     private final MessageChannel textChannel;
 
     /**
      * The audio player.
      */
+    @Nonnull
     private final AudioPlayer player;
 
     /**
      * The track scheduler.
      */
+    @Nonnull
     private final TrackScheduler scheduler;
 
     /**

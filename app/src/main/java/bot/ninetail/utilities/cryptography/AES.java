@@ -12,15 +12,13 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
+import lombok.experimental.UtilityClass;
+
 /**
  * AES encryption and decryption utility.
  */
+@UtilityClass
 public class AES {
-    /**
-     * Private constructor to prevent instantiation.
-     */
-    private AES() {}
-
     /**
      * ThreadLocal to store the cipher instance.
      */

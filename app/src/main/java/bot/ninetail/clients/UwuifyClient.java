@@ -24,6 +24,7 @@ public class UwuifyClient extends TextManipulatorClient {
     /**
      * The base URL for the Owoify API.
      */
+    @Nonnull
     private static final String BASE_URL = "https://nekos.life/api/v2/owoify?text=%s&api_key=%s";
 
     /**

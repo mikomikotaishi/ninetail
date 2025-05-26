@@ -7,6 +7,8 @@ import bot.ninetail.core.LogLevel;
 import bot.ninetail.core.Logger;
 import bot.ninetail.structures.commands.AudioCommand;
 
+import lombok.experimental.UtilityClass;
+
 import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.managers.AudioManager;
@@ -16,12 +18,8 @@ import net.dv8tion.jda.api.managers.AudioManager;
  * 
  * @implements AudioCommand
  */
+@UtilityClass
 public final class Play implements AudioCommand {
-    /**
-     * Private constructor to prevent instantiation.
-     */
-    private Play() {}
-
     /**
      * Invokes the command.
      *

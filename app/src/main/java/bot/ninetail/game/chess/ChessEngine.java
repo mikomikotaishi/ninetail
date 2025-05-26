@@ -7,6 +7,8 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+import jakarta.annotation.Nonnull;
+
 import bot.ninetail.core.LogLevel;
 import bot.ninetail.core.Logger;
 import bot.ninetail.core.config.ConfigNames;
@@ -18,19 +20,40 @@ import bot.ninetail.game.Engine;
  * @extends Engine
  */
 public class ChessEngine extends Engine {
+    @Nonnull
     private final MethodHandle initChessEngineHandle;
+
+    @Nonnull
     private final MethodHandle getBoardStateHandle;
+
+    @Nonnull
     private final MethodHandle getBoardDisplayHandle;
+
+    @Nonnull
     private final MethodHandle makeMoveHandle;
+
+    @Nonnull
     private final MethodHandle resetBoardHandle;
+
+    @Nonnull
     private final MethodHandle loadPositionHandle;
+
+    @Nonnull
     private final MethodHandle isWhiteTurnHandle;
+
+    @Nonnull
     private final MethodHandle getBestMoveHandle;
+
+    @Nonnull
     private final MethodHandle isInCheckHandle;
+    
+    @Nonnull
     private final MethodHandle destroyChessEngineHandle;
     
+    @Nonnull
     private final Arena arena;
     
+    @Nonnull
     private static final Map<Character, String> FEN_TO_EMOJI = new HashMap<>();
     
     static {

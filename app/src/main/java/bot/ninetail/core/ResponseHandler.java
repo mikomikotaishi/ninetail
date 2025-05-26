@@ -14,6 +14,8 @@ import jakarta.json.JsonReader;
 import bot.ninetail.core.config.ConfigNames;
 import bot.ninetail.structures.InteractionHandler;
 
+import lombok.experimental.UtilityClass;
+
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 
 /**
@@ -22,16 +24,13 @@ import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
  * 
  * @extends InteractionHandler
  */
+@UtilityClass
 public final class ResponseHandler extends InteractionHandler {
-    /**
-     * Private constructor to prevent instantiation.
-     */
-    private ResponseHandler() {}
-
     /**
      * Map of keywords to responses.
      */
-    @Nonnull private static Map<String, String> RESPONSES = new HashMap<>();
+    @Nonnull 
+    private static Map<String, String> RESPONSES = new HashMap<>();
 
     /**
      * Loads responses from responses.json.

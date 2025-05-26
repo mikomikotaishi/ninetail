@@ -4,18 +4,16 @@ import jakarta.annotation.Nonnull;
 
 import bot.ninetail.structures.ConfigFile;
 
-import lombok.Getter;
+import lombok.experimental.UtilityClass;
 
 /**
  * Class containing paths used by the bot.
  */
-@Getter
+@UtilityClass
 public final class ConfigPaths extends ConfigFile {
-    /**
-     * Private constructor to prevent instantiation.
-     */
-    private ConfigPaths() {}
+    @Nonnull 
+    public static final String LIB_PATH = "src/native/%s/lib";
 
-    @Nonnull public static final String LIB_PATH = "src/native/%s/lib";
-    @Nonnull public static final String LOG_PATH = "./logs";
+    @Nonnull 
+    public static final String LOG_PATH = "./logs";
 }

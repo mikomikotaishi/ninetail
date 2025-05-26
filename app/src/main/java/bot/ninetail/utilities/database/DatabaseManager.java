@@ -7,6 +7,8 @@ import javax.sql.DataSource;
 import bot.ninetail.structures.Manager;
 import bot.ninetail.system.ConfigLoader;
 
+import lombok.experimental.UtilityClass;
+
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -15,12 +17,8 @@ import com.zaxxer.hikari.HikariDataSource;
  * 
  * @extends Manager
  */
+@UtilityClass
 public final class DatabaseManager extends Manager {
-    /**
-     * Private constructor to prevent instantiation.
-     */
-    private DatabaseManager() {}
-
     /**
      * Loads the Coins Registry.
      * 

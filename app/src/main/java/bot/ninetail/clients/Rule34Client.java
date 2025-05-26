@@ -25,6 +25,7 @@ public class Rule34Client extends ImageboardClient {
     /**
      * The base URL for Rule34.
      */
+    @Nonnull
     private static final String BASE_URL = "https://rule34.xxx/index.php?page=dapi&s=post&q=index&json=1&tags=%s&api_key=%s";
 
     /**
