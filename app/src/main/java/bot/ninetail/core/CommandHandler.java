@@ -13,7 +13,6 @@ import bot.ninetail.commands.imageboard.*;
 import bot.ninetail.commands.social.*;
 import bot.ninetail.commands.system.*;
 import bot.ninetail.commands.webhook.*;
-import bot.ninetail.structures.InteractionHandler;
 
 import lombok.experimental.UtilityClass;
 
@@ -30,11 +29,9 @@ import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 /**
  * Class to handle operations with slash commands.
  * This class is used to handle operations with slash commands recognised by the bot.
- * 
- * @extends InteractionHandler
  */
 @UtilityClass
-public final class CommandHandler extends InteractionHandler {
+public final class CommandHandler {
     /**
      * Updates the list of commands to Discord and loads them on to the bot.
      * 

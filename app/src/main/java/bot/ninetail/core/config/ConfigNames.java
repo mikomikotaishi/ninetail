@@ -2,15 +2,13 @@ package bot.ninetail.core.config;
 
 import jakarta.annotation.Nonnull;
 
-import bot.ninetail.structures.ConfigFile;
-
 import lombok.experimental.UtilityClass;
 
 /**
  * Class containing file names used by the bot.
  */
 @UtilityClass
-public final class ConfigNames extends ConfigFile {
+public final class ConfigNames {
     // Files
     @Nonnull 
     public static final String CONFIG_PROPERTIES_FILE = "config.properties";

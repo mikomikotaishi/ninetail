@@ -2,17 +2,13 @@ package bot.ninetail.utilities;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-import bot.ninetail.structures.Manager;
-
 import lombok.experimental.UtilityClass;
 
 /**
  * Utility class for generating random numbers.
- * 
- * @extends Manager
  */
 @UtilityClass
-public class RandomNumberGenerator extends Manager {
+public final class RandomNumberGenerator {
     /**
      * Generates a random number.
      *

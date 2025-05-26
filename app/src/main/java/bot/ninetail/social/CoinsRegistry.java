@@ -11,6 +11,8 @@ import jakarta.annotation.Nonnull;
 import bot.ninetail.core.LogLevel;
 import bot.ninetail.core.Logger;
 
+import lombok.Getter;
+
 import org.postgresql.util.PSQLException;
 import org.postgresql.util.PSQLState;
 
@@ -28,15 +30,17 @@ public class CoinsRegistry {
     /**
      * The data source used by this registry.
      */
-    @Nonnull private final DataSource db;
+    @Getter
+    @Nonnull 
+    private final DataSource data;
     
     /**
      * Private constructor to prevent instantiation.
      * 
      * @param db The data source to use
      */
-    private CoinsRegistry(@Nonnull DataSource db) {
-        this.db = db;
+    private CoinsRegistry(@Nonnull DataSource data) {
+        this.data = data;
     }
 
     /**
@@ -46,7 +50,7 @@ public class CoinsRegistry {
      * 
      * @throws SQLException
      */
-    public static void initDatabase(DataSource dataSource) throws SQLException {
+    public static void initDatabase(@Nonnull DataSource dataSource) throws SQLException {
         try (Connection conn = dataSource.getConnection();
             Statement statement = conn.createStatement()) {
             
@@ -92,14 +96,5 @@ public class CoinsRegistry {
         if (instance == null)
             throw new IllegalStateException("CoinsRegistry has not been initialized");
         return instance;
-    }
-
-    /**
-     * Obtains the DataSource.
-     * 
-     * @return The data source itself.
-     */
-    public DataSource getData() {
-        return db;
     }
 }

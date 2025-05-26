@@ -18,7 +18,7 @@ import lombok.experimental.UtilityClass;
  * Loads configuration properties from config.properties.
  */
 @UtilityClass
-public class ConfigLoader {
+public final class ConfigLoader {
     /**
      * Properties object to store configuration properties.
      */

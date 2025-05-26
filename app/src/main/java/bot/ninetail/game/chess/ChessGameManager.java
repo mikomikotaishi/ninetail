@@ -2,17 +2,13 @@ package bot.ninetail.game.chess;
 
 import jakarta.annotation.Nonnull;
 
-import bot.ninetail.game.GameManager;
-
 import lombok.experimental.UtilityClass;
 
 /**
  * Chess game manager class
- * 
- * @extends GameManager
  */
 @UtilityClass
-public class ChessGameManager extends GameManager {
+public final class ChessGameManager {
     /**
      * The chess engine instance.
      */

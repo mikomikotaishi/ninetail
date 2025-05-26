@@ -11,7 +11,7 @@ import lombok.experimental.UtilityClass;
  * Utility class for temporal formatting operations.
  */
 @UtilityClass
-public class TemporalFormatting {
+public final class TemporalFormatting {
     @Nonnull
     public static final DateTimeFormatter FILE_NAME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
 

@@ -4,7 +4,6 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import bot.ninetail.structures.Manager;
 import bot.ninetail.system.ConfigLoader;
 
 import lombok.experimental.UtilityClass;
@@ -14,11 +13,9 @@ import com.zaxxer.hikari.HikariDataSource;
 
 /**
  * Manager for handling databases used by the bot.
- * 
- * @extends Manager
  */
 @UtilityClass
-public final class DatabaseManager extends Manager {
+public final class DatabaseManager {
     /**
      * Loads the Coins Registry.
      * 

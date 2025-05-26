@@ -12,7 +12,6 @@ import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 
 import bot.ninetail.core.config.ConfigNames;
-import bot.ninetail.structures.InteractionHandler;
 
 import lombok.experimental.UtilityClass;
 
@@ -21,11 +20,9 @@ import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 /**
  * Class to handle responses to messages.
  * This class is used to send responses to messages based on keywords.
- * 
- * @extends InteractionHandler
  */
 @UtilityClass
-public final class ResponseHandler extends InteractionHandler {
+public final class ResponseHandler {
     /**
      * Map of keywords to responses.
      */

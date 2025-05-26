@@ -11,7 +11,7 @@ import bot.ninetail.core.LogLevel;
 import bot.ninetail.core.Logger;
 import bot.ninetail.structures.commands.ApiCommand;
 import bot.ninetail.utilities.RandomNumberGenerator;
-
+import bot.ninetail.utilities.TextFormat;
 import lombok.experimental.UtilityClass;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -53,7 +53,10 @@ public final class Danbooru implements ApiCommand {
             Logger.log(LogLevel.INFO, String.format("Attempting to retrieve posts for tags: %s%s", tag1, (tag2 != null ? ", " + tag2 : "")));
             JsonArray posts = danbooruClient.getPosts(tag1, tag2);
             if (posts.isEmpty()) {
-                event.reply(String.format("No posts found for tags: %s%s.", tag1, (tag2 != null ? " and " + tag2 : ""))).queue();
+                event.reply(String.format("No posts found for tags: %s%s.", 
+                    TextFormat.verbatim(tag1), 
+                    tag2 != null ? " and " + TextFormat.verbatim(tag2) : "")
+                ).queue();
                 return;
             }
             int randomIndex = RandomNumberGenerator.generateRandomNumber(posts.size());
@@ -66,10 +69,16 @@ public final class Danbooru implements ApiCommand {
             event.reply(imageUrl).queue();
         } catch (IOException e) {
             Logger.log(LogLevel.WARN, String.format("Failed to retrieve posts for tags: %s%s", tag1, (tag2 != null ? ", " + tag2 : "")));
-            event.reply(String.format("Error retrieving posts for tags: %s%s.", tag1, (tag2 != null ? " and " + tag2 : ""))).queue();
+            event.reply(String.format("Error retrieving posts for tags: %s%s.", 
+                TextFormat.verbatim(tag1), 
+                tag2 != null ? " and " + TextFormat.verbatim(tag2) : "")
+            ).queue();
         } catch (InterruptedException e) {
             Logger.log(LogLevel.WARN, String.format("Interrupted while retrieving posts for tags: %s%s", tag1, (tag2 != null ? ", " + tag2 : "")));
-            event.reply(String.format("Interrupted while retrieving posts for tags: %s%s.", tag1, (tag2 != null ? " and " + tag2 : ""))).queue();
+            event.reply(String.format("Interrupted while retrieving posts for tags: %s%s.", 
+                TextFormat.verbatim(tag1), 
+                tag2 != null ? " and " + TextFormat.verbatim(tag2) : "")
+            ).queue();
         }
     }
 }

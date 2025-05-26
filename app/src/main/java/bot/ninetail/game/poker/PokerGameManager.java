@@ -2,17 +2,13 @@ package bot.ninetail.game.poker;
 
 import jakarta.annotation.Nonnull;
 
-import bot.ninetail.game.GameManager;
-
 import lombok.experimental.UtilityClass;
 
 /**
  * Poker game manager class
- * 
- * @extends GameManager
  */
 @UtilityClass
-public class PokerGameManager extends GameManager {
+public class PokerGameManager {
     /**
      * The poker engine instance.
      */
