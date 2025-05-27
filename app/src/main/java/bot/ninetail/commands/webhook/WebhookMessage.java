@@ -1,7 +1,5 @@
 package bot.ninetail.commands.webhook;
 
-import java.util.function.Consumer;
-
 import jakarta.annotation.Nonnull;
 
 import bot.ninetail.core.LogLevel;
@@ -22,7 +20,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  * @implements Command
  */
 @UtilityClass
-public final class ImpersonateUser implements WebhookCommand {
+public final class WebhookMessage implements WebhookCommand {
     /**
      * The webhook name used for impersonating users.
      */
@@ -47,7 +45,9 @@ public final class ImpersonateUser implements WebhookCommand {
         @Nonnull 
         TextChannel channel = event.getChannel().asTextChannel();
         @Nonnull 
-        String userId  = event.getOption("id").getAsString();
+        String username  = event.getOption("username").getAsString();
+        @Nonnull 
+        String avatarUrl = event.getOption("avatar_url").getAsString();
         @Nonnull 
         String message = event.getOption("message").getAsString();
 
@@ -59,31 +59,21 @@ public final class ImpersonateUser implements WebhookCommand {
                     .findFirst()
                     .orElse(null);
 
-            Consumer<Webhook> sendWithWebhook = hook -> 
-                event.getJDA().retrieveUserById(userId).queue(user -> {
-                    String username  = user.getName();
-                    String avatarUrl = user.getAvatarUrl();
-                    WebhookUtilities.sendImpersonatedMessage(event, hook, username, avatarUrl, message, guild);
-                }, error -> {
-                    event.getHook().editOriginal("Couldn’t fetch user: " + error.getMessage()).queue();
-                    Logger.log(LogLevel.ERROR, "Failed to fetch user " + userId + ": " + error.getMessage());
-                });
-
             if (webhook != null) {
                 Logger.log(LogLevel.DEBUG, String.format(
                     "Using existing impersonator webhook in #%s of guild %s",
                     channel.getName(), guild.getName())
                 );
-                sendWithWebhook.accept(webhook);
+                WebhookUtilities.sendImpersonatedMessage(event, webhook, username, avatarUrl, message, guild);
             } else {
                 Logger.log(LogLevel.INFO, String.format(
                     "Creating impersonator webhook in #%s of guild %s",
                     channel.getName(), guild.getName())
                 );
                 channel.createWebhook(IMPERSONATOR_WEBHOOK_NAME).queue(
-                    newWebhook -> sendWithWebhook.accept(newWebhook),
+                    newWebhook -> WebhookUtilities.sendImpersonatedMessage(event, webhook, username, avatarUrl, message, guild),
                     error -> {
-                        event.getHook().editOriginal(String.format("Failed to create webhook: %s", error.getMessage())).queue();
+                        event.getHook().editOriginal("Failed to create webhook: " + error.getMessage()).queue();
                         Logger.log(LogLevel.ERROR, String.format("Failed to create webhook in guild %s: %s", guild.getName(), error.getMessage()));
                     }
                 );

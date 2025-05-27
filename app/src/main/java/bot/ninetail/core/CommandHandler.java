@@ -39,6 +39,7 @@ public final class CommandHandler {
      */
     public static void loadCommands(@Nonnull CommandListUpdateAction commands) {
         Logger.log(LogLevel.INFO, "Loading bot commands.");
+        System.out.println("Loading bot commands.");
 
         commands.addCommands(
             // ====== Admin commands ======
@@ -201,16 +202,33 @@ public final class CommandHandler {
                     .setRequired(true)),
 
             // ====== Webhook commands ======
-            // User webhook command
-            Commands.slash("impersonateuser", "Impersonate a user by sending a webhook message as them")
+            // Member webhook command
+            Commands.slash("impersonatemember", "Impersonate a member of the guild by sending a webhook message as them")
                 .addOptions(new OptionData(OptionType.USER, "user", "The user to impersonate")
+                    .setRequired(true))
+                .addOptions(new OptionData(OptionType.STRING, "message", "The message to send")
+                    .setRequired(true))
+                .setContexts(InteractionContextType.GUILD),
+            // User webhook command
+            Commands.slash("impersonateuser", "Impersonate a user globally by sending a webhook message as them")
+                .addOptions(new OptionData(OptionType.STRING, "id", "The user ID")
+                    .setRequired(true))
+                .addOptions(new OptionData(OptionType.STRING, "message", "The message to send")
+                    .setRequired(true))
+                .setContexts(InteractionContextType.GUILD),
+            // Webhook message command
+            Commands.slash("webhookmessage", "Create a webhook with custom username and avatar and send a message as it")
+                .addOptions(new OptionData(OptionType.STRING, "username", "The username of the webhook")
+                    .setRequired(true))
+                .addOptions(new OptionData(OptionType.STRING, "avatar_url", "The avatar URL of the webhook")
                     .setRequired(true))
                 .addOptions(new OptionData(OptionType.STRING, "message", "The message to send")
                     .setRequired(true))
                 .setContexts(InteractionContextType.GUILD)
         ).queue();
 
-        Logger.log(LogLevel.INFO, "Commands finished logging!");
+        Logger.log(LogLevel.INFO, "Commands finished loading!");
+        System.out.println("Commands finished loading!");
     }
 
     /**
@@ -334,8 +352,14 @@ public final class CommandHandler {
                 Shutdown.invoke(event, jda);
                 break;
             // Webhook
+            case "impersonatemember":
+                ImpersonateMember.invoke(event);
+                break;
             case "impersonateuser":
                 ImpersonateUser.invoke(event);
+                break;
+            case "webhookmessage":
+                WebhookMessage.invoke(event);
                 break;
             // Default
             default:

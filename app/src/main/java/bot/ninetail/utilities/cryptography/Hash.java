@@ -10,7 +10,7 @@ import lombok.experimental.UtilityClass;
  * Hashing utility.
  */
 @UtilityClass
-public class Hash {
+public final class Hash {
     /**
      * Hashes a message.
      *

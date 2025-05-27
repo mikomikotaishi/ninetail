@@ -54,8 +54,8 @@ public final class GyateBooru implements ApiCommand {
             JsonArray posts = gyatebooruClient.getPosts(tag1, tag2);
             if (posts.isEmpty()) {
                 event.reply(String.format("No posts found for tags: %s%s.", 
-                    TextFormat.verbatim(tag1), 
-                    tag2 != null ? " and " + TextFormat.verbatim(tag2) : "")
+                    TextFormat.markdownVerbatim(tag1), 
+                    tag2 != null ? " and " + TextFormat.markdownVerbatim(tag2) : "")
                 ).queue();
                 return;
             }
@@ -70,14 +70,14 @@ public final class GyateBooru implements ApiCommand {
         } catch (IOException e) {
             Logger.log(LogLevel.WARN, String.format("Failed to retrieve posts for tags: %s%s", tag1, (tag2 != null ? ", " + tag2 : "")));
             event.reply(String.format("Error retrieving posts for tags: %s%s.", 
-                TextFormat.verbatim(tag1), 
-                tag2 != null ? " and " + TextFormat.verbatim(tag2) : "")
+                TextFormat.markdownVerbatim(tag1), 
+                tag2 != null ? " and " + TextFormat.markdownVerbatim(tag2) : "")
             ).queue();
         } catch (InterruptedException e) {
             Logger.log(LogLevel.WARN, String.format("Interrupted while retrieving posts for tags: %s%s", tag1, (tag2 != null ? ", " + tag2 : "")));
             event.reply(String.format("Interrupted while retrieving posts for tags: %s%s.", 
-                TextFormat.verbatim(tag1), 
-                tag2 != null ? " and " + TextFormat.verbatim(tag2) : "")
+                TextFormat.markdownVerbatim(tag1), 
+                tag2 != null ? " and " + TextFormat.markdownVerbatim(tag2) : "")
             ).queue();
         }
     }

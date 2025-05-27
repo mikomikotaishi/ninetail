@@ -18,7 +18,7 @@ import lombok.experimental.UtilityClass;
  * AES encryption and decryption utility.
  */
 @UtilityClass
-public class AES {
+public final class AES {
     /**
      * ThreadLocal to store the cipher instance.
      */

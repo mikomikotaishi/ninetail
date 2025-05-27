@@ -9,7 +9,14 @@ import lombok.experimental.UtilityClass;
  */
 @UtilityClass
 public final class TextFormat {
-    public String verbatim(@Nonnull String s) {
+    /**
+     * Formats a string into verbatim text in Markdown.
+     * 
+     * @param s The string to make verbatim
+     * 
+     * @return The string with '`' surrounding it
+     */
+    public String markdownVerbatim(@Nonnull String s) {
         return String.format("`%s`", s);
     }
 }

@@ -22,7 +22,7 @@ import lombok.experimental.UtilityClass;
  * RSA encryption utility.
  */
 @UtilityClass
-public class RSA {
+public final class RSA {
     /**
      * Thread-local cipher.
      */

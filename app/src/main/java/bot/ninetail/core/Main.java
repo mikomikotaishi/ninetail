@@ -5,7 +5,6 @@ import java.util.EnumSet;
 import javax.security.auth.login.LoginException;
 
 import jakarta.annotation.Nonnull;
-
 import bot.ninetail.system.*;
 
 import lombok.experimental.UtilityClass;
@@ -29,7 +28,8 @@ public final class Main {
      * @throws InterruptedException If the bot is interrupted
      */
     public static void main(String[] args) throws LoginException, InterruptedException {
-        @Nonnull final String BOT_TOKEN = ConfigLoader.getBotToken();
+        @Nonnull 
+        final String BOT_TOKEN = ConfigLoader.getBotToken();
 
         EnumSet<GatewayIntent> INTENTS = EnumSet.of(
             GatewayIntent.GUILD_EXPRESSIONS,

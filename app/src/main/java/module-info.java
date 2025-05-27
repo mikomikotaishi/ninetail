@@ -8,7 +8,7 @@ module bot.ninetail {
     requires java.sql;
 
     requires jakarta.annotation;
-    requires jakarta.json;
+    requires transitive jakarta.json;
 
     requires kotlin.stdlib;
 
