@@ -61,12 +61,12 @@ public final class ImpersonateUser implements WebhookCommand {
 
             Consumer<Webhook> sendWithWebhook = hook -> 
                 event.getJDA().retrieveUserById(userId).queue(user -> {
-                    String username  = user.getName();
+                    String username  = user.getEffectiveName();
                     String avatarUrl = user.getAvatarUrl();
                     WebhookUtilities.sendImpersonatedMessage(event, hook, username, avatarUrl, message, guild);
                 }, error -> {
-                    event.getHook().editOriginal("Couldn’t fetch user: " + error.getMessage()).queue();
-                    Logger.log(LogLevel.ERROR, "Failed to fetch user " + userId + ": " + error.getMessage());
+                    event.getHook().editOriginal("Couldn't fetch user: " + error.getMessage()).queue();
+                    Logger.log(LogLevel.ERROR, String.format("Failed to fetch user %s: %s", userId, error.getMessage()));
                 });
 
             if (webhook != null) {

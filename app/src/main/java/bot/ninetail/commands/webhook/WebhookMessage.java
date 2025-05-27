@@ -73,13 +73,13 @@ public final class WebhookMessage implements WebhookCommand {
                 channel.createWebhook(IMPERSONATOR_WEBHOOK_NAME).queue(
                     newWebhook -> WebhookUtilities.sendImpersonatedMessage(event, webhook, username, avatarUrl, message, guild),
                     error -> {
-                        event.getHook().editOriginal("Failed to create webhook: " + error.getMessage()).queue();
+                        event.getHook().editOriginal(String.format("Failed to create webhook: %s", error.getMessage())).queue();
                         Logger.log(LogLevel.ERROR, String.format("Failed to create webhook in guild %s: %s", guild.getName(), error.getMessage()));
                     }
                 );
             }
         }, error -> {
-            event.getHook().editOriginal("Failed to retrieve webhooks: " + error.getMessage()).queue();
+            event.getHook().editOriginal(String.format("Failed to retrieve webhooks: %s", error.getMessage())).queue();
             Logger.log(LogLevel.ERROR, String.format("Failed to retrieve webhooks for guild %s: %s", guild.getName(), error.getMessage()));
         });
     }
