@@ -22,6 +22,7 @@ module bot.ninetail {
     requires org.postgresql.jdbc;
     requires org.slf4j;
     requires net.dv8tion.jda;
+    // requires transitive net.dv8tion.jda;
     
     exports bot.ninetail.audio;
     exports bot.ninetail.clients;
@@ -34,6 +35,7 @@ module bot.ninetail {
     exports bot.ninetail.commands.social;
     exports bot.ninetail.commands.system;
     exports bot.ninetail.commands.webhook;
+    // exports bot.ninetail.core;
     exports bot.ninetail.core.config;
     exports bot.ninetail.game;
     exports bot.ninetail.game.chess;

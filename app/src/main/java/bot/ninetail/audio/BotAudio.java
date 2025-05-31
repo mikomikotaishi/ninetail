@@ -93,13 +93,15 @@ public class BotAudio {
         inactivityChecker = Executors.newSingleThreadScheduledExecutor();
         inactivityChecker.scheduleAtFixedRate(() -> {
             for (BotAudio audio: instances.values()) {
-                if (audio.isActive() && System.currentTimeMillis() - audio.lastActiveTime > INACTIVITY_TIMEOUT) {
-                    String channelName = audio.getVoiceChannel() != null ? audio.getVoiceChannel().getName() : "unknown";
-                    String guildName = audio.getVoiceChannel() != null ? audio.getVoiceChannel().getGuild().getName() : "unknown";
-                    String guildId = audio.getVoiceChannel() != null ? audio.getVoiceChannel().getGuild().getId() : "unknown";
+                boolean shouldDisconnect = !audio.isPlaying() && (System.currentTimeMillis() - audio.lastActiveTime > INACTIVITY_TIMEOUT);
+                if (audio.isActive() && shouldDisconnect) {
+                    String channelName = audio.getVoiceChannel().getName();
+                    String guildName = audio.getVoiceChannel().getGuild().getName();
+                    String guildId = audio.getVoiceChannel().getGuild().getId();
                     
-                    audio.disconnect(String.format("Auto-disconnected from %s of server %s (%s) due to 10 minutes of inactivity", 
-                        channelName, guildName, guildId));
+                    audio.disconnect(
+                        String.format("Auto-disconnected from %s of server %s (%s) due to 10 minutes of inactivity", channelName, guildName, guildId)
+                    );
                 }
             }
         }, 1, 1, TimeUnit.MINUTES);
@@ -208,6 +210,22 @@ public class BotAudio {
      */
     public boolean isActive() {
         return activated;
+    }
+
+    /**
+     * Checks if the bot audio is currently playing.
+     * 
+     * @return Whether the bot audio is playing.
+     */
+    public boolean isPlaying() {
+        return player.getPlayingTrack() != null && !player.isPaused();
+    }
+
+    /**
+     * Updates the last active time to the current time, marking it as active.
+     */
+    public void markActive() {
+        this.lastActiveTime = System.currentTimeMillis();
     }
 
     /**

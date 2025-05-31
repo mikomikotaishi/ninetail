@@ -48,7 +48,10 @@ public class TrackScheduler extends AudioEventAdapter {
      */
     private void sendNowPlayingMessage(@Nonnull AudioTrack track) {
         String trackInfo = String.format("%s (%s)", track.getInfo().title, TemporalFormatting.getFormattedTime(track.getInfo().length));
-        @Nonnull MessageChannel textChannel = botAudio.getTextChannel();
+
+        @Nonnull 
+        MessageChannel textChannel = botAudio.getTextChannel();
+
         textChannel.sendMessage(String.format("Now playing: **%s**", trackInfo)).queue();
     }
 
@@ -78,6 +81,7 @@ public class TrackScheduler extends AudioEventAdapter {
             textChannel.sendMessage(String.format("Queued track: **%s**", trackInfo)).queue();
         } else {
             Logger.log(LogLevel.INFO, "Now playing: " + track.getInfo().title);
+            botAudio.markActive();
             sendNowPlayingMessage(track);
         }
     }
@@ -96,6 +100,7 @@ public class TrackScheduler extends AudioEventAdapter {
             if (nextTrack != null) {
                 Logger.log(LogLevel.INFO, "Current song ended. Beginning next song...");
                 player.startTrack(nextTrack, false);
+                botAudio.markActive();
                 sendNowPlayingMessage(nextTrack);
             } else {
                 Logger.log(LogLevel.INFO, "Song queue empty.");

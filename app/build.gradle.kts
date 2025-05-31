@@ -8,6 +8,7 @@ import java.io.ByteArrayOutputStream
 
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
+    java
     application
     kotlin("jvm") version "2.1.10"
     id("io.freefair.lombok") version "8.13.1"
@@ -107,4 +108,13 @@ tasks.withType<JavaExec> {
         "--enable-preview", "--add-reads", "bot.ninetail=ALL-UNNAMED",
         "--patch-module", "bot.ninetail=./build/classes/java/main"
     )
+}
+
+tasks.jar {
+    manifest {
+        attributes(
+            "Main-Class" to "bot.ninetail.core.Main",
+            "Automatic-Module-Name" to "com.sedmelluq.discord.lavaplayer"
+        )
+    }
 }
