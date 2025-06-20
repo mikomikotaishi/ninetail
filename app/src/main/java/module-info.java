@@ -18,11 +18,11 @@ module bot.ninetail {
     requires com.fasterxml.jackson.databind;
     requires com.fasterxml.jackson.annotation;
     requires com.zaxxer.hikari;
+    // requires lavaplayer;
+    requires transitive net.dv8tion.jda;
     requires org.mockito;
     requires org.postgresql.jdbc;
     requires org.slf4j;
-    requires net.dv8tion.jda;
-    // requires transitive net.dv8tion.jda;
     
     exports bot.ninetail.audio;
     exports bot.ninetail.clients;

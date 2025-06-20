@@ -47,7 +47,7 @@ dependencies {
     implementation("org.eclipse.parsson:parsson:1.1.7")
 
     // JDA
-    implementation("net.dv8tion:JDA:5.5.1")
+    implementation("net.dv8tion:JDA:5.6.0")
 
     // Jackson dependencies (required by JDA)
     implementation("com.fasterxml.jackson.core:jackson-core:2.19.0")
@@ -105,7 +105,9 @@ tasks.named<Test>("test") {
 
 tasks.withType<JavaExec> {
     jvmArgs = listOf(
-        "--enable-preview", "--add-reads", "bot.ninetail=ALL-UNNAMED",
+        "--enable-preview", 
+        "--add-reads", "bot.ninetail=ALL-UNNAMED",
+        "--add-modules", "ALL-MODULE-PATH",
         "--patch-module", "bot.ninetail=./build/classes/java/main"
     )
 }
@@ -114,7 +116,7 @@ tasks.jar {
     manifest {
         attributes(
             "Main-Class" to "bot.ninetail.core.Main",
-            "Automatic-Module-Name" to "com.sedmelluq.discord.lavaplayer"
+            "Automatic-Module-Name" to "bot.ninetail"
         )
     }
 }
