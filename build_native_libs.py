@@ -33,14 +33,14 @@ class Project(Enum):
     CHESS = "chess"
     POKER = "poker"
 
-def color(text: str, colour_code: Colour) -> str:
+def colour(text: str, colour_code: Colour) -> str:
     """
     @brief Wrap text in ANSI colour codes.
 
     @param text The text to colour.
     @param colour_code The Colour enum value to apply.
 
-    @return A string wrapped with ANSI escape codes for terminal colorization.
+    @return A string wrapped with ANSI escape codes for terminal colourization.
     """
     return f"{colour_code.value}{text}{Colour.RESET.value}"
 
@@ -67,21 +67,21 @@ def build_project(project: Project) -> None:
     lib_name: Path = f"lib{name}.so"
     output_path: Path = base_dir / "lib" / lib_name
 
-    print(f"{color("Removing", Colour.RED)} build directory for {name}")
+    print(f"{colour("Removing", Colour.RED)} build directory for {name}")
     shutil.rmtree(build_dir, ignore_errors = True)
 
-    print(f"{color("Initialising", Colour.GREEN)} {name} build")
+    print(f"{colour("Initialising", Colour.GREEN)} {name} build")
     run_command(["cmake", "-S", ".", "-G", "Ninja", "-B", "build"], cwd = base_dir)
 
-    print(f"{color("Building", Colour.GREEN)} {name}")
+    print(f"{colour("Building", Colour.GREEN)} {name}")
     run_command(["cmake", "--build", "build"], cwd = base_dir)
 
-    print(f"{color("Moving", Colour.GREEN)} {lib_name} to lib directory")
+    print(f"{colour("Moving", Colour.GREEN)} {lib_name} to lib directory")
     built_so: Path = build_dir / "lib" / lib_name
     output_path.parent.mkdir(parents = True, exist_ok = True)
     shutil.move(str(built_so), str(output_path))
 
-    print(color("Build complete!", Colour.GREEN))
+    print(colour("Build complete!", Colour.GREEN))
 
 def main() -> None:
     """
