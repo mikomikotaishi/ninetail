@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 """
 @file build_native_libs.py
 @brief Builds native C++ shared libraries for chess and poker using CMake and Ninja.
@@ -19,6 +20,10 @@ from typing import List
 
 class Colour(Enum):
     """
+    @enum Colour
+
+    @extends Enum
+
     @brief Enum representing ANSI terminal colours.
     """
     RED = "\033[31m"
@@ -28,6 +33,10 @@ class Colour(Enum):
 
 class Project(Enum):
     """
+    @enum Project
+    
+    @extends Enum
+
     @brief Enum for available native C++ projects.
     """
     CHESS = "chess"
@@ -39,23 +48,22 @@ def colour(text: str, colour_code: Colour) -> str:
 
     @param text The text to colour.
     @param colour_code The Colour enum value to apply.
-
     @return A string wrapped with ANSI escape codes for terminal colourization.
     """
     return f"{colour_code.value}{text}{Colour.RESET.value}"
 
-def run_command(command: List[str], cwd: Path) -> None:
+def runCommand(command: List[str], cwd: Path) -> None:
     """
     @brief Run a shell command in a given directory.
 
     @param command The command to execute, split into arguments.
     @param cwd The working directory to run the command in.
-
+    
     @throws CalledProcessError if the command fails.
     """
     subprocess.run(command, cwd = cwd, check = True)
 
-def build_project(project: Project) -> None:
+def buildProject(project: Project) -> None:
     """
     @brief Build a native C++ project and move its compiled `.so` file.
 
@@ -71,10 +79,10 @@ def build_project(project: Project) -> None:
     shutil.rmtree(build_dir, ignore_errors = True)
 
     print(f"{colour("Initialising", Colour.GREEN)} {name} build")
-    run_command(["cmake", "-S", ".", "-G", "Ninja", "-B", "build"], cwd = base_dir)
+    runCommand(["cmake", "-S", ".", "-G", "Ninja", "-B", "build"], cwd = base_dir)
 
     print(f"{colour("Building", Colour.GREEN)} {name}")
-    run_command(["cmake", "--build", "build"], cwd = base_dir)
+    runCommand(["cmake", "--build", "build"], cwd = base_dir)
 
     print(f"{colour("Moving", Colour.GREEN)} {lib_name} to lib directory")
     built_so: Path = build_dir / "lib" / lib_name
@@ -88,7 +96,7 @@ def main() -> None:
     @brief Main entry point that builds all native libraries.
     """
     for project in Project:
-        build_project(project)
+        buildProject(project)
 
 if __name__ == "__main__":
     main()
