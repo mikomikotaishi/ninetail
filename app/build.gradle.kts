@@ -36,9 +36,9 @@ dependencies {
 
     // Kotlin
     implementation(kotlin("stdlib"))
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.9.23"))
-    implementation("org.jetbrains.kotlin:kotlin-stdlib")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:2.2.0"))
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:2.2.0")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.2.0")
 
     // Lombok
     implementation("org.projectlombok:lombok:1.18.38")
@@ -47,29 +47,29 @@ dependencies {
     implementation("org.eclipse.parsson:parsson:1.1.7")
 
     // JDA
-    implementation("net.dv8tion:JDA:5.6.0")
+    implementation("net.dv8tion:JDA:5.6.1")
 
     // Jackson dependencies (required by JDA)
-    implementation("com.fasterxml.jackson.core:jackson-core:2.19.0")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.19.0")
-    implementation("com.fasterxml.jackson.core:jackson-annotations:2.19.0")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.19.1")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.19.1")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:2.19.1")
 
     // Audio
-    implementation("dev.arbjerg:lavaplayer:2.2.3")
-    implementation("dev.lavalink.youtube:common:1.13.2")
+    implementation("dev.arbjerg:lavaplayer:2.2.4")
+    implementation("dev.lavalink.youtube:common:1.13.3")
 
     // SLF4J
     implementation("org.slf4j:slf4j-api:2.0.17")
     implementation("org.slf4j:slf4j-simple:2.0.17")
 
     // PostgreSQL JDBC driver
-    implementation("org.postgresql:postgresql:42.7.5")
+    implementation("org.postgresql:postgresql:42.7.7")
 
     // HikariCP
     implementation("com.zaxxer:HikariCP:6.3.0")
 
     // Testing
-    implementation("org.mockito:mockito-core:5.17.0")
+    implementation("org.mockito:mockito-core:5.18.0")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
