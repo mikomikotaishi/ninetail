@@ -31,7 +31,7 @@ public abstract class Engine {
         String os = System.getProperty("os.name").toLowerCase();
         String libName = os.contains("win") ? String.format(ConfigNames.DLL_FILE_NAME, libraryName) : String.format(ConfigNames.SO_FILE_NAME, libraryName);
         Path libPath = Paths.get(String.format(ConfigPaths.LIB_PATH, libraryName), libName).toAbsolutePath();
-        Logger.log(LogLevel.INFO, "Loading library at " + libPath.toString());
+        Logger.log(LogLevel.INFO, "Loading library at %s", libPath.toString());
         System.load(libPath.toString());
     }
 }

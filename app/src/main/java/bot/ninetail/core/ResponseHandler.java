@@ -44,14 +44,14 @@ public final class ResponseHandler {
         RESPONSES.clear();
         try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(ConfigNames.RESPONSES_FILE)) {
             if (inputStream == null) {
-                Logger.log(LogLevel.WARN, ConfigNames.RESPONSES_FILE + " not found. Skipping loading responses.");
+                Logger.log(LogLevel.WARN, "%s not found. Skipping loading responses.", ConfigNames.RESPONSES_FILE);
                 return;
             }
-            Logger.log(LogLevel.INFO, "Loading " + ConfigNames.RESPONSES_FILE);
+            Logger.log(LogLevel.INFO, "Loading %s", ConfigNames.RESPONSES_FILE);
             try (JsonReader jsonReader = Json.createReader(inputStream)) {
                 JsonObject responsesJson = jsonReader.readObject();
                 for (String key: responsesJson.keySet()) {
-                    Logger.log(LogLevel.INFO, "Loading response for key " + key);
+                    Logger.log(LogLevel.INFO, "Loading response for key %s", key);
                     RESPONSES.put(key, responsesJson.getString(key));
                 }
             }

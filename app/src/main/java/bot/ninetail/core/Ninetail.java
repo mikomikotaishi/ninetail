@@ -55,8 +55,9 @@ public final class Ninetail extends ListenerAdapter {
         String content = message.getContentRaw();
         Guild guild = message.getGuild();
 
-        if (event.getAuthor().isBot() || !event.isFromGuild()) 
+        if (event.getAuthor().isBot() || !event.isFromGuild()) {
             return;
+        }
 
         ResponseHandler.handleMessage(content, textChannel);
     }

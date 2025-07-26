@@ -54,14 +54,15 @@ public class Rule34Client extends ImageboardClient {
         }
 
         String tags = tag1;
-        if (tag2 != null && !tag2.isEmpty())
+        if (tag2 != null && !tag2.isEmpty()) {
             tags += ("+" + tag2);
+        }
         
         String url = String.format(BASE_URL, tags, getApiKey());
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .build();
-        Logger.log(LogLevel.INFO, "Issuing request to Rule34 for tags: " + tags);
+            .uri(URI.create(url))
+            .build();
+        Logger.log(LogLevel.INFO, "Issuing request to Rule34 for tags: %s", tags);
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         Logger.log(LogLevel.INFO, "Obtaining response.");
         if (response.statusCode() != 200) {

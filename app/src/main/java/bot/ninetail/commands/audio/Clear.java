@@ -24,11 +24,11 @@ public final class Clear implements AudioCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        Logger.log(LogLevel.INFO, String.format("Clear queue command invoked by %s (%s) of guild %s (%s)", 
-                                                event.getUser().getGlobalName(), 
-                                                event.getUser().getId(),
-                                                event.getGuild().getName(),
-                                                event.getGuild().getId())
+        Logger.log(LogLevel.INFO, "Clear queue command invoked by %s (%s) of guild %s (%s)", 
+            event.getUser().getGlobalName(), 
+            event.getUser().getId(),
+            event.getGuild().getName(),
+            event.getGuild().getId()
         );
         
         long guildId = event.getGuild().getIdLong();

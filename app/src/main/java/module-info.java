@@ -5,7 +5,7 @@ module bot.ninetail {
     requires java.base;
     requires java.net.http;
     requires java.scripting;
-    requires java.sql;
+    requires transitive java.sql;
 
     requires jakarta.annotation;
     requires transitive jakarta.json;

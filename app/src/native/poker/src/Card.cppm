@@ -3,7 +3,7 @@
  * @brief Definition of the Card structure and related enums.
  */
 
-export module poker.Card;
+export module bot.ninetail.game.poker.Card;
 
 /**
  * @enum Rank
@@ -49,7 +49,8 @@ export struct Card {
      * @param other The other card to compare with.
      * @return True if the cards are equal, false otherwise.
      */
-    constexpr bool operator==(const Card& other) {
+    [[nodiscard]]
+    constexpr bool operator==(const Card& other) noexcept {
         return rank == other.rank && suit == other.suit;
     }
 };

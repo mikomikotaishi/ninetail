@@ -28,11 +28,11 @@ public final class Kick implements BasicCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        Logger.log(LogLevel.INFO, String.format("Kick command invoked by %s (%s) of guild %s (%s)", 
-                                                event.getUser().getGlobalName(), 
-                                                event.getUser().getId(),
-                                                event.getGuild().getName(),
-                                                event.getGuild().getId())
+        Logger.log(LogLevel.INFO, "Kick command invoked by %s (%s) of guild %s (%s)", 
+            event.getUser().getGlobalName(), 
+            event.getUser().getId(),
+            event.getGuild().getName(),
+            event.getGuild().getId()
         );
 
         Member member = event.getOption("user").getAsMember();
@@ -43,34 +43,42 @@ public final class Kick implements BasicCommand {
         hook.setEphemeral(true);
         
         if (!event.getMember().hasPermission(Permission.KICK_MEMBERS)) {
-            Logger.log(LogLevel.INFO, String.format("Attempted (failed) kick attempt by %s (%s)", event.getUser().getGlobalName(), event.getUser().getId()));
+            Logger.log(LogLevel.INFO, "Attempted (failed) kick attempt by %s (%s)", 
+                event.getUser().getGlobalName(), event.getUser().getId()
+            );
             hook.sendMessage("You do not have the required permissions to kick users from this server.").queue();
             return;
         }
 
         Member selfMember = event.getGuild().getSelfMember();
         if (!selfMember.hasPermission(Permission.KICK_MEMBERS)) {
-            Logger.log(LogLevel.INFO, String.format("Attempted (failed) kick attempt by %s (%s)", event.getUser().getGlobalName(), event.getUser().getId()));
+            Logger.log(LogLevel.INFO, "Attempted (failed) kick attempt by %s (%s)", 
+                event.getUser().getGlobalName(), event.getUser().getId()
+            );
             hook.sendMessage("I don't have the required permissions to kick users from this server.").queue();
             return;
         }
 
         if (member != null && !selfMember.canInteract(member)) {
-            Logger.log(LogLevel.INFO, String.format("Attempted (failed) kick attempt by %s (%s)", event.getUser().getGlobalName(), event.getUser().getId()));
+            Logger.log(LogLevel.INFO, "Attempted (failed) kick attempt by %s (%s)", 
+                event.getUser().getGlobalName(), event.getUser().getId()
+            );
             hook.sendMessage("This user is too powerful for me to kick.").queue();
             return;
         }
 
         String reason = event.getOption("reason",
-                () -> ("Kicked by " + event.getUser().getName()),
-                OptionMapping::getAsString);
+            () -> ("Kicked by " + event.getUser().getName()),
+            OptionMapping::getAsString
+        );
 
         event.getGuild().kick(member)
             .reason(reason)
             .flatMap(v -> hook.sendMessage("Kicked user " + user.getName()))
             .queue();
 
-        Logger.log(LogLevel.INFO, String.format("Kick executed by %s (%s) on %s (%s)", 
-            event.getUser().getGlobalName(), event.getUser().getId(), user.getName(), user.getId()));
+        Logger.log(LogLevel.INFO, "Kick executed by %s (%s) on %s (%s)", 
+            event.getUser().getGlobalName(), event.getUser().getId(), user.getName(), user.getId()
+        );
     }
 }

@@ -1,5 +1,6 @@
 /**
  * @file Move.cppm
+ * @module bot.ninetail.game.chess.Move
  * @brief Implementation of chess moves.
  */
 
@@ -7,7 +8,7 @@ module;
 
 #include <string>
 
-export module chess.Move;
+export module bot.ninetail.game.chess.Move;
 
 /**
  * @class Move
@@ -68,7 +69,8 @@ public:
      * @brief Gets the starting row of the move.
      * @return The starting row.
      */
-    int getFromRow() const { 
+    [[nodiscard]]
+    int getFromRow() const noexcept { 
         return fromRow; 
     }
 
@@ -76,7 +78,8 @@ public:
      * @brief Gets the starting column of the move.
      * @return The starting column.
      */
-    int getFromCol() const { 
+    [[nodiscard]]
+    int getFromCol() const noexcept { 
         return fromCol; 
     }
 
@@ -84,7 +87,8 @@ public:
      * @brief Gets the ending row of the move.
      * @return The ending row.
      */
-    int getToRow() const { 
+    [[nodiscard]]
+    int getToRow() const noexcept { 
         return toRow; 
     }
 
@@ -92,7 +96,8 @@ public:
      * @brief Gets the ending column of the move.
      * @return The ending column.
      */
-    int getToCol() const { 
+    [[nodiscard]]
+    int getToCol() const noexcept { 
         return toCol; 
     }
 
@@ -100,7 +105,8 @@ public:
      * @brief Checks if the move is a capture.
      * @return True if the move is a capture, false otherwise.
      */
-    bool getIsCapture() const { 
+    [[nodiscard]]
+    bool getIsCapture() const noexcept { 
         return isCapture; 
     }
 
@@ -108,7 +114,8 @@ public:
      * @brief Checks if the move is a promotion.
      * @return True if the move is a promotion, false otherwise.
      */
-    bool getIsPromotion() const { 
+    [[nodiscard]]
+    bool getIsPromotion() const noexcept { 
         return isPromotion; 
     }
 
@@ -116,7 +123,8 @@ public:
      * @brief Checks if the move is a castling move.
      * @return True if the move is a castling move, false otherwise.
      */
-    bool getIsCastling() const { 
+    [[nodiscard]]
+    bool getIsCastling() const noexcept { 
         return isCastling; 
     }
 
@@ -124,7 +132,8 @@ public:
      * @brief Checks if the move is an en passant capture.
      * @return True if the move is an en passant capture, false otherwise.
      */
-    bool getIsEnPassant() const { 
+    [[nodiscard]]
+    bool getIsEnPassant() const noexcept { 
         return isEnPassant; 
     }
 
@@ -132,7 +141,8 @@ public:
      * @brief Gets the promotion piece.
      * @return The promotion piece.
      */
-    char getPromotionPiece() const { 
+    [[nodiscard]]
+    char getPromotionPiece() const noexcept { 
         return promotionPiece; 
     }
     
@@ -140,7 +150,7 @@ public:
      * @brief Sets the capture flag.
      * @param capture True if the move is a capture, false otherwise.
      */
-    void setCapture(bool capture) { 
+    void setCapture(bool capture) noexcept { 
         isCapture = capture; 
     }
 
@@ -149,7 +159,7 @@ public:
      * @param promotion True if the move is a promotion, false otherwise.
      * @param piece The piece to which a pawn is promoted.
      */
-    void setPromotion(bool promotion, char piece = 'q') { 
+    void setPromotion(bool promotion, char piece = 'q') noexcept { 
         isPromotion = promotion;
         promotionPiece = piece;
     }
@@ -158,7 +168,7 @@ public:
      * @brief Sets the castling flag.
      * @param castling True if the move is a castling move, false otherwise.
      */
-    void setCastling(bool castling) { 
+    void setCastling(bool castling) noexcept { 
         isCastling = castling; 
     }
 
@@ -166,7 +176,7 @@ public:
      * @brief Sets the en passant flag.
      * @param enPassant True if the move is an en passant capture, false otherwise.
      */
-    void setEnPassant(bool enPassant) { 
+    void setEnPassant(bool enPassant) noexcept { 
         isEnPassant = enPassant; 
     }
     
@@ -175,7 +185,8 @@ public:
      * @param algebraic The move in algebraic notation.
      * @return The Move object.
      */
-    static Move fromAlgebraic(const std::string& algebraic) {
+    [[nodiscard]]
+    static Move fromAlgebraic(const std::string& algebraic) noexcept {
         int fromCol = algebraic[0] - 'a';
         int fromRow = '8' - algebraic[1];
         int toCol = algebraic[2] - 'a';
@@ -183,8 +194,9 @@ public:
         
         Move move(fromRow, fromCol, toRow, toCol);
         
-        if (algebraic.length() > 4) 
+        if (algebraic.length() > 4) {
             move.setPromotion(true, algebraic[4]);
+        }
         
         return move;
     }
@@ -193,15 +205,17 @@ public:
      * @brief Converts the move to algebraic notation.
      * @return The move in algebraic notation.
      */
-    std::string toAlgebraic() const {
+    [[nodiscard]]
+    std::string toAlgebraic() const noexcept {
         std::string result;
         result += static_cast<char>('a' + fromCol);
         result += static_cast<char>('8' - fromRow);
         result += static_cast<char>('a' + toCol);
         result += static_cast<char>('8' - toRow);
         
-        if (isPromotion && promotionPiece != '\0')
+        if (isPromotion && promotionPiece != '\0') {
             result += promotionPiece;
+        }
         
         return result;
     }

@@ -21,7 +21,7 @@ public final class DatabaseManager {
      * 
      * @return The DataSource
      */
-    public static DataSource loadCoinsRegistry() {
+    public static DataSource loadDatabase() {
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl(ConfigLoader.getCoinsRegistryDbUrl());
         config.setUsername(ConfigLoader.getCoinsRegistryDbUsername());

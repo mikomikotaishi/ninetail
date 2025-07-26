@@ -1,5 +1,6 @@
 /**
  * @file Piece.cppm
+ * @module bot.ninetail.game.chess.Piece
  * @brief Implementation of the chess piece.
  */
 
@@ -8,7 +9,7 @@ module;
 #include <cctype>
 #include <utility>
 
-export module chess.Piece;
+export module bot.ninetail.game.chess.Piece;
 
 /**
  * @enum PieceType
@@ -55,7 +56,8 @@ public:
      * @brief Gets the type of the piece.
      * @return The type of the piece.
      */
-    PieceType getType() const { 
+    [[nodiscard]]
+    PieceType getType() const noexcept { 
         return type; 
     }
 
@@ -63,7 +65,8 @@ public:
      * @brief Gets the colour of the piece.
      * @return The colour of the piece.
      */
-    PieceColour getColour() const { 
+    [[nodiscard]]
+    PieceColour getColour() const noexcept { 
         return colour; 
     }
     
@@ -71,9 +74,11 @@ public:
      * @brief Converts the piece to a character representation.
      * @return The character representation of the piece.
      */
-    char toChar() const {
-        if (type == PieceType::Empty) 
+    [[nodiscard]]
+    char toChar() const noexcept {
+        if (type == PieceType::Empty) {
             return ' ';
+        }
         char pieceChar;
         switch (type) {
             case PieceType::Pawn: 
@@ -105,7 +110,8 @@ public:
      * @brief Converts the piece to its FEN notation character.
      * @return The FEN notation character of the piece.
      */
-    char toFEN() const {
+    [[nodiscard]]
+    char toFEN() const noexcept {
         return toChar();
     }
 };

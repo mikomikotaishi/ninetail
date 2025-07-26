@@ -30,11 +30,11 @@ public final class CheckQueue implements AudioCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        Logger.log(LogLevel.INFO, String.format("Check queue command invoked by %s (%s) of guild %s (%s)", 
-                                                event.getUser().getGlobalName(), 
-                                                event.getUser().getId(),
-                                                event.getGuild().getName(),
-                                                event.getGuild().getId())
+        Logger.log(LogLevel.INFO, "Check queue command invoked by %s (%s) of guild %s (%s)", 
+            event.getUser().getGlobalName(), 
+            event.getUser().getId(),
+            event.getGuild().getName(),
+            event.getGuild().getId()
         );
         
         BotAudio.getInstance(event.getGuild().getIdLong()).updateLastActiveTime();
@@ -54,7 +54,9 @@ public final class CheckQueue implements AudioCommand {
             AudioTrack track = iterator.next();
             String trackName = track.getInfo().title;
             long songLength = track.getInfo().length;
-            fullList.append(String.format("%d. %s (%s)\n", currentIndex++, trackName, TemporalFormatting.getFormattedTime(songLength)));
+            fullList.append(String.format("%d. %s (%s)\n", 
+                currentIndex++, trackName, TemporalFormatting.getFormattedTime(songLength))
+            );
         }
         Logger.log(LogLevel.INFO, "Queue completed parsing.");
         Logger.log(LogLevel.INFO, fullList.toString());

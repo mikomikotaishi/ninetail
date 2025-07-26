@@ -1,19 +1,21 @@
 /**
  * @file ChessEngine.cppm
+ * @module bot.ninetail.game.chess.ChessEngine
  * @brief Implementation of the chess engine.
  */
 
 module;
 
-#include <string>
 #include <memory>
+#include <string>
+#include <string_view>
 #include <vector>
 
-export module chess.ChessEngine;
+export module bot.ninetail.game.chess.ChessEngine;
 
-import chess.Board;
-import chess.Move;
-import chess.Piece;
+import bot.ninetail.game.chess.Board;
+import bot.ninetail.game.chess.Move;
+import bot.ninetail.game.chess.Piece;
 
 /**
  * @class ChessEngine
@@ -36,11 +38,12 @@ public:
      * @param moveStr The move in algebraic notation.
      * @return True if the move was successful, false otherwise.
      */
-    bool makeMove(const std::string& moveStr) {
+    bool makeMove(std::string_view moveStr) noexcept {
         Move move = Move::fromAlgebraic(moveStr);
         bool success = board->makeMove(move);
-        if (success)
+        if (success) {
             moveHistory.push_back(moveStr);
+        }
         return success;
     }
     
@@ -48,6 +51,7 @@ public:
      * @brief Gets the board state in FEN notation.
      * @return The board state in FEN notation.
      */
+    [[nodiscard]]
     std::string getBoardFEN() const {
         return board->getFEN();
     }
@@ -56,14 +60,16 @@ public:
      * @brief Gets a string representation of the board.
      * @return The string representation of the board.
      */
-    std::string getBoardDisplay() const {
+    [[nodiscard]]
+    std::string getBoardDisplay() const noexcept {
         return board->getBoardString();
     }
     
     /**
      * @brief Resets the board to the initial position.
      */
-    void resetBoard() {
+    [[nodiscard]]
+    void resetBoard() noexcept {
         board = std::make_unique<Board>();
         moveHistory.clear();
     }
@@ -73,6 +79,7 @@ public:
      * @param fen The FEN string.
      * @return True if the position was successfully loaded, false otherwise.
      */
+    [[nodiscard]]
     bool loadPosition(const std::string& fen) {
         board = std::make_unique<Board>();
         moveHistory.clear();
@@ -83,7 +90,8 @@ public:
      * @brief Checks if it is white's turn to move.
      * @return True if it is white's turn to move, false otherwise.
      */
-    bool isWhiteTurn() const {
+    [[nodiscard]]
+    bool isWhiteTurn() const noexcept {
         return board->isWhiteToMove();
     }
 
@@ -92,7 +100,8 @@ public:
      * @param depth The depth of the search.
      * @return The best move in algebraic notation.
      */
-    std::string getBestMove(int depth) {
+    [[nodiscard]]
+    std::string getBestMove(int depth) noexcept {
         std::vector<Move> legalMoves = board->getLegalMoves();
         Move bestMove(0, 0, 0, 0);
         int bestValue = -10000;
@@ -113,7 +122,8 @@ public:
      * @param colour The colour to check.
      * @return True if the specified colour is in check, false otherwise.
      */
-    bool isInCheck(const std::string& colour) const {
+    [[nodiscard]]
+    bool isInCheck(const std::string& colour) const noexcept {
         PieceColour pieceColour = (colour == "white") ? PieceColour::White : PieceColour::Black;
         return board->isInCheck(pieceColour);
     }

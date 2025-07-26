@@ -30,8 +30,9 @@ public class Logger {
     static {
         try {
             File logDir = new File(ConfigPaths.LOG_PATH);
-            if (!logDir.exists())
+            if (!logDir.exists()) {
                 logDir.mkdirs();
+            }
             
             String fileName = String.format(ConfigNames.LOG_FILE_NAME, LocalDateTime.now().format(TemporalFormatting.FILE_NAME_FORMAT));
             File logFile = new File(logDir, fileName);
@@ -45,8 +46,8 @@ public class Logger {
     /**
      * Logs a message to the log file.
      * 
-     * @param level
-     * @param message
+     * @param level The log level (e.g., ERROR, WARN).
+     * @param fmt The message to log.
      */
     public static void log(LogLevel level, String message) {
         try {
@@ -62,6 +63,18 @@ public class Logger {
         } catch (IOException e) {
             System.err.println("Failed to write to log file: " + e.getMessage());
         }
+    }
+
+    /**
+     * Logs a message to the log file.
+     * 
+     * @param level The log level (e.g., ERROR, WARN).
+     * @param fmt The (unformatted) message to log.
+     * @param args The arguments to format the message with.
+     */
+    public static void log(LogLevel level, String fmt, Object... args) {
+        String message = String.format(fmt, args);
+        log(level, message);
     }
 
     /**
@@ -96,8 +109,9 @@ public class Logger {
      */
     public static void close() {
         try {
-            if (writer != null)
+            if (writer != null) {
                 writer.close();
+            }
         } catch (IOException e) {
             System.err.println("Failed to close logger: " + e.getMessage());
         }

@@ -58,7 +58,7 @@ public class AudioPlayerLoadResultHandler implements AudioLoadResultHandler {
      */
     @Override
     public void trackLoaded(@Nonnull AudioTrack track) {
-        Logger.log(LogLevel.INFO, "Loading track: " + track.getInfo().title);
+        Logger.log(LogLevel.INFO, "Loading track: %s", track.getInfo().title);
         textChannel.sendMessage(String.format("Added to queue: **%s**", track.getInfo().title)).queue();
         scheduler.queue(track);
     }
@@ -70,14 +70,15 @@ public class AudioPlayerLoadResultHandler implements AudioLoadResultHandler {
      */
     @Override
     public void playlistLoaded(@Nonnull AudioPlaylist playlist) {
-        Logger.log(LogLevel.INFO, "Loading playlist: " + playlist.getName());
+        Logger.log(LogLevel.INFO, "Loading playlist: %s", playlist.getName());
         if (playlist.isSearchResult()) {
             AudioTrack firstTrack = playlist.getTracks().get(0);
             textChannel.sendMessage(String.format("Added to queue: **%s**", firstTrack.getInfo().title)).queue();
             scheduler.queue(firstTrack);
         } else {
-            for (AudioTrack track: playlist.getTracks())
+            for (AudioTrack track: playlist.getTracks()) {
                 scheduler.queue(track);
+            }
             textChannel.sendMessage(String.format("Added **%d** tracks to the queue.", playlist.getTracks().size())).queue();
         }
     }

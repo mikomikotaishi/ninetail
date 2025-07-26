@@ -44,11 +44,11 @@ public final class Ping extends ContentResponder implements BasicCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        Logger.log(LogLevel.INFO, String.format("Ping command invoked by %s (%s) of guild %s (%s)", 
-                                                event.getUser().getGlobalName(), 
-                                                event.getUser().getId(),
-                                                event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
-                                                event.getGuild() != null ? event.getGuild().getId() : "N/A")
+        Logger.log(LogLevel.INFO, "Ping command invoked by %s (%s) of guild %s (%s)", 
+            event.getUser().getGlobalName(), 
+            event.getUser().getId(),
+            event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
+            event.getGuild() != null ? event.getGuild().getId() : "N/A"
         );
         
         long startTime = System.currentTimeMillis();
@@ -57,7 +57,7 @@ public final class Ping extends ContentResponder implements BasicCommand {
             long endTime = System.currentTimeMillis();
             long latency = endTime - startTime;
             response.editOriginal(String.format("%s (Latency: %dms)", pingMessage, latency)).queue();
-            Logger.log(LogLevel.INFO, String.format("Ping executed with latency %dms", latency));
+            Logger.log(LogLevel.INFO, "Ping executed with latency %dms", latency);
         });
     }
 }

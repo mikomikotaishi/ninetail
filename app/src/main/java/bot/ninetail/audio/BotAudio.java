@@ -99,8 +99,8 @@ public class BotAudio {
                     String guildName = audio.getVoiceChannel().getGuild().getName();
                     String guildId = audio.getVoiceChannel().getGuild().getId();
                     
-                    audio.disconnect(
-                        String.format("Auto-disconnected from %s of server %s (%s) due to 10 minutes of inactivity", channelName, guildName, guildId)
+                    audio.disconnect("Auto-disconnected from %s of server %s (%s) due to 10 minutes of inactivity", 
+                        channelName, guildName, guildId
                     );
                 }
             }
@@ -253,14 +253,26 @@ public class BotAudio {
     }
 
     /**
+     * Disconnects the bot audio with a reason.
+     *
+     * @param reason The (unformatted) reason for disconnection.
+     * @param args The arguments to format the reason with.
+     */
+    public void disconnect(String reason, Object... args) {
+        Logger.log(LogLevel.INFO, reason, args);
+        disconnect();
+    }
+
+    /**
      * Disconnects the bot audio.
      */
     public void disconnect() {
         activated = false;
         scheduler.clear();
         player.stopTrack();
-        if (audioManager != null)
+        if (audioManager != null) {
             audioManager.closeAudioConnection();
+        }
         textChannel = null;
         voiceChannel = null;
     }

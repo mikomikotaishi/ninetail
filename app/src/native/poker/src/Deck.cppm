@@ -10,9 +10,9 @@ module;
 #include <stdexcept>
 #include <vector>
 
-export module poker.Deck;
+export module bot.ninetail.game.poker.Deck;
 
-import poker.Card;
+import bot.ninetail.game.poker.Card;
 
 /**
  * @class Deck
@@ -28,9 +28,11 @@ public:
      */
     Deck():
         rng{std::random_device{}()} {
-        for (int suit = 0; suit < 4; ++suit)
-            for (int rank = 2; rank <= 14; ++rank)
+        for (int suit = 0; suit < 4; ++suit) {
+            for (int rank = 2; rank <= 14; ++rank) {
                 cards.push_back({ static_cast<Rank>(rank), static_cast<Suit>(suit) });
+            }
+        }
         shuffle();
     }
 
@@ -46,9 +48,11 @@ public:
      * @return The card drawn from the top of the deck.
      * @throws std::runtime_error if the deck is empty.
      */
+    [[nodiscard]]
     Card draw() {
-        if (cards.empty())
+        if (cards.empty()) {
             throw std::runtime_error("Deck is empty!");
+        }
         Card top = cards.back();
         cards.pop_back();
         return top;

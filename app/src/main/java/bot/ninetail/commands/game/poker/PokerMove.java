@@ -24,11 +24,11 @@ public final class PokerMove implements GameCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        Logger.log(LogLevel.INFO, String.format("Poker move command invoked by %s (%s) of guild %s (%s)", 
-                                                event.getUser().getGlobalName(), 
-                                                event.getUser().getId(),
-                                                event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
-                                                event.getGuild() != null ? event.getGuild().getId() : "N/A")
+        Logger.log(LogLevel.INFO, "Poker move command invoked by %s (%s) of guild %s (%s)", 
+            event.getUser().getGlobalName(), 
+            event.getUser().getId(),
+            event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
+            event.getGuild() != null ? event.getGuild().getId() : "N/A"
         );
         
         String moveType = event.getOption("move").getAsString();

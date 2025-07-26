@@ -82,17 +82,20 @@ public class ChessEngine extends Engine {
      * @return The length of the string (excluding the null terminator)
      */
     private static long strlen(MemorySegment segment) {
-        if (segment == null) 
+        if (segment == null) {
             return -1;
-        if (segment.byteSize() <= 0)
+        }
+        if (segment.byteSize() <= 0) {
             return -1;
+        }
         
         long len = 0;
         try {
             while (true) {
                 byte b = segment.get(ValueLayout.JAVA_BYTE, len);
-                if (b == 0) 
+                if (b == 0) {
                     break;
+                }
                 ++len;
             }
             return len;
@@ -185,7 +188,7 @@ public class ChessEngine extends Engine {
      */
     public String getBoardState() {
         try {
-            MemorySegment result = (MemorySegment) getBoardStateHandle.invoke();
+            MemorySegment result = (MemorySegment)getBoardStateHandle.invoke();
             
             if (result == null) {
                 Logger.log(LogLevel.WARN, "getBoardState: Native call returned null");
@@ -215,9 +218,10 @@ public class ChessEngine extends Engine {
      */
     public String getBoardDisplay() {
         try {
-            MemorySegment result = (MemorySegment) getBoardDisplayHandle.invoke();
-            if (result.byteSize() == 0)
+            MemorySegment result = (MemorySegment)getBoardDisplayHandle.invoke();
+            if (result.byteSize() == 0) {
                 throw new RuntimeException("Failed to get board display: empty result");
+            }
             return result.getString(0);
         } catch (Throwable t) {
             throw new RuntimeException("Failed to get board display", t);
@@ -229,12 +233,12 @@ public class ChessEngine extends Engine {
      * 
      * @param moveStr The move in algebraic notation.
      * 
-     * @return 1 if the move was successful, 0 otherwise.
+     * @return True if the move was successful, false otherwise.
      */
-    public int makeMove(String moveStr) {
+    public boolean makeMove(String moveStr) {
         try {
             MemorySegment moveStrSegment = arena.allocateFrom(moveStr);
-            return (int) makeMoveHandle.invoke(moveStrSegment);
+            return (boolean)makeMoveHandle.invoke(moveStrSegment);
         } catch (Throwable t) {
             throw new RuntimeException("Failed to make move", t);
         }
@@ -261,7 +265,7 @@ public class ChessEngine extends Engine {
     public int loadPosition(String fen) {
         try {
             MemorySegment fenSegment = arena.allocateFrom(fen);
-            return (int) loadPositionHandle.invoke(fenSegment);
+            return (int)loadPositionHandle.invoke(fenSegment);
         } catch (Throwable t) {
             throw new RuntimeException("Failed to load position", t);
         }
@@ -270,11 +274,11 @@ public class ChessEngine extends Engine {
     /**
      * Checks if it is white's turn to move.
      * 
-     * @return 1 if it is white's turn to move, 0 otherwise.
+     * @return True if it is white's turn to move, false otherwise.
      */
-    public int isWhiteTurn() {
+    public boolean isWhiteTurn() {
         try {
-            return (int) isWhiteTurnHandle.invoke();
+            return (boolean)isWhiteTurnHandle.invoke();
         } catch (Throwable t) {
             throw new RuntimeException("Failed to check turn", t);
         }
@@ -289,7 +293,7 @@ public class ChessEngine extends Engine {
      */
     public String getBestMove(int depth) {
         try {
-            MemorySegment result = (MemorySegment) getBestMoveHandle.invoke(depth);
+            MemorySegment result = (MemorySegment)getBestMoveHandle.invoke(depth);
             return result.getString(0);
         } catch (Throwable t) {
             throw new RuntimeException("Failed to get best move", t);
@@ -306,7 +310,7 @@ public class ChessEngine extends Engine {
     public boolean isInCheck(String colour) {
         try {
             MemorySegment colourSegment = arena.allocateFrom(colour);
-            return (int) isInCheckHandle.invoke(colourSegment) == 1;
+            return (boolean)isInCheckHandle.invoke(colourSegment);
         } catch (Throwable t) {
             throw new RuntimeException("Failed to check if in check", t);
         }

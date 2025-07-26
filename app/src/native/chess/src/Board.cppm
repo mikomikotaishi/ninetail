@@ -1,5 +1,6 @@
 /**
  * @file Board.cppm
+ * @module bot.ninetail.game.chess.Board
  * @brief Implementation of the chess board and related functionalities.
  */
 
@@ -11,12 +12,13 @@ module;
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 #include <vector>
 
-export module chess.Board;
+export module bot.ninetail.game.chess.Board;
 
-import chess.Move;
-import chess.Piece;
+import bot.ninetail.game.chess.Move;
+import bot.ninetail.game.chess.Piece;
 
 /**
  * @namespace Tables
@@ -91,7 +93,7 @@ export namespace Tables {
 }
 
 export namespace Moves {
-    const std::array<std::pair<int, int>, 8> Directions = {{
+    constexpr std::array<std::pair<int, int>, 8> Directions = {{
         {1, 0}, {-1, 0}, {0, 1}, {0, -1}, 
         {1, 1}, {-1, -1}, {1, -1}, {-1, 1}
     }};
@@ -101,7 +103,7 @@ export namespace Moves {
         {1, 2}, {1, -2}, {-1, 2}, {-1, -2}
     }};
 
-    const std::array<std::pair<int, int>, 8> KingMoves = {{
+    constexpr std::array<std::pair<int, int>, 8> KingMoves = {{
         {1, 0}, {-1, 0}, {0, 1}, {0, -1},
         {1, 1}, {-1, -1}, {1, -1}, {-1, 1}
     }};
@@ -157,9 +159,11 @@ public:
      * @brief Initialises the board to the starting position.
      */
     void initialiseBoard() {
-        for (int row = 0; row < 8; ++row)
-            for (int col = 0; col < 8; ++col)
+        for (int row = 0; row < 8; ++row) {
+            for (int col = 0; col < 8; ++col) {
                 board[row][col] = Piece();
+            }
+        }
         
         for (int col = 0; col < 8; ++col) {
             board[1][col] = Piece(PieceType::Pawn, PieceColour::Black);
@@ -175,7 +179,7 @@ public:
      * @param row The row to set up the back rank.
      * @param colour The colour of the pieces.
      */
-    void setupBackRank(int row, PieceColour colour) {
+    void setupBackRank(int row, PieceColour colour) noexcept {
         board[row][0] = Piece(PieceType::Rook, colour);
         board[row][1] = Piece(PieceType::Knight, colour);
         board[row][2] = Piece(PieceType::Bishop, colour);
@@ -190,7 +194,8 @@ public:
      * @brief Gets the FEN representation of the board.
      * @return The FEN string.
      */
-    std::string getFEN() const {
+    [[nodiscard]]
+    std::string getFEN() const noexcept {
         std::stringstream fen;
         
         for (int row = 0; row < 8; ++row) {
@@ -199,9 +204,9 @@ public:
             for (int col = 0; col < 8; ++col) {
                 char pieceChar = board[row][col].toFEN();
                 
-                if (pieceChar == ' ')
+                if (pieceChar == ' ') {
                     emptyCount++;
-                else {
+                } else {
                     if (emptyCount > 0) {
                         fen << emptyCount;
                         emptyCount = 0;
@@ -210,33 +215,41 @@ public:
                 }
             }
             
-            if (emptyCount > 0)
+            if (emptyCount > 0) {
                 fen << emptyCount;
+            }
             
-            if (row < 7)
+            if (row < 7) {
                 fen << '/';
+            }
         }
         
         fen << (whiteToMove ? " w " : " b ");
         
         bool anyCastling = false;
-        if (whiteCanCastleKingside) 
+        if (whiteCanCastleKingside) {
             fen << 'K'; anyCastling = true;
-        if (whiteCanCastleQueenside)
+        }
+        if (whiteCanCastleQueenside) {
             fen << 'Q'; anyCastling = true;
-        if (blackCanCastleKingside) 
+        }
+        if (blackCanCastleKingside) {
             fen << 'k'; anyCastling = true;
-        if (blackCanCastleQueenside) 
+        }
+        if (blackCanCastleQueenside) {
             fen << 'q'; anyCastling = true;
-        if (!anyCastling)
+        }
+        if (!anyCastling) {
             fen << '-';
+        }
         
         fen << ' ';
-        if (enPassantTargetSquare[0] != -1 && enPassantTargetSquare[1] != -1)
+        if (enPassantTargetSquare[0] != -1 && enPassantTargetSquare[1] != -1) {
             fen << static_cast<char>('a' + enPassantTargetSquare[1])
                 << static_cast<char>('8' - enPassantTargetSquare[0]);
-        else
+        } else {
             fen << '-';
+        }
         
         fen << ' ' << halfMoveClock;
         
@@ -251,7 +264,7 @@ public:
      * @return True if the FEN string was successfully loaded, false otherwise.
      * @throws std::invalid_argument if the FEN string is invalid.
      */
-    bool loadFEN(const std::string& fen) {
+    bool loadFEN(std::string_view fen) {
         std::istringstream ss(fen);
         std::string placement; 
         std::string activeColour; 
@@ -262,12 +275,15 @@ public:
         
         ss >> placement >> activeColour >> castling >> enPassant >> halfMoves >> fullMoves;
 
-        if (ss.fail())
+        if (ss.fail()) {
             throw std::invalid_argument("Invalid FEN string: missing fields");
+        }
         
-        for (int row = 0; row < 8; ++row)
-            for (int col = 0; col < 8; ++col)
+        for (int row = 0; row < 8; ++row) {
+            for (int col = 0; col < 8; ++col) {
                 board[row][col] = Piece();
+            }
+        }
         
         int row = 0, col = 0;
         for (char c: placement) {
@@ -332,22 +348,24 @@ public:
      * @param move The move to make.
      * @return True if the move was successfully made, false otherwise.
      */
-    bool makeMove(const Move& move) {
+    bool makeMove(const Move& move) noexcept {
         int fromRow = move.getFromRow();
         int fromCol = move.getFromCol();
         int toRow = move.getToRow();
         int toCol = move.getToCol();
 
         if (fromRow < 0 || fromRow > 7 || fromCol < 0 || fromCol > 7 ||
-            toRow < 0 || toRow > 7 || toCol < 0 || toCol > 7)
+            toRow < 0 || toRow > 7 || toCol < 0 || toCol > 7) {
             return false;
+        }
 
         Piece& fromPiece = board[fromRow][fromCol];
         Piece& toPiece = board[toRow][toCol];
 
         if ((whiteToMove && fromPiece.getColour() != PieceColour::White) ||
-            (!whiteToMove && fromPiece.getColour() != PieceColour::Black))
+            (!whiteToMove && fromPiece.getColour() != PieceColour::Black)) {
             return false;
+        }
 
         bool isCapture = (toPiece.getType() != PieceType::Empty);
 
@@ -382,14 +400,15 @@ public:
         }
 
         if (fromPiece.getType() == PieceType::Rook) {
-            if (fromRow == 7 && fromCol == 0)
+            if (fromRow == 7 && fromCol == 0) {
                 whiteCanCastleQueenside = false;
-            else if (fromRow == 7 && fromCol == 7)
+            } else if (fromRow == 7 && fromCol == 7) {
                 whiteCanCastleKingside = false;
-            else if (fromRow == 0 && fromCol == 0)
+            } else if (fromRow == 0 && fromCol == 0) {
                 blackCanCastleQueenside = false;
-            else if (fromRow == 0 && fromCol == 7)
+            } else if (fromRow == 0 && fromCol == 7) {
                 blackCanCastleKingside = false;
+            }
         }
 
         bool isPromotion = false;
@@ -428,13 +447,15 @@ public:
         board[toRow][toCol] = fromPiece;
         board[fromRow][fromCol] = Piece();
 
-        if (fromPiece.getType() == PieceType::Pawn || isCapture)
+        if (fromPiece.getType() == PieceType::Pawn || isCapture) {
             halfMoveClock = 0;
-        else
+        } else {
             halfMoveClock++;
+        }
 
-        if (!whiteToMove)
+        if (!whiteToMove) {
             fullMoveNumber++;
+        }
 
         whiteToMove = !whiteToMove;
 
@@ -447,9 +468,11 @@ public:
      * @param col The column of the piece.
      * @return The piece at the specified position.
      */
-    Piece getPieceAt(int row, int col) const {
-        if (row >= 0 && row < 8 && col >= 0 && col < 8)
+    [[nodiscard]]
+    Piece getPieceAt(int row, int col) const noexcept {
+        if (row >= 0 && row < 8 && col >= 0 && col < 8) {
             return board[row][col];
+        }
         return Piece();
     }
     
@@ -457,14 +480,16 @@ public:
      * @brief Gets a string representation of the board.
      * @return The string representation of the board.
      */
-    std::string getBoardString() const {
+    [[nodiscard]]
+    std::string getBoardString() const noexcept {
         std::stringstream ss;
         
         ss << "  a b c d e f g h\n";
         for (int row = 0; row < 8; ++row) {
             ss << std::format("{} ", (8 - row));
-            for (int col = 0; col < 8; ++col)
+            for (int col = 0; col < 8; ++col) {
                 ss << std::format("{} ", board[row][col].toChar());
+            }
             ss << std::format("{}\n", (8 - row));
         }
         ss << "  a b c d e f g h\n";
@@ -476,7 +501,8 @@ public:
      * @brief Checks if it is white's turn to move.
      * @return True if it is white's turn to move, false otherwise.
      */
-    bool isWhiteToMove() const { 
+    [[nodiscard]]
+    bool isWhiteToMove() const noexcept { 
         return whiteToMove; 
     }
     
@@ -485,7 +511,8 @@ public:
      * @param colour The colour to check.
      * @return True if the specified colour is in check, false otherwise.
      */
-    bool isInCheck(PieceColour colour) const {
+    [[nodiscard]]
+    bool isInCheck(PieceColour colour) const noexcept {
         int kingRow = -1, kingCol = -1;
         for (int row = 0; row < 8; ++row) {
             for (int col = 0; col < 8; ++col) {
@@ -496,23 +523,27 @@ public:
                     break;
                 }
             }
-            if (kingRow != -1) 
+            if (kingRow != -1) {
                 break;
+            }
         }
 
-        if (kingRow == -1) 
+        if (kingRow == -1) {
             return false;
+        }
 
         PieceColour opponentColour = (colour == PieceColour::White) ? PieceColour::Black : PieceColour::White;
 
         int pawnDirection = (colour == PieceColour::White) ? -1 : 1;
         if (kingRow + pawnDirection >= 0 && kingRow + pawnDirection < 8) {
             if (kingCol - 1 >= 0 && board[kingRow + pawnDirection][kingCol - 1].getType() == PieceType::Pawn &&
-                board[kingRow + pawnDirection][kingCol - 1].getColour() == opponentColour)
+                board[kingRow + pawnDirection][kingCol - 1].getColour() == opponentColour) {
                 return true;
+            }
             if (kingCol + 1 < 8 && board[kingRow + pawnDirection][kingCol + 1].getType() == PieceType::Pawn &&
-                board[kingRow + pawnDirection][kingCol + 1].getColour() == opponentColour)
+                board[kingRow + pawnDirection][kingCol + 1].getColour() == opponentColour) {
                 return true;
+            }
         }
 
         for (const auto& [dr, dc]: Moves::KnightMoves) {
@@ -520,8 +551,9 @@ public:
             int newCol = kingCol + dc;
             if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8 &&
                 board[newRow][newCol].getType() == PieceType::Knight &&
-                board[newRow][newCol].getColour() == opponentColour)
+                board[newRow][newCol].getColour() == opponentColour) {
                 return true;
+            }
         }
 
         for (const auto& [dr, dc]: Moves::Directions) {
@@ -529,13 +561,15 @@ public:
             int newCol = kingCol + dc;
             while (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
                 Piece piece = board[newRow][newCol];
-                if (piece.getType() != PieceType::Empty)
+                if (piece.getType() != PieceType::Empty) {
                     if (piece.getColour() == opponentColour &&
                         ((piece.getType() == PieceType::Rook && (dr == 0 || dc == 0)) ||
                          (piece.getType() == PieceType::Bishop && (dr != 0 && dc != 0)) ||
-                          piece.getType() == PieceType::Queen))
+                          piece.getType() == PieceType::Queen)) {
                         return true;
+                    }
                     break;
+                }
                 newRow += dr;
                 newCol += dc;
             }
@@ -546,8 +580,9 @@ public:
             int newCol = kingCol + dc;
             if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8 &&
                 board[newRow][newCol].getType() == PieceType::King &&
-                board[newRow][newCol].getColour() == opponentColour)
+                board[newRow][newCol].getColour() == opponentColour) {
                 return true;
+            }
         }
 
         return false;
@@ -557,7 +592,8 @@ public:
      * @brief Gets all legal moves for the current player.
      * @return A vector of legal moves.
      */
-    std::vector<Move> getLegalMoves() const {
+    [[nodiscard]]
+    std::vector<Move> getLegalMoves() const noexcept {
         std::vector<Move> legalMoves;
         PieceColour currentPlayer = whiteToMove ? PieceColour::White : PieceColour::Black;
 
@@ -600,7 +636,7 @@ public:
      * @param col The column of the pawn.
      * @param legalMoves The vector to store the legal moves.
      */
-    void generatePawnMoves(int row, int col, std::vector<Move>& legalMoves) const {
+    void generatePawnMoves(int row, int col, std::vector<Move>& legalMoves) const noexcept {
         Piece pawn = board[row][col];
         PieceColour colour = pawn.getColour();
         int direction = (colour == PieceColour::White) ? -1 : 1;
@@ -618,8 +654,9 @@ public:
                 legalMoves.push_back(Move(row, col, newRow, col));
             }
 
-            if (row == startRow && board[newRow + direction][col].getType() == PieceType::Empty)
+            if (row == startRow && board[newRow + direction][col].getType() == PieceType::Empty) {
                 legalMoves.push_back(Move(row, col, newRow + direction, col));
+            }
         }
 
         for (int dc: {-1, 1}) {
@@ -639,8 +676,9 @@ public:
             }
         }
 
-        if (enPassantTargetSquare[0] == newRow && std::abs(enPassantTargetSquare[1] - col) == 1)
+        if (enPassantTargetSquare[0] == newRow && std::abs(enPassantTargetSquare[1] - col) == 1) {
             legalMoves.push_back(Move(row, col, newRow, enPassantTargetSquare[1], true));
+        }
     }
 
     /**
@@ -649,7 +687,7 @@ public:
      * @param col The column of the knight.
      * @param legalMoves The vector to store the legal moves.
      */
-    void generateKnightMoves(int row, int col, std::vector<Move>& legalMoves) const {
+    void generateKnightMoves(int row, int col, std::vector<Move>& legalMoves) const noexcept {
         Piece knight = board[row][col];
         PieceColour colour = knight.getColour();
 
@@ -658,8 +696,9 @@ public:
             int newCol = col + dc;
             if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
                 Piece target = board[newRow][newCol];
-                if (target.getType() == PieceType::Empty || target.getColour() != colour)
+                if (target.getType() == PieceType::Empty || target.getColour() != colour) {
                     legalMoves.push_back(Move(row, col, newRow, newCol));
+                }
             }
         }
     }
@@ -670,13 +709,14 @@ public:
      * @param col The column of the bishop.
      * @param legalMoves The vector to store the legal moves.
      */
-    void generateBishopMoves(int row, int col, std::vector<Move>& legalMoves) const {
+    void generateBishopMoves(int row, int col, std::vector<Move>& legalMoves) const noexcept {
         Piece bishop = board[row][col];
         PieceColour colour = bishop.getColour();
 
         for (const auto& [dr, dc]: Moves::Directions) {
-            if (std::abs(dr) != std::abs(dc)) 
+            if (std::abs(dr) != std::abs(dc)) {
                 continue;
+            }
 
             int newRow = row + dr;
             int newCol = col + dc;
@@ -685,8 +725,9 @@ public:
                 if (target.getType() == PieceType::Empty) {
                     legalMoves.push_back(Move(row, col, newRow, newCol));
                 } else {
-                    if (target.getColour() != colour)
+                    if (target.getColour() != colour) {
                         legalMoves.push_back(Move(row, col, newRow, newCol));
+                    }
                     break;
                 }
                 newRow += dr;
@@ -701,13 +742,14 @@ public:
      * @param col The column of the rook.
      * @param legalMoves The vector to store the legal moves.
      */
-    void generateRookMoves(int row, int col, std::vector<Move>& legalMoves) const {
+    void generateRookMoves(int row, int col, std::vector<Move>& legalMoves) const noexcept {
         Piece rook = board[row][col];
         PieceColour colour = rook.getColour();
 
         for (const auto& [dr, dc] : Moves::Directions) {
-            if (dr != 0 && dc != 0) 
+            if (dr != 0 && dc != 0) {
                 continue;
+            }
 
             int newRow = row + dr;
             int newCol = col + dc;
@@ -732,7 +774,7 @@ public:
      * @param col The column of the queen.
      * @param legalMoves The vector to store the legal moves.
      */
-    void generateQueenMoves(int row, int col, std::vector<Move>& legalMoves) const {
+    void generateQueenMoves(int row, int col, std::vector<Move>& legalMoves) const noexcept {
         Piece queen = board[row][col];
         PieceColour colour = queen.getColour();
 
@@ -760,7 +802,7 @@ public:
      * @param col The column of the king.
      * @param legalMoves The vector to store the legal moves.
      */
-    void generateKingMoves(int row, int col, std::vector<Move>& legalMoves) const {
+    void generateKingMoves(int row, int col, std::vector<Move>& legalMoves) const noexcept {
         Piece king = board[row][col];
         PieceColour colour = king.getColour();
 
@@ -769,21 +811,26 @@ public:
             int newCol = col + dc;
             if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
                 Piece target = board[newRow][newCol];
-                if (target.getType() == PieceType::Empty || target.getColour() != colour)
+                if (target.getType() == PieceType::Empty || target.getColour() != colour) {
                     legalMoves.push_back(Move(row, col, newRow, newCol));
+                }
             }
         }
 
         if (colour == PieceColour::White) {
-            if (whiteCanCastleKingside && board[7][5].getType() == PieceType::Empty && board[7][6].getType() == PieceType::Empty)
+            if (whiteCanCastleKingside && board[7][5].getType() == PieceType::Empty && board[7][6].getType() == PieceType::Empty) {
                 legalMoves.push_back(Move(row, col, 7, 6));
-            if (whiteCanCastleQueenside && board[7][1].getType() == PieceType::Empty && board[7][2].getType() == PieceType::Empty && board[7][3].getType() == PieceType::Empty)
+            }
+            if (whiteCanCastleQueenside && board[7][1].getType() == PieceType::Empty && board[7][2].getType() == PieceType::Empty && board[7][3].getType() == PieceType::Empty) {
                 legalMoves.push_back(Move(row, col, 7, 2));
+            }
         } else {
-            if (blackCanCastleKingside && board[0][5].getType() == PieceType::Empty && board[0][6].getType() == PieceType::Empty)
+            if (blackCanCastleKingside && board[0][5].getType() == PieceType::Empty && board[0][6].getType() == PieceType::Empty) {
                 legalMoves.push_back(Move(row, col, 0, 6));
-            if (blackCanCastleQueenside && board[0][1].getType() == PieceType::Empty && board[0][2].getType() == PieceType::Empty && board[0][3].getType() == PieceType::Empty)
+            }
+            if (blackCanCastleQueenside && board[0][1].getType() == PieceType::Empty && board[0][2].getType() == PieceType::Empty && board[0][3].getType() == PieceType::Empty) {
                 legalMoves.push_back(Move(row, col, 0, 2));
+            }
         }
     }
 
@@ -791,7 +838,8 @@ public:
      * @brief Evaluates the board and returns a score.
      * @return The evaluation score of the board.
      */
-    int evaluate() const {
+    [[nodiscard]]
+    int evaluate() const noexcept {
         int score = 0;
 
         for (int row = 0; row < 8; ++row) {
@@ -844,13 +892,16 @@ public:
      * @param maximisingPlayer True if the current player is maximising, false if minimising.
      * @return The evaluation score of the best move.
      */
-    int alphaBeta(int depth, int alpha, int beta, bool maximisingPlayer) {
-        if (depth == 0)
+    [[nodiscard]]
+    int alphaBeta(int depth, int alpha, int beta, bool maximisingPlayer) noexcept {
+        if (depth == 0) {
             return evaluate();
+        }
 
         std::vector<Move> legalMoves = getLegalMoves();
-        if (legalMoves.empty())
+        if (legalMoves.empty()) {
             return (isInCheck(maximisingPlayer ? PieceColour::White : PieceColour::Black)) ? -10000 : 0;
+        }
 
         if (maximisingPlayer) {
             int maxEval = -10000;
@@ -860,8 +911,9 @@ public:
                 int eval = newBoard.alphaBeta(depth - 1, alpha, beta, false);
                 maxEval = std::max(maxEval, eval);
                 alpha = std::max(alpha, eval);
-                if (beta <= alpha)
+                if (beta <= alpha) {
                     break;
+                }
             }
             return maxEval;
         } else {
@@ -872,8 +924,9 @@ public:
                 int eval = newBoard.alphaBeta(depth - 1, alpha, beta, true);
                 minEval = std::min(minEval, eval);
                 beta = std::min(beta, eval);
-                if (beta <= alpha)
+                if (beta <= alpha) {
                     break;
+                }
             }
             return minEval;
         }

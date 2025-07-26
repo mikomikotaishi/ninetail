@@ -24,15 +24,15 @@ public final class NewPoker implements GameCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        Logger.log(LogLevel.INFO, String.format("New poker game command invoked by %s (%s) of guild %s (%s)", 
-                                                event.getUser().getGlobalName(), 
-                                                event.getUser().getId(),
-                                                event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
-                                                event.getGuild() != null ? event.getGuild().getId() : "N/A")
+        Logger.log(LogLevel.INFO, "New poker game command invoked by %s (%s) of guild %s (%s)", 
+            event.getUser().getGlobalName(), 
+            event.getUser().getId(),
+            event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
+            event.getGuild() != null ? event.getGuild().getId() : "N/A"
         );
         
         PokerGameManager.startNewGame();
-        Logger.log(LogLevel.INFO, String.format("A new poker game has been started by %s of guild %s", event.getUser(), event.getGuild()));
+        Logger.log(LogLevel.INFO, "A new poker game has been started by %s of guild %s", event.getUser(), event.getGuild());
         event.reply("A new poker game has been started!").queue();
     }
 }

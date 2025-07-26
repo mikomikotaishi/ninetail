@@ -12,8 +12,9 @@ import bot.ninetail.commands.general.*;
 import bot.ninetail.commands.imageboard.*;
 import bot.ninetail.commands.social.*;
 import bot.ninetail.commands.system.*;
+import bot.ninetail.commands.system.Shutdown;
 import bot.ninetail.commands.webhook.*;
-
+import bot.ninetail.system.BannedUsersManager;
 import lombok.experimental.UtilityClass;
 
 import net.dv8tion.jda.api.JDA;
@@ -179,7 +180,20 @@ public final class CommandHandler {
             // Daily credits command
             Commands.slash("daily", "Get daily credits"),
 
-            // ====== System commands ======     
+            // ====== System commands ======   
+            // Ban ID form bot command
+            Commands.slash("banidglobal", "Ban an ID from using the bot globally")
+                .addOptions(new OptionData(OptionType.STRING, "password", "The master password (specified in config.properties)")
+                    .setRequired(true))
+                .addOptions(new OptionData(OptionType.STRING, "id", "The user ID to ban")
+                    .setRequired(true))
+                .addOptions(new OptionData(OptionType.STRING, "reason", "The reason to ban")),
+            // Unban ID form bot command
+            Commands.slash("unbanidglobal", "Unban an ID from using the bot globally")
+                .addOptions(new OptionData(OptionType.STRING, "password", "The master password (specified in config.properties)")
+                    .setRequired(true))
+                .addOptions(new OptionData(OptionType.STRING, "id", "The user ID to unban")
+                    .setRequired(true)),
             // Delete all webhooks command
             Commands.slash("deleteallwebhooks", "(Bot master only) Deletes all webhooks across all guilds")
                 .addOptions(new OptionData(OptionType.STRING, "password", "The master password (specified in config.properties)")
@@ -238,6 +252,14 @@ public final class CommandHandler {
      * @param event The slash command event
      */
     public static void handleSlashCommand(@Nonnull JDA jda, @Nonnull SlashCommandInteractionEvent event) {
+        if (BannedUsersManager.isBanned(event.getUser().getIdLong())) {
+            event.reply("❌ You are globally banned from using this bot.").setEphemeral(true).queue();
+            Logger.log(LogLevel.INFO, "Banned user %s (%s) attempted to use command: %s", 
+                event.getUser().getGlobalName(), event.getUser().getId(), event.getName()
+            );
+            return;
+        }
+
         switch (event.getName()) {
             // Admin
             case "ban":
@@ -336,6 +358,12 @@ public final class CommandHandler {
                 Daily.invoke(event);
                 break;
             // System
+            case "banidglobal":
+                BanIDGlobal.invoke(event, jda);
+                break;
+            case "unbanidglobal":
+                UnbanIDGlobal.invoke(event, jda);
+                break;
             case "wipeallwebhooks":
                 DeleteAllWebhooks.invoke(event, jda);
                 break;
@@ -364,7 +392,6 @@ public final class CommandHandler {
             // Default
             default:
                 event.reply("Invalid command!").setEphemeral(true).queue();
-                Logger.log(LogLevel.INFO, String.format("Invalid command called by %s of guild %s", event.getUser(), event.getGuild()));
         }
     }
 }

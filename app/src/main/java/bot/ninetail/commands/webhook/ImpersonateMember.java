@@ -34,11 +34,11 @@ public final class ImpersonateMember implements WebhookCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        Logger.log(LogLevel.INFO, String.format("Impersonate user command invoked by %s (%s) of guild %s (%s)", 
-                                                event.getUser().getGlobalName(), 
-                                                event.getUser().getId(),
-                                                event.getGuild().getName(),
-                                                event.getGuild().getId())
+        Logger.log(LogLevel.INFO, "Impersonate user command invoked by %s (%s) of guild %s (%s)", 
+            event.getUser().getGlobalName(), 
+            event.getUser().getId(),
+            event.getGuild().getName(),
+            event.getGuild().getId()
         );
         
         @Nonnull 
@@ -52,30 +52,39 @@ public final class ImpersonateMember implements WebhookCommand {
 
         event.deferReply(true).queue();
 
-        channel.retrieveWebhooks().queue(webhooks -> {
-            Webhook existingWebhook = webhooks.stream()
-                .filter(webhook -> webhook.getName().equals(IMPERSONATOR_WEBHOOK_NAME))
-                .findFirst()
-                .orElse(null);
+        channel.retrieveWebhooks().queue(
+                webhooks -> {
+                Webhook existingWebhook = webhooks.stream()
+                    .filter(webhook -> webhook.getName().equals(IMPERSONATOR_WEBHOOK_NAME))
+                    .findFirst()
+                    .orElse(null);
 
-            if (existingWebhook != null) {
-                Logger.log(LogLevel.DEBUG, String.format("Using existing webhook in channel %s of guild %s", 
-                                                        channel.getName(), guild.getName()));
-                WebhookUtilities.sendImpersonatedMessage(event, existingWebhook, member, message, guild);
-            } else {
-                Logger.log(LogLevel.INFO, String.format("Creating new impersonation webhook in channel %s of guild %s", 
-                                                        channel.getName(), guild.getName()));
-                channel.createWebhook(IMPERSONATOR_WEBHOOK_NAME).queue(
-                    newWebhook -> WebhookUtilities.sendImpersonatedMessage(event, newWebhook, member, message, guild),
-                    error -> {
-                        event.getHook().editOriginal(String.format("Failed to create webhook: %s", error.getMessage())).queue();
-                        Logger.log(LogLevel.ERROR, String.format("Failed to create webhook in guild %s: %s", guild.getName(), error.getMessage()));
-                    }
+                if (existingWebhook != null) {
+                    Logger.log(LogLevel.DEBUG, "Using existing webhook in channel %s of guild %s", 
+                        channel.getName(), guild.getName()
+                    );
+                    WebhookUtilities.sendImpersonatedMessage(event, existingWebhook, member, message, guild);
+                } else {
+                    Logger.log(LogLevel.INFO, "Creating new impersonation webhook in channel %s of guild %s", 
+                        channel.getName(), guild.getName()
+                    );
+                    channel.createWebhook(IMPERSONATOR_WEBHOOK_NAME).queue(
+                        newWebhook -> WebhookUtilities.sendImpersonatedMessage(event, newWebhook, member, message, guild),
+                        error -> {
+                            event.getHook().editOriginal(String.format("Failed to create webhook: %s", error.getMessage())).queue();
+                            Logger.log(LogLevel.ERROR, "Failed to create webhook in guild %s: %s", 
+                                guild.getName(), error.getMessage()
+                            );
+                        }
+                    );
+                }
+            }, 
+            error -> {
+                event.getHook().editOriginal("Failed to retrieve webhooks: " + error.getMessage()).queue();
+                Logger.log(LogLevel.ERROR, "Failed to retrieve webhooks for guild %s: %s", 
+                    guild.getName(), error.getMessage()
                 );
             }
-        }, error -> {
-            event.getHook().editOriginal("Failed to retrieve webhooks: " + error.getMessage()).queue();
-            Logger.log(LogLevel.ERROR, String.format("Failed to retrieve webhooks for guild %s: %s", guild.getName(), error.getMessage()));
-        });
+        );
     }
 }

@@ -24,11 +24,12 @@ public final class VerifySha256 implements CryptographyCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(SlashCommandInteractionEvent event) {
-        Logger.log(LogLevel.INFO, String.format("Verify SHA-256 command invoked by %s (%s) of guild %s (%s)", 
-                                                event.getUser().getGlobalName(), 
-                                                event.getUser().getId(),
-                                                event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
-                                                event.getGuild() != null ? event.getGuild().getId() : "N/A"));
+        Logger.log(LogLevel.INFO, "Verify SHA-256 command invoked by %s (%s) of guild %s (%s)", 
+            event.getUser().getGlobalName(), 
+            event.getUser().getId(),
+            event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
+            event.getGuild() != null ? event.getGuild().getId() : "N/A"
+        );
         String message = event.getOption("message").getAsString();
         String hash = event.getOption("hash").getAsString();
         try {

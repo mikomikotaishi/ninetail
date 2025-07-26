@@ -53,9 +53,9 @@ public class WeatherClient extends LocationInformationClient {
 
         String url = String.format(BASE_URL, location, getApiKey());
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .build();
-        Logger.log(LogLevel.INFO, "Issuing request to OpenWeatherMap for location: " + location);
+            .uri(URI.create(url))
+            .build();
+        Logger.log(LogLevel.INFO, "Issuing request to OpenWeatherMap for location: %s", location);
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         Logger.log(LogLevel.INFO, "Obtaining response.");
         if (response.statusCode() != 200) {

@@ -83,7 +83,7 @@ public class PokerEngine extends Engine {
      */
     public boolean createGame(int startingChips, int smallBlind, int bigBlind) {
         try {
-            return (boolean) createGameHandle.invoke(startingChips, smallBlind, bigBlind);
+            return (boolean)createGameHandle.invoke(startingChips, smallBlind, bigBlind);
         } catch (Throwable t) {
             throw new RuntimeException("Failed to create game", t);
         }
@@ -107,7 +107,7 @@ public class PokerEngine extends Engine {
      */
     public boolean startHand() {
         try {
-            return (boolean) startHandHandle.invoke();
+            return (boolean)startHandHandle.invoke();
         } catch (Throwable t) {
             throw new RuntimeException("Failed to start hand", t);
         }
@@ -120,7 +120,7 @@ public class PokerEngine extends Engine {
      */
     public String getGameState() {
         try {
-            MemorySegment result = (MemorySegment) getGameStateHandle.invoke();
+            MemorySegment result = (MemorySegment)getGameStateHandle.invoke();
             return result.getString(0);
         } catch (Throwable t) {
             throw new RuntimeException("Failed to get game state", t);
@@ -137,7 +137,7 @@ public class PokerEngine extends Engine {
      */
     public String executeAction(int action, int amount) {
         try {
-            MemorySegment result = (MemorySegment) executeActionHandle.invoke(action, amount);
+            MemorySegment result = (MemorySegment)executeActionHandle.invoke(action, amount);
             return result.getString(0);
         } catch (Throwable t) {
             throw new RuntimeException("Failed to execute action", t);

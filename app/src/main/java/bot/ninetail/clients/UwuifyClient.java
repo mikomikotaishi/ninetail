@@ -25,7 +25,7 @@ public class UwuifyClient extends TextManipulatorClient {
      * The base URL for the Owoify API.
      */
     @Nonnull
-    private static final String BASE_URL = "https://nekos.life/api/v2/owoify?text=%s&api_key=%s";
+    private static final String BASE_URL = "https://nekos.life/api/v2/owoify?text=%s";
 
     /**
      * Constructs a new Uwuify client.
@@ -46,19 +46,14 @@ public class UwuifyClient extends TextManipulatorClient {
      */
     @Override
     public String getText(@Nonnull String text) throws IOException, InterruptedException {
-        if (getApiKey() == null || getApiKey().isEmpty()) {
-            Logger.log(LogLevel.ERROR, "Uwuify API key missing!");
-            throw new IllegalArgumentException("No Uwuify token found!");
-        }
-
         String encodedText = URLEncoder.encode(text, java.nio.charset.StandardCharsets.UTF_8);
         String url = String.format(BASE_URL, encodedText, getApiKey());
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .build();
+            .uri(URI.create(url))
+            .build();
         
-        Logger.log(LogLevel.INFO, "Issuing request to Owoify API for text: " + text);
+        Logger.log(LogLevel.INFO, "Issuing request to Owoify API for text: %s", text);
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         Logger.log(LogLevel.INFO, "Obtaining response...");
 

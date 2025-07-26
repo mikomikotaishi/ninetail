@@ -1,5 +1,6 @@
 /**
  * @file HandEvaluator.cppm
+ * @module bot.ninetail.game.poker.HandEvaluator
  * @brief Implementation of the HandEvaluator namespace for evaluating poker hands.
  */
 
@@ -10,9 +11,9 @@ module;
 #include <vector>
 #include <stdexcept>
 
-export module poker.HandEvaluator;
+export module bot.ninetail.game.poker.HandEvaluator;
 
-import poker.Card;
+import bot.ninetail.game.poker.Card;
 
 /**
  * @enum HandRank
@@ -42,6 +43,7 @@ export namespace HandEvaluator {
      * @return The rank of the hand.
      * @throws std::runtime_error if the hand does not contain exactly 5 cards.
      */
+    [[nodiscard]]
     int evaluateHand(const std::vector<Card>& hand) {
         if (hand.size() != 5)
             throw std::runtime_error("Hand must contain exactly 5 cards!");
@@ -63,8 +65,9 @@ export namespace HandEvaluator {
         }
         
         std::vector<int> ranks;
-        for (const auto& [rank, count]: rankCount)
+        for (const auto& [rank, count]: rankCount) {
             ranks.push_back(static_cast<int>(rank));
+        }
 
         std::sort(ranks.begin(), ranks.end(), [](const int a, const int b) -> bool {
             return a < b;
@@ -94,42 +97,54 @@ export namespace HandEvaluator {
             return static_cast<int>(HandRank::RoyalFlush);
         }
         
-        if (isFlush && isStraight)
+        if (isFlush && isStraight) {
             return static_cast<int>(HandRank::StraightFlush);
+        }
         
-        for (const auto& [rank, count]: rankCount)
-            if (count == 4)
+        for (const auto& [rank, count]: rankCount) {
+            if (count == 4) {
                 return static_cast<int>(HandRank::FourOfAKind);
+            }
+        }
         
         bool hasThree = false;
         bool hasPair = false;
         for (const auto& [rank, count]: rankCount) {
-            if (count == 3) 
+            if (count == 3) {
                 hasThree = true;
-            else if (count == 2) 
+            } else if (count == 2) {
                 hasPair = true;
+            }
         }
-        if (hasThree && hasPair)
+        if (hasThree && hasPair) {
             return static_cast<int>(HandRank::FullHouse);
+        }
         
-        if (isFlush)
+        if (isFlush) {
             return static_cast<int>(HandRank::Flush);
+        }
         
-        if (isStraight)
+        if (isStraight) {
             return static_cast<int>(HandRank::Straight);
+        }
         
-        if (hasThree) 
+        if (hasThree) {
             return static_cast<int>(HandRank::ThreeOfAKind);
+        }
         
         int pairCount = 0;
-        for (const auto& [rank, count]: rankCount) 
-            if (count == 2) 
+        for (const auto& [rank, count]: rankCount) {
+            if (count == 2) {
                 ++pairCount;
-        if (pairCount == 2)
+            }
+        }
+        if (pairCount == 2) {
             return static_cast<int>(HandRank::TwoPair);
+        }
         
-        if (pairCount == 1)
+        if (pairCount == 1) {
             return static_cast<int>(HandRank::OnePair);
+        }
         
         return static_cast<int>(HandRank::HighCard);
     }

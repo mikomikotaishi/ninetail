@@ -46,8 +46,9 @@ public abstract class ContentResponder {
      */
     protected static String getRandomContent() {
         String[] contents = getContents();
-        if (contents.length == 0) 
+        if (contents.length == 0) {
             return "";
+        }
         return contents[RandomNumberGenerator.generateRandomNumber(contents.length)];
     }
     
@@ -63,8 +64,9 @@ public abstract class ContentResponder {
             String className = stackTrace[i].getClassName();
             try {
                 Class<?> clazz = Class.forName(className);
-                if (ContentResponder.class.isAssignableFrom(clazz) && clazz != ContentResponder.class)
+                if (ContentResponder.class.isAssignableFrom(clazz) && clazz != ContentResponder.class) {
                     return clazz.asSubclass(ContentResponder.class);
+                }
             } catch (ClassNotFoundException e) {
                 unfoundClass = className;
                 Logger.log(LogLevel.WARN, "Warning: class not found: " + unfoundClass);

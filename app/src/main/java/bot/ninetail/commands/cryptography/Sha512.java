@@ -24,11 +24,12 @@ public final class Sha512 implements CryptographyCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(SlashCommandInteractionEvent event) {
-        Logger.log(LogLevel.INFO, String.format("SHA-512 command invoked by %s (%s) of guild %s (%s)", 
-                                                event.getUser().getGlobalName(), 
-                                                event.getUser().getId(),
-                                                event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
-                                                event.getGuild() != null ? event.getGuild().getId() : "N/A"));
+        Logger.log(LogLevel.INFO, "SHA-512 command invoked by %s (%s) of guild %s (%s)", 
+            event.getUser().getGlobalName(), 
+            event.getUser().getId(),
+            event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
+            event.getGuild() != null ? event.getGuild().getId() : "N/A"
+        );
         String message = event.getOption("message").getAsString();
         try {
             String hashedMessage = Hash.hash(message, "SHA-512");

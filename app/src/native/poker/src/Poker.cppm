@@ -1,5 +1,6 @@
 /**
  * @file Poker.cppm
+ * @module bot.ninetail.game.poker
  * @brief Exports the poker engine interface for use with Java FFI.
  */
 
@@ -16,12 +17,12 @@ module;
 #include <string>
 #include <stdexcept>
 
-export module poker;
+export module bot.ninetail.game.poker;
 
-import poker.Card;
-import poker.Deck;
-import poker.HandEvaluator;
-import poker.PokerEngine;
+import bot.ninetail.game.poker.Card;
+import bot.ninetail.game.poker.Deck;
+import bot.ninetail.game.poker.HandEvaluator;
+import bot.ninetail.game.poker.PokerEngine;
 
 export extern "C" {
     static std::unique_ptr<PokerEngine> pokerEngine = nullptr;

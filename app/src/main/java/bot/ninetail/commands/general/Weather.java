@@ -33,16 +33,16 @@ public final class Weather implements ApiCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        Logger.log(LogLevel.INFO, String.format("Weather command invoked by %s (%s) of guild %s (%s)", 
-                                                event.getUser().getGlobalName(), 
-                                                event.getUser().getId(),
-                                                event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
-                                                event.getGuild() != null ? event.getGuild().getId() : "N/A")
+        Logger.log(LogLevel.INFO, "Weather command invoked by %s (%s) of guild %s (%s)", 
+            event.getUser().getGlobalName(), 
+            event.getUser().getId(),
+            event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
+            event.getGuild() != null ? event.getGuild().getId() : "N/A"
         );
         
         String location = event.getOption("location").getAsString();
         try {
-            Logger.log(LogLevel.INFO, String.format("Attempting to retrieve data for location: %s", location));
+            Logger.log(LogLevel.INFO, "Attempting to retrieve data for location: %s", location);
             JsonObject weatherData = weatherClient.getInfo(location);
             double temp = weatherData.getJsonNumber("temp").doubleValue();
             event.reply(String.format("Current temperature in %s: %.2f°C", location, temp)).queue();

@@ -30,11 +30,9 @@ public final class TemporalFormatting {
         long hours = duration.toHours();
         long remainingMinutes = duration.toMinutes() % 60;
         long seconds = duration.getSeconds() % 60;
-        String formattedDuration;
-        if (hours > 0)
-            formattedDuration = String.format("%d:%02d:%02d", hours, remainingMinutes, seconds);
-        else
-            formattedDuration = String.format("%d:%02d", remainingMinutes, seconds);
-        return formattedDuration;
+        if (hours > 0) {
+            return String.format("%d:%02d:%02d", hours, remainingMinutes, seconds);
+        }
+        return String.format("%d:%02d", remainingMinutes, seconds);
     }
 }

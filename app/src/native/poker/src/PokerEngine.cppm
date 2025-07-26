@@ -1,5 +1,6 @@
 /**
  * @file PokerEngine.cppm
+ * @module bot.ninetail.game.poker.PokerEngine
  * @brief Implementation of the PokerEngine class for managing a poker game.
  */
 
@@ -12,11 +13,11 @@ module;
 #include <sstream>
 #include <utility>
 
-export module poker.PokerEngine;
+export module bot.ninetail.game.poker.PokerEngine;
 
-import poker.Card;
-import poker.Deck;
-import poker.HandEvaluator;
+import bot.ninetail.game.poker.Card;
+import bot.ninetail.game.poker.Deck;
+import bot.ninetail.game.poker.HandEvaluator;
 
 /**
  * @enum PlayerAction
@@ -90,7 +91,7 @@ private:
     /**
      * @brief Advances the game state to the next stage.
      */
-    void advanceGameState() {
+    void advanceGameState() noexcept {
         switch (state) {
             case GameState::NotStarted:
                 state = GameState::Preflop;
@@ -129,28 +130,32 @@ private:
     /**
      * @brief Deals two cards to each player.
      */
-    void dealCards() {
-        for (Player& player: players)
+    void dealCards() noexcept {
+        for (Player& player: players) {
             player.holeCards.clear();
+        }
 
-        for (int i = 0; i < 2; ++i)
-            for (Player& player : players)
+        for (int i = 0; i < 2; ++i) {
+            for (Player& player : players) {
                 player.holeCards.push_back(deck.draw());
+            }
+        }
     }
 
     /**
      * @brief Deals a specified number of community cards.
      * @param count The number of community cards to deal.
      */
-    void dealCommunityCards(int count) {
-        for (int i = 0; i < count; ++i)
+    void dealCommunityCards(int count) noexcept {
+        for (int i = 0; i < count; ++i) {
             communityCards.push_back(deck.draw());
+        }
     }
 
     /**
      * @brief Collects the blinds from the players.
      */
-    void collectBlinds() {
+    void collectBlinds() noexcept {
         int smallBlindPos = (dealerPosition + 1) % players.size();
         players[smallBlindPos].chips -= smallBlind;
         players[smallBlindPos].currentBet = smallBlind;
@@ -168,13 +173,15 @@ private:
     /**
      * @brief Resets the betting round.
      */
-    void resetBettingRound() {
-        for (Player& player: players)
+    void resetBettingRound() noexcept {
+        for (Player& player: players) {
             player.currentBet = 0;
+        }
         currentBet = 0;
         currentPlayerIndex = (dealerPosition + 1) % players.size();
-        while (players[currentPlayerIndex].folded && !allPlayersFoldedExceptOne())
+        while (players[currentPlayerIndex].folded && !allPlayersFoldedExceptOne()) {
             currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+        }
         actionComplete = false;
     }
 
@@ -182,11 +189,14 @@ private:
      * @brief Checks if all players except one have folded.
      * @return True if all players except one have folded, false otherwise.
      */
-    bool allPlayersFoldedExceptOne() {
+    [[nodiscard]]
+    bool allPlayersFoldedExceptOne() noexcept {
         int activePlayers = 0;
-        for (const Player& player: players)
-            if (!player.folded) 
+        for (const Player& player: players) {
+            if (!player.folded) {
                 activePlayers++;
+            }
+        }
         return activePlayers <= 1;
     }
 
@@ -194,16 +204,20 @@ private:
      * @brief Checks if all players have acted.
      * @return True if all players have acted, false otherwise.
      */
-    bool allPlayersActed() {
+    [[nodiscard]]
+    bool allPlayersActed() noexcept {
         for (const Player& player: players) {
-            if (player.folded) 
+            if (player.folded) {
                 continue;
+            }
             
-            if (player.isAllIn) 
+            if (player.isAllIn) {
                 continue;
+            }
             
-            if (player.currentBet < currentBet)
+            if (player.currentBet < currentBet) {
                 return false;
+            }
         }
         return true;
     }
@@ -211,21 +225,22 @@ private:
     /**
      * @brief Moves to the next player.
      */
-    void nextPlayer() {
+    void nextPlayer() noexcept {
         do {
             currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
         } while ((players[currentPlayerIndex].folded || players[currentPlayerIndex].isAllIn) && 
                  !allPlayersFoldedExceptOne() && 
                  !allPlayersActed());
         
-        if (allPlayersActed() || allPlayersFoldedExceptOne())
+        if (allPlayersActed() || allPlayersFoldedExceptOne()) {
             actionComplete = true;
+        }
     }
 
     /**
      * @brief Determines the winner of the hand.
      */
-    void determineWinner() {
+    void determineWinner() noexcept {
         if (allPlayersFoldedExceptOne()) {
             for (Player& player: players) {
                 if (!player.folded) {
@@ -240,8 +255,9 @@ private:
         std::vector<int> winners;
 
         for (int i = 0; i < players.size(); ++i) {
-            if (players[i].folded) 
+            if (players[i].folded) {
                 continue;
+            }
 
             std::vector<Card> fullHand = players[i].holeCards;
             fullHand.insert(fullHand.end(), communityCards.begin(), communityCards.end());
@@ -259,14 +275,15 @@ private:
         }
 
         int winningsPerPlayer = potSize / winners.size();
-        for (int winnerIdx: winners)
+        for (int winnerIdx: winners) {
             players[winnerIdx].chips += winningsPerPlayer;
+        }
     }
 
     /**
      * @brief Resets the game for a new hand.
      */
-    void resetGame() {
+    void resetGame() noexcept {
         potSize = 0;
         currentBet = 0;
         communityCards.clear();
@@ -307,8 +324,9 @@ public:
      * @brief Starts a new game.
      */
     void startGame() {
-        if (state != GameState::NotStarted && state != GameState::Complete)
+        if (state != GameState::NotStarted && state != GameState::Complete) {
             throw std::runtime_error("Cannot start a new game while one is in progress");
+        }
         
         resetGame();
         advanceGameState();
@@ -320,9 +338,10 @@ public:
      * @param amount The amount for the action (if applicable).
      * @return A string describing the result of the action.
      */
-    std::string executeAction(PlayerAction action, int amount = 0) {
-        if (currentPlayerIndex != 0)
+    std::string executeAction(PlayerAction action, int amount = 0) noexcept {
+        if (currentPlayerIndex != 0) {
             return "It's not your turn!";
+        }
 
         Player& currentPlayer = players[currentPlayerIndex];
         std::stringstream result;
@@ -410,7 +429,7 @@ public:
     /**
      * @brief Executes the AI player's action.
      */
-    void executeAIAction() {
+    void executeAIAction() noexcept {
         Player& aiPlayer = players[currentPlayerIndex];
         
         if (currentBet <= aiPlayer.currentBet) {
@@ -437,7 +456,8 @@ public:
      * @brief Gets the current game state as a string.
      * @return The current game state as a string.
      */
-    std::string getGameState() const {
+    [[nodiscard]]
+    std::string getGameState() const noexcept {
         std::stringstream ss;
         
         switch (state) {
@@ -469,24 +489,27 @@ public:
         ss << std::format("Pot: {}\n", potSize);
         
         ss << "Your hand: ";
-        for (const Card& card: players[0].holeCards)
+        for (const Card& card: players[0].holeCards) {
             ss << std::format("{}{} ", rankToString(card.rank), suitToString(card.suit));
+        }
         ss << "\n";
         
         if (!communityCards.empty()) {
             ss << "Board: ";
-            for (const Card& card: communityCards)
+            for (const Card& card: communityCards) {
                 ss << std::format("{}{} ", rankToString(card.rank), suitToString(card.suit));
+            }
             ss << "\n";
         }
         
         if (state != GameState::Showdown && state != GameState::Complete) {
             if (currentPlayerIndex == 0) {
                 ss << "Your action (";
-                if (currentBet <= players[0].currentBet)
+                if (currentBet <= players[0].currentBet) {
                     ss << "check/bet";
-                else
+                } else {
                     ss << std::format("call {}/raise/fold", (currentBet - players[0].currentBet));
+                }
                 ss << ")";
             } else {
                 ss << "Waiting for AI...";
@@ -501,7 +524,8 @@ public:
      * @param rank The rank to convert.
      * @return The string representation of the rank.
      */
-    static std::string rankToString(Rank rank) {
+    [[nodiscard]]
+    static std::string rankToString(Rank rank) noexcept {
         switch (rank) {
             case Rank::Two: 
                 return "2";
@@ -539,7 +563,8 @@ public:
      * @param suit The suit to convert.
      * @return The string representation of the suit.
      */
-    static std::string suitToString(Suit suit) {
+    [[nodiscard]]
+    static std::string suitToString(Suit suit) noexcept {
         switch (suit) {
             case Suit::Clubs: 
                 return "♣";

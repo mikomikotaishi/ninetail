@@ -45,8 +45,8 @@ public class RandomFoxClient extends RandomImageClient {
     @Override
     public JsonArray getImage() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL))
-                .build();
+            .uri(URI.create(BASE_URL))
+            .build();
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         Logger.log(LogLevel.INFO, "Obtaining response.");

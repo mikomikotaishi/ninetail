@@ -26,11 +26,11 @@ public final class Play implements AudioCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        Logger.log(LogLevel.INFO, String.format("Play command invoked by %s (%s) of guild %s (%s)", 
-                                                event.getUser().getGlobalName(), 
-                                                event.getUser().getId(),
-                                                event.getGuild().getName(),
-                                                event.getGuild().getId())
+        Logger.log(LogLevel.INFO, "Play command invoked by %s (%s) of guild %s (%s)", 
+            event.getUser().getGlobalName(), 
+            event.getUser().getId(),
+            event.getGuild().getName(),
+            event.getGuild().getId()
         );
         
         if (event.getMember().getVoiceState() == null || !event.getMember().getVoiceState().inAudioChannel()) {
@@ -63,6 +63,7 @@ public final class Play implements AudioCommand {
 
         event.reply("Queueing...").queue();
         botAudio.getAudioPlayerManager().loadItem(identifier, 
-            new AudioPlayerLoadResultHandler(botAudio.getTextChannel(), botAudio.getAudioPlayer(), botAudio.getScheduler()));
+            new AudioPlayerLoadResultHandler(botAudio.getTextChannel(), botAudio.getAudioPlayer(), botAudio.getScheduler())
+        );
     }
 }

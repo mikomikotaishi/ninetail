@@ -31,19 +31,18 @@ public final class GenerateInvite implements BasicCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        Logger.log(LogLevel.INFO, String.format("Generate invite command invoked by %s (%s) of guild %s (%s)", 
-                                                event.getUser().getGlobalName(), 
-                                                event.getUser().getId(),
-                                                event.getGuild().getName(),
-                                                event.getGuild().getId())
+        Logger.log(LogLevel.INFO, "Generate invite command invoked by %s (%s) of guild %s (%s)", 
+            event.getUser().getGlobalName(), 
+            event.getUser().getId(),
+            event.getGuild().getName(),
+            event.getGuild().getId()
         );
 
         event.deferReply(true).queue();
         InteractionHook hook = event.getHook();
 
         if (!event.getMember().hasPermission(Permission.CREATE_INSTANT_INVITE)) {
-            Logger.log(LogLevel.INFO, String.format("Failed invite generation attempt by %s (%s) - insufficient permissions", 
-                event.getUser().getGlobalName(), event.getUser().getId()));
+            Logger.log(LogLevel.INFO, "Failed invite generation attempt by %s (%s) - insufficient permissions", event.getUser().getGlobalName(), event.getUser().getId());
             hook.sendMessage("❌ You don't have permission to create invites for this server.").queue();
             return;
         }
@@ -61,7 +60,8 @@ public final class GenerateInvite implements BasicCommand {
         
         GuildChannel channel = event.getOption("channel",
             () -> event.getGuildChannel(),
-            OptionMapping::getAsChannel);
+            OptionMapping::getAsChannel
+        );
 
         if (!(channel instanceof IInviteContainer targetChannel)) {
             hook.sendMessage("❌ The selected channel cannot have invites.").queue();
@@ -78,11 +78,10 @@ public final class GenerateInvite implements BasicCommand {
                     String inviteInfo = buildInviteInfo(invite, maxAge, maxUses, temporary);
                     hook.sendMessage(String.format("🔗 **Invite Created Successfully!**\n\n**Invite Link:** %s\n\n%s", invite.getUrl(), inviteInfo)).queue();
 
-                    Logger.log(LogLevel.INFO, String.format("Invite created by %s (%s) - %s", 
-                        event.getUser().getGlobalName(), event.getUser().getId(), invite.getCode()));
+                    Logger.log(LogLevel.INFO, "Invite created by %s (%s) - %s", event.getUser().getGlobalName(), event.getUser().getId(), invite.getCode());
                 },
                 error -> {
-                    Logger.log(LogLevel.ERROR, String.format("Failed to create invite: %s", error.getMessage()));
+                    Logger.log(LogLevel.ERROR, "Failed to create invite: %s", error.getMessage());
                     hook.sendMessage("❌ Failed to create invite. Please try again later.").queue();
                 }
             );
@@ -104,16 +103,18 @@ public final class GenerateInvite implements BasicCommand {
         info.append("**Invite Details:**\n");
         info.append("📺 **Channel:** ").append(invite.getChannel().getName()).append("\n");
         
-        if (maxAge == 0)
+        if (maxAge == 0) {
             info.append("⏰ **Expires:** Never\n");
-        else
+        } else {
             info.append("⏰ **Expires:** <t:").append((System.currentTimeMillis() / 1000) + maxAge).append(":R>\n");
-        
-        if (maxUses == 0)
+        }
+
+        if (maxUses == 0) {
             info.append("🔢 **Max Uses:** Unlimited\n");
-        else
+        } else {
             info.append("🔢 **Max Uses:** ").append(maxUses).append("\n");
-        
+        }
+
         info.append("👥 **Temporary Membership:** ").append(temporary ? "Yes" : "No").append("\n");
         info.append("🆔 **Invite Code:** `").append(invite.getCode()).append("`");
         

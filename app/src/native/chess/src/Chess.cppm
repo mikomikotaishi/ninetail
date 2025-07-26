@@ -1,5 +1,6 @@
 /**
  * @file Chess.cppm
+ * @module bot.ninetail.game.chess
  * @brief Exports the chess engine interface.
  */
 
@@ -15,12 +16,12 @@ module;
 #include <print>
 #include <string>
 
-export module chess;
+export module bot.ninetail.game.chess;
 
-import chess.Board;
-import chess.ChessEngine;
-import chess.Move;
-import chess.Piece;
+import bot.ninetail.game.chess.Board;
+import bot.ninetail.game.chess.ChessEngine;
+import bot.ninetail.game.chess.Move;
+import bot.ninetail.game.chess.Piece;
 
 export extern "C" {
     static std::unique_ptr<ChessEngine> chessEngine = nullptr;
@@ -43,6 +44,7 @@ export extern "C" {
      * @brief Gets the board state in FEN notation.
      * @return The board state in FEN notation.
      */
+    [[nodiscard]]
     EXPORT_API const char* getBoardState() {
         static std::string boardFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         
@@ -74,12 +76,14 @@ export extern "C" {
      * @brief Gets a string representation of the board.
      * @return The string representation of the board.
      */
-    EXPORT_API const char* getBoardDisplay() {
+    [[nodiscard]]
+    EXPORT_API const char* getBoardDisplay() noexcept {
         static std::string boardDisplay;
-        if (chessEngine)
+        if (chessEngine) {
             boardDisplay = chessEngine->getBoardDisplay();
-        else
+        } else {
             boardDisplay = "Engine not initialised";
+        }
         return boardDisplay.c_str();
     }
     
@@ -88,18 +92,22 @@ export extern "C" {
      * @param moveStr The move in algebraic notation.
      * @return 1 if the move was successful, 0 otherwise.
      */
-    EXPORT_API int makeMove(const char* moveStr) {
-        if (chessEngine)
+    [[nodiscard]]
+    EXPORT_API inline int makeMove(const char* moveStr) noexcept {
+        if (chessEngine) {
             return chessEngine->makeMove(moveStr) ? 1 : 0;
+        }
         return 0;
     }
     
     /**
      * @brief Resets the board to the initial position.
      */
-    EXPORT_API void resetBoard() {
-        if (chessEngine)
+    [[nodiscard]]
+    EXPORT_API inline void resetBoard() noexcept {
+        if (chessEngine) {
             chessEngine->resetBoard();
+        }
     }
     
     /**
@@ -107,9 +115,11 @@ export extern "C" {
      * @param fen The FEN string.
      * @return 1 if the position was successfully loaded, 0 otherwise.
      */
-    EXPORT_API int loadPosition(const char* fen) {
-        if (chessEngine)
+    [[nodiscard]]
+    EXPORT_API inline int loadPosition(const char* fen) noexcept {
+        if (chessEngine) {
             return chessEngine->loadPosition(fen) ? 1 : 0;
+        }
         return 0;
     }
     
@@ -117,9 +127,11 @@ export extern "C" {
      * @brief Checks if it is white's turn to move.
      * @return 1 if it is white's turn to move, 0 otherwise.
      */
-    EXPORT_API int isWhiteTurn() {
-        if (chessEngine)
+    [[nodiscard]]
+    EXPORT_API inline int isWhiteTurn() noexcept {
+        if (chessEngine) {
             return chessEngine->isWhiteTurn() ? 1 : 0;
+        }
         return 0;
     }
 
@@ -128,7 +140,8 @@ export extern "C" {
      * @param depth The depth of the search.
      * @return The best move in algebraic notation.
      */
-    EXPORT_API const char* getBestMove(int depth) {
+    [[nodiscard]]
+    EXPORT_API const char* getBestMove(int depth) noexcept {
         static std::string bestMove;
         if (chessEngine) {
             bestMove = chessEngine->getBestMove(depth);
@@ -142,16 +155,18 @@ export extern "C" {
      * @param colour The colour to check ("white" or "black").
      * @return 1 if the specified colour is in check, 0 otherwise.
      */
-    EXPORT_API int isInCheck(const char* colour) {
-        if (chessEngine)
+    [[nodiscard]]
+    EXPORT_API inline int isInCheck(const char* colour) noexcept {
+        if (chessEngine) {
             return chessEngine->isInCheck(colour) ? 1 : 0;
+        }
         return 0;
     }
     
     /**
      * @brief Destroys the chess engine.
      */
-    EXPORT_API void destroyChessEngine() {
+    EXPORT_API inline void destroyChessEngine() noexcept {
         chessEngine.reset();
     }
 }

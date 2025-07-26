@@ -27,15 +27,20 @@ public final class WebhookUtilities {
         webhook.sendMessage(message)
             .setUsername(member.getEffectiveName())
             .setAvatarUrl(member.getEffectiveAvatarUrl())
-            .queue(success -> {
-                event.getHook().editOriginal(String.format("Message sent as **%s**", member.getEffectiveName())).queue();
-                Logger.log(LogLevel.INFO, String.format("Sent webhook message as %s in guild %s", 
-                                                    member.getEffectiveName(), guild.getName()));
-            }, error -> {
-                event.getHook().editOriginal(String.format("Failed to send message: **%s**", member.getEffectiveName())).queue();
-                Logger.log(LogLevel.ERROR, String.format("Failed to send webhook message in guild %s: %s", 
-                                                    guild.getName(), error.getMessage()));
-            });
+            .queue(
+                success -> {
+                    event.getHook().editOriginal(String.format("Message sent as **%s**", member.getEffectiveName())).queue();
+                    Logger.log(LogLevel.INFO, "Sent webhook message as %s in guild %s", 
+                        member.getEffectiveName(), guild.getName()
+                    );
+                }, 
+                error -> {
+                    event.getHook().editOriginal(String.format("Failed to send message: **%s**", member.getEffectiveName())).queue();
+                    Logger.log(LogLevel.ERROR, "Failed to send webhook message in guild %s: %s", 
+                        guild.getName(), error.getMessage()
+                    );
+                }
+            );
     }
 
     /**
@@ -52,14 +57,19 @@ public final class WebhookUtilities {
         webhook.sendMessage(message)
             .setUsername(username)
             .setAvatarUrl(avatarUrl)
-            .queue(success -> {
-                event.getHook().editOriginal(String.format("Message sent as **%s**", username)).queue();
-                Logger.log(LogLevel.INFO, String.format("Sent webhook member.getEffectiveName()message as %s in guild %s", 
-                                                    username, guild.getName()));
-            }, error -> {
-                event.getHook().editOriginal(String.format("Failed to send message: **%s**", username)).queue();
-                Logger.log(LogLevel.ERROR, String.format("Failed to send webhook message in guild %s: %s", 
-                                                    username, error.getMessage()));
-            });
+            .queue(
+                success -> {
+                    event.getHook().editOriginal(String.format("Message sent as **%s**", username)).queue();
+                    Logger.log(LogLevel.INFO, "Sent webhook member.getEffectiveName()message as %s in guild %s", 
+                        username, guild.getName()
+                    );
+                }, 
+                error -> {
+                    event.getHook().editOriginal(String.format("Failed to send message: **%s**", username)).queue();
+                    Logger.log(LogLevel.ERROR, "Failed to send webhook message in guild %s: %s", 
+                        username, error.getMessage()
+                    );
+                }
+            );
     }
 }

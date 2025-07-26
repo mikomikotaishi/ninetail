@@ -35,11 +35,11 @@ public final class E621 implements ApiCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        Logger.log(LogLevel.INFO, String.format("e621 command invoked by %s (%s) of guild %s (%s)", 
-                                                event.getUser().getGlobalName(), 
-                                                event.getUser().getId(),
-                                                event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
-                                                event.getGuild() != null ? event.getGuild().getId() : "N/A")
+        Logger.log(LogLevel.INFO, "e621 command invoked by %s (%s) of guild %s (%s)", 
+            event.getUser().getGlobalName(), 
+            event.getUser().getId(),
+            event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
+            event.getGuild() != null ? event.getGuild().getId() : "N/A"
         );
         
         if (e621Client.getApiKey() == null) {
@@ -50,7 +50,7 @@ public final class E621 implements ApiCommand {
         String tag1 = event.getOption("tag1").getAsString();
         String tag2 = event.getOption("tag2") != null ? event.getOption("tag2").getAsString() : null;
         try {
-            Logger.log(LogLevel.INFO, String.format("Attempting to retrieve posts for tags: %s%s", tag1, (tag2 != null ? ", " + tag2 : "")));
+            Logger.log(LogLevel.INFO, "Attempting to retrieve posts for tags: %s%s", tag1, (tag2 != null ? ", " + tag2 : ""));
             JsonArray posts = e621Client.getPosts(tag1, tag2);
             if (posts.isEmpty()) {
                 event.reply(String.format("No posts found for tags: %s%s.", 
@@ -68,13 +68,13 @@ public final class E621 implements ApiCommand {
             String imageUrl = post.getString("file_url");
             event.reply(imageUrl).queue();
         } catch (IOException e) {
-            Logger.log(LogLevel.WARN, String.format("Failed to retrieve posts for tags: %s%s", tag1, (tag2 != null ? ", " + tag2 : "")));
+            Logger.log(LogLevel.WARN, "Failed to retrieve posts for tags: %s%s", tag1, (tag2 != null ? ", " + tag2 : ""));
             event.reply(String.format("Error retrieving posts for tags: %s%s.", 
                 TextFormat.markdownVerbatim(tag1), 
                 tag2 != null ? " and " + TextFormat.markdownVerbatim(tag2) : "")
             ).queue();
         } catch (InterruptedException e) {
-            Logger.log(LogLevel.WARN, String.format("Interrupted while retrieving posts for tags: %s%s", tag1, (tag2 != null ? ", " + tag2 : "")));
+            Logger.log(LogLevel.WARN, "Interrupted while retrieving posts for tags: %s%s", tag1, (tag2 != null ? ", " + tag2 : ""));
             event.reply(String.format("Interrupted while retrieving posts for tags: %s%s.", 
                 TextFormat.markdownVerbatim(tag1), 
                 tag2 != null ? " and " + TextFormat.markdownVerbatim(tag2) : "")

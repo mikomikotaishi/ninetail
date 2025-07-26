@@ -31,45 +31,45 @@ dependencies {
     implementation(libs.guava)
 
     // Jakarta
-    implementation("jakarta.annotation:jakarta.annotation-api:3.0.0")
-    implementation("jakarta.json:jakarta.json-api:2.1.3")
+    implementation("jakarta.annotation:jakarta.annotation-api:+")
+    implementation("jakarta.json:jakarta.json-api:+")
 
     // Kotlin
     implementation(kotlin("stdlib"))
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom:2.2.0"))
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:2.2.0")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.2.0")
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:+"))
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:+")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:+")
 
     // Lombok
-    implementation("org.projectlombok:lombok:1.18.38")
+    implementation("org.projectlombok:lombok:+")
 
     // JSON
-    implementation("org.eclipse.parsson:parsson:1.1.7")
+    implementation("org.eclipse.parsson:parsson:+")
 
     // JDA
-    implementation("net.dv8tion:JDA:5.6.1")
+    implementation("net.dv8tion:JDA:+")
 
     // Jackson dependencies (required by JDA)
-    implementation("com.fasterxml.jackson.core:jackson-core:2.19.1")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.19.1")
-    implementation("com.fasterxml.jackson.core:jackson-annotations:2.19.1")
+    implementation("com.fasterxml.jackson.core:jackson-core:+")
+    implementation("com.fasterxml.jackson.core:jackson-databind:+")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:+")
 
     // Audio
-    implementation("dev.arbjerg:lavaplayer:2.2.4")
-    implementation("dev.lavalink.youtube:common:1.13.3")
+    implementation("dev.arbjerg:lavaplayer:+")
+    implementation("dev.lavalink.youtube:common:+")
 
     // SLF4J
-    implementation("org.slf4j:slf4j-api:2.0.17")
-    implementation("org.slf4j:slf4j-simple:2.0.17")
+    implementation("org.slf4j:slf4j-api:+")
+    implementation("org.slf4j:slf4j-simple:+")
 
     // PostgreSQL JDBC driver
-    implementation("org.postgresql:postgresql:42.7.7")
+    implementation("org.postgresql:postgresql:+")
 
     // HikariCP
-    implementation("com.zaxxer:HikariCP:6.3.0")
+    implementation("com.zaxxer:HikariCP:+")
 
     // Testing
-    implementation("org.mockito:mockito-core:5.18.0")
+    implementation("org.mockito:mockito-core:+")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

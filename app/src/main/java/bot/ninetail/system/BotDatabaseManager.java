@@ -1,4 +1,4 @@
-package bot.ninetail.social;
+package bot.ninetail.system;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -13,19 +13,16 @@ import bot.ninetail.core.Logger;
 
 import lombok.Getter;
 
-import org.postgresql.util.PSQLException;
-import org.postgresql.util.PSQLState;
-
 /**
- * Registry for managing user coins.
+ * Manager for handling all utilities requiring a database.
  * Implemented as a thread-safe singleton.
  */
-public class CoinsRegistry {
+public class BotDatabaseManager {
     /**
      * The singleton instance of CoinsRegistry.
      */
     @Nonnull
-    private static volatile CoinsRegistry instance;
+    private static volatile BotDatabaseManager instance;
     
     /**
      * The data source used by this registry.
@@ -39,7 +36,7 @@ public class CoinsRegistry {
      * 
      * @param db The data source to use
      */
-    private CoinsRegistry(@Nonnull DataSource data) {
+    private BotDatabaseManager(@Nonnull DataSource data) {
         this.data = data;
     }
 
@@ -54,6 +51,7 @@ public class CoinsRegistry {
         try (Connection conn = dataSource.getConnection();
             Statement statement = conn.createStatement()) {
             
+            // Existing user_wallet table
             statement.execute("""
                 CREATE TABLE IF NOT EXISTS user_wallet (
                     user_id BIGINT PRIMARY KEY,
@@ -62,12 +60,18 @@ public class CoinsRegistry {
                 )
             """);
             
-            Logger.log(LogLevel.INFO, "Database tables initialised successfully");
-        } catch (PSQLException e) {
-            if (PSQLState.CONNECTION_FAILURE.getState().equals(e.getSQLState()))
-                Logger.log(LogLevel.ERROR, "Database connection failed: " + e.getMessage());
-            else
-                Logger.log(LogLevel.ERROR, "PostgreSQL error: " + e.getMessage() + " (SQL State: " + e.getSQLState() + ")");
+            statement.execute("""
+                CREATE TABLE IF NOT EXISTS banned_users (
+                    user_id BIGINT PRIMARY KEY,
+                    banned_by BIGINT NOT NULL,
+                    reason TEXT,
+                    banned_at TIMESTAMP NOT NULL DEFAULT NOW()
+                )
+            """);
+            
+            Logger.log(LogLevel.INFO, "Database tables initialized successfully");
+        } catch (SQLException e) {
+            Logger.log(LogLevel.ERROR, "Failed to initialize database: %s", e.getMessage());
             throw e;
         }
     }
@@ -76,13 +80,11 @@ public class CoinsRegistry {
      * Initialises the singleton instance. Should be called once at application startup.
      * 
      * @param db The DataSource to use
-     * 
-     * @throws IllegalStateException if the instance is already initialised
      */
     public static synchronized void init(@Nonnull DataSource db) {
-        if (instance != null)
-            throw new IllegalStateException("CoinsRegistry is already initialised");
-        instance = new CoinsRegistry(db);
+        if (instance == null) {
+            instance = new BotDatabaseManager(db);
+        }
     }
 
     /**
@@ -92,9 +94,10 @@ public class CoinsRegistry {
      * 
      * @throws IllegalStateException if called before initialisation
      */
-    public static CoinsRegistry getInstance() {
-        if (instance == null)
+    public static BotDatabaseManager getInstance() {
+        if (instance != null) {
             throw new IllegalStateException("CoinsRegistry has not been initialized");
+        }
         return instance;
     }
 }

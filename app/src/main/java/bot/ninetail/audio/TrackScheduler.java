@@ -14,8 +14,6 @@ import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 
-import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
-
 /**
  * Class to manage the audio track queue.
  * This class is used to manage the audio track queue.
@@ -48,11 +46,7 @@ public class TrackScheduler extends AudioEventAdapter {
      */
     private void sendNowPlayingMessage(@Nonnull AudioTrack track) {
         String trackInfo = String.format("%s (%s)", track.getInfo().title, TemporalFormatting.getFormattedTime(track.getInfo().length));
-
-        @Nonnull 
-        MessageChannel textChannel = botAudio.getTextChannel();
-
-        textChannel.sendMessage(String.format("Now playing: **%s**", trackInfo)).queue();
+        botAudio.getTextChannel().sendMessage(String.format("Now playing: **%s**", trackInfo)).queue();
     }
 
     /**
@@ -75,12 +69,11 @@ public class TrackScheduler extends AudioEventAdapter {
     public void queue(@Nonnull AudioTrack track) {
         String trackInfo = String.format("%s (%s)", track.getInfo().title, TemporalFormatting.getFormattedTime(track.getInfo().length));
         if (!player.startTrack(track, true)) {
-            Logger.log(LogLevel.INFO, String.format("Queued track: %s", track.getInfo().title));
-            @Nonnull MessageChannel textChannel = botAudio.getTextChannel();
+            Logger.log(LogLevel.INFO, "Queued track: %s", track.getInfo().title);
             queue.offer(track);
-            textChannel.sendMessage(String.format("Queued track: **%s**", trackInfo)).queue();
+            botAudio.getTextChannel().sendMessage(String.format("Queued track: **%s**", trackInfo)).queue();
         } else {
-            Logger.log(LogLevel.INFO, "Now playing: " + track.getInfo().title);
+            Logger.log(LogLevel.INFO, "Now playing: %s", track.getInfo().title);
             botAudio.markActive();
             sendNowPlayingMessage(track);
         }
@@ -104,8 +97,7 @@ public class TrackScheduler extends AudioEventAdapter {
                 sendNowPlayingMessage(nextTrack);
             } else {
                 Logger.log(LogLevel.INFO, "Song queue empty.");
-                @Nonnull MessageChannel textChannel = botAudio.getTextChannel();
-                textChannel.sendMessage("Queue is empty. Use `/play` to queue new songs.").queue();
+                botAudio.getTextChannel().sendMessage("Queue is empty. Use `/play` to queue new songs.").queue();
             }
         }
     }
@@ -144,7 +136,6 @@ public class TrackScheduler extends AudioEventAdapter {
      * Handles an automatic bot disconnection.
      */
     public void autoDisconnect() {
-        @Nonnull MessageChannel textChannel = botAudio.getTextChannel();
-        textChannel.sendMessage("Disconnecting from voice channel due to 10 minutes of inactivity.").queue();
+        botAudio.getTextChannel().sendMessage("Disconnecting from voice channel due to 10 minutes of inactivity.").queue();
     }
 }

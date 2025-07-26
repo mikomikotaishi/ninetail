@@ -162,13 +162,16 @@ public final class ConfigLoader {
             gyateBooruToken = PROPERTIES.getProperty("GYATEBOORU_TOKEN");
             rule34Token = PROPERTIES.getProperty("RULE34_TOKEN");
 
-            if (!verbose) 
+            if (!verbose) {
                 return;
+            }
 
-            if (botToken == null)
+            if (botToken == null) {
                 throwRequired("bot token");
-            if (masterPassword == null)
+            }
+            if (masterPassword == null) {
                 throwRequired("master password");
+            }
 
             warnIfNull(weatherToken, "Weather");
             warnIfNull(danbooruToken, "Danbooru");
@@ -188,7 +191,7 @@ public final class ConfigLoader {
      * @param what The missing item.
      */
     private static void throwRequired(String what) {
-        Logger.log(LogLevel.ERROR, String.format("No %s found!", what));
+        Logger.log(LogLevel.ERROR, "No %s found!", what);
         throw new IllegalArgumentException(String.format("No %s found!", what));
     }
 
@@ -199,7 +202,8 @@ public final class ConfigLoader {
      * @param name The name of the token.
      */
     private static void warnIfNull(String token, String name) {
-        if (token == null)
-            Logger.log(LogLevel.WARN, String.format("No %s token found!", name));
+        if (token == null) {
+            Logger.log(LogLevel.WARN, "No %s token found!", name);
+        }
     }
 }

@@ -24,11 +24,11 @@ public final class ChessMove implements GameCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        Logger.log(LogLevel.INFO, String.format("Chess move command invoked by %s (%s) of guild %s (%s)", 
-                                                event.getUser().getGlobalName(), 
-                                                event.getUser().getId(),
-                                                event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
-                                                event.getGuild() != null ? event.getGuild().getId() : "N/A")
+        Logger.log(LogLevel.INFO, "Chess move command invoked by %s (%s) of guild %s (%s)", 
+            event.getUser().getGlobalName(), 
+            event.getUser().getId(),
+            event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
+            event.getGuild() != null ? event.getGuild().getId() : "N/A"
         );
         
         ChessEngine chessEngine = ChessGameManager.getChessEngine();
@@ -38,7 +38,7 @@ public final class ChessMove implements GameCommand {
         }
 
         String move = event.getOption("move").getAsString();
-        if (chessEngine.makeMove(move) == 1) {
+        if (chessEngine.makeMove(move)) {
             String boardState = chessEngine.getBoardState();
             String boardDisplay = chessEngine.convertFenToEmoji(boardState);
             event.reply(String.format("User move: %s\n%s", move, boardDisplay)).queue();
@@ -50,7 +50,7 @@ public final class ChessMove implements GameCommand {
             event.getChannel().sendMessage(String.format("Engine move: %s\n%s", engineMove, boardDisplay)).queue();
 
             if (isCheckmate(chessEngine)) {
-                event.getChannel().sendMessage(String.format("Checkmate! %s wins!", chessEngine.isWhiteTurn() == 1 ? "Black" : "White")).queue();
+                event.getChannel().sendMessage(String.format("Checkmate! %s wins!", chessEngine.isWhiteTurn() ? "Black" : "White")).queue();
             }
         } else {
             event.reply("Invalid move: " + move).queue();
@@ -65,6 +65,6 @@ public final class ChessMove implements GameCommand {
      * @return Whether the chess engine is in checkmate
      */
     private static boolean isCheckmate(ChessEngine chessEngine) {
-        return chessEngine.isInCheck(chessEngine.isWhiteTurn() == 1 ? "white" : "black");
+        return chessEngine.isInCheck(chessEngine.isWhiteTurn() ? "white" : "black");
     }
 }
