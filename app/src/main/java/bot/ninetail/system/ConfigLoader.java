@@ -3,7 +3,10 @@ package bot.ninetail.system;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 import jakarta.annotation.Nonnull;
 
@@ -39,7 +42,6 @@ public final class ConfigLoader {
     @Nonnull 
     private String masterPassword;
 
-
     /**
      * The bot master ID.
      */
@@ -67,6 +69,13 @@ public final class ConfigLoader {
     @Getter 
     @Nonnull 
     private String coinsRegistryDbUrl;
+
+    /**
+     * List of pre-banned user IDs from config.
+     */
+    @Getter 
+    @Nonnull 
+    private List<Long> prebannedUserIds;
 
     // === General ===
     /**
@@ -152,6 +161,27 @@ public final class ConfigLoader {
             coinsRegistryDbUsername = PROPERTIES.getProperty("COINS_REGISTRY_DB_USERNAME");
             coinsRegistryDbPassword = PROPERTIES.getProperty("COINS_REGISTRY_DB_PASSWORD");
             coinsRegistryDbUrl = PROPERTIES.getProperty("COINS_REGISTRY_DB_URL");
+
+            // Load pre-banned user IDs
+            String bannedIdsString = PROPERTIES.getProperty("PREBANNED_USER_IDS");
+            if (bannedIdsString != null && !bannedIdsString.trim().isEmpty()) {
+                try {
+                    prebannedUserIds = Arrays.stream(bannedIdsString.split(","))
+                        .map(String::trim)
+                        .filter(s -> !s.isEmpty())
+                        .map(Long::parseLong)
+                        .collect(Collectors.toList());
+                    
+                    if (verbose) {
+                        Logger.log(LogLevel.INFO, "Loaded %d pre-banned user IDs from config", prebannedUserIds.size());
+                    }
+                } catch (NumberFormatException e) {
+                    Logger.log(LogLevel.ERROR, "Invalid format in PREBANNED_USER_IDS: %s", e.getMessage());
+                    prebannedUserIds = List.of(); // Empty list on error
+                }
+            } else {
+                prebannedUserIds = List.of(); // Empty list if not specified
+            }
 
             weatherToken = PROPERTIES.getProperty("WEATHER_TOKEN");
 

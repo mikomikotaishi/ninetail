@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -26,11 +27,21 @@ public final class BannedUsersManager {
     private static final Set<Long> bannedUserCache = ConcurrentHashMap.newKeySet();
     
     /**
-     * Loads all banned users from database into memory cache.
+     * Loads all banned users from database and config into memory cache.
      */
     public static void loadBannedUsers() {
+        bannedUserCache.clear();
+        
+        // First, load pre-banned IDs from config
+        List<Long> prebannedIds = ConfigLoader.getPrebannedUserIds();
+        if (!prebannedIds.isEmpty()) {
+            bannedUserCache.addAll(prebannedIds);
+            Logger.log(LogLevel.INFO, "Loaded %d pre-banned user IDs from config", prebannedIds.size());
+        }
+        
+        // Then, load banned IDs from database
         if (BotDatabaseManager.getInstance() == null || BotDatabaseManager.getInstance().getData() == null) {
-            Logger.log(LogLevel.WARN, "Database not available, banned users cache not loaded");
+            Logger.log(LogLevel.WARN, "Database not available, only config-based banned users loaded");
             return;
         }
         
@@ -38,16 +49,20 @@ public final class BannedUsersManager {
             PreparedStatement stmt = conn.prepareStatement("SELECT user_id FROM banned_users")) {
             
             ResultSet rs = stmt.executeQuery();
-            bannedUserCache.clear();
+            int dbBannedCount = 0;
             
             while (rs.next()) {
-                bannedUserCache.add(rs.getLong("user_id"));
+                long userId = rs.getLong("user_id");
+                if (bannedUserCache.add(userId)) {
+                    dbBannedCount++;
+                }
             }
             
-            Logger.log(LogLevel.INFO, "Loaded %d banned users into cache", bannedUserCache.size());
+            Logger.log(LogLevel.INFO, "Loaded %d banned users from database, %d total banned users", 
+                dbBannedCount, bannedUserCache.size());
             
         } catch (SQLException e) {
-            Logger.log(LogLevel.ERROR, "Failed to load banned users: %s", e.getMessage());
+            Logger.log(LogLevel.ERROR, "Failed to load banned users from database: %s", e.getMessage());
         }
     }
     
@@ -141,5 +156,14 @@ public final class BannedUsersManager {
      */
     public static int getBannedUserCount() {
         return bannedUserCache.size();
+    }
+    
+    /**
+     * Adds a pre-banned user from config to the cache (used during startup).
+     * 
+     * @param userId The user ID to add to cache
+     */
+    public static void addPrebannedUser(long userId) {
+        bannedUserCache.add(userId);
     }
 }
