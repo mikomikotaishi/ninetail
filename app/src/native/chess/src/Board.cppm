@@ -1,6 +1,6 @@
 /**
  * @file Board.cppm
- * @module bot.ninetail.game.chess.Board
+ * @module bot.ninetail.native.game.chess.Board
  * @brief Implementation of the chess board and related functionalities.
  */
 
@@ -15,10 +15,10 @@ module;
 #include <string_view>
 #include <vector>
 
-export module bot.ninetail.game.chess.Board;
+export module bot.ninetail.native.game.chess.Board;
 
-import bot.ninetail.game.chess.Move;
-import bot.ninetail.game.chess.Piece;
+import bot.ninetail.native.game.chess.Move;
+import bot.ninetail.native.game.chess.Piece;
 
 /**
  * @namespace Tables

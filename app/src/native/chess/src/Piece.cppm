@@ -1,6 +1,6 @@
 /**
  * @file Piece.cppm
- * @module bot.ninetail.game.chess.Piece
+ * @module bot.ninetail.native.game.chess.Piece
  * @brief Implementation of the chess piece.
  */
 
@@ -9,7 +9,7 @@ module;
 #include <cctype>
 #include <utility>
 
-export module bot.ninetail.game.chess.Piece;
+export module bot.ninetail.native.game.chess.Piece;
 
 /**
  * @enum PieceType

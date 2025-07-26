@@ -1,6 +1,6 @@
 /**
  * @file ChessEngine.cppm
- * @module bot.ninetail.game.chess.ChessEngine
+ * @module bot.ninetail.native.game.chess.ChessEngine
  * @brief Implementation of the chess engine.
  */
 
@@ -11,11 +11,11 @@ module;
 #include <string_view>
 #include <vector>
 
-export module bot.ninetail.game.chess.ChessEngine;
+export module bot.ninetail.native.game.chess.ChessEngine;
 
-import bot.ninetail.game.chess.Board;
-import bot.ninetail.game.chess.Move;
-import bot.ninetail.game.chess.Piece;
+import bot.ninetail.native.game.chess.Board;
+import bot.ninetail.native.game.chess.Move;
+import bot.ninetail.native.game.chess.Piece;
 
 /**
  * @class ChessEngine

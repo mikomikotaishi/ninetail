@@ -1,6 +1,6 @@
 /**
  * @file Move.cppm
- * @module bot.ninetail.game.chess.Move
+ * @module bot.ninetail.native.game.chess.Move
  * @brief Implementation of chess moves.
  */
 
@@ -8,7 +8,7 @@ module;
 
 #include <string>
 
-export module bot.ninetail.game.chess.Move;
+export module bot.ninetail.native.game.chess.Move;
 
 /**
  * @class Move

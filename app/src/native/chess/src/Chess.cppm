@@ -1,6 +1,6 @@
 /**
  * @file Chess.cppm
- * @module bot.ninetail.game.chess
+ * @module bot.ninetail.native.game.chess
  * @brief Exports the chess engine interface.
  */
 
@@ -16,12 +16,12 @@ module;
 #include <print>
 #include <string>
 
-export module bot.ninetail.game.chess;
+export module bot.ninetail.native.game.chess;
 
-import bot.ninetail.game.chess.Board;
-import bot.ninetail.game.chess.ChessEngine;
-import bot.ninetail.game.chess.Move;
-import bot.ninetail.game.chess.Piece;
+import bot.ninetail.native.game.chess.Board;
+import bot.ninetail.native.game.chess.ChessEngine;
+import bot.ninetail.native.game.chess.Move;
+import bot.ninetail.native.game.chess.Piece;
 
 export extern "C" {
     static std::unique_ptr<ChessEngine> chessEngine = nullptr;

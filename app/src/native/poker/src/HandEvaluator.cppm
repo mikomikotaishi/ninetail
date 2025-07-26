@@ -1,6 +1,6 @@
 /**
  * @file HandEvaluator.cppm
- * @module bot.ninetail.game.poker.HandEvaluator
+ * @module bot.ninetail.native.game.poker.HandEvaluator
  * @brief Implementation of the HandEvaluator namespace for evaluating poker hands.
  */
 
@@ -11,9 +11,9 @@ module;
 #include <vector>
 #include <stdexcept>
 
-export module bot.ninetail.game.poker.HandEvaluator;
+export module bot.ninetail.native.game.poker.HandEvaluator;
 
-import bot.ninetail.game.poker.Card;
+import bot.ninetail.native.game.poker.Card;
 
 /**
  * @enum HandRank

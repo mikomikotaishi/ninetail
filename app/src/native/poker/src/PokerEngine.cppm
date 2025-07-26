@@ -1,6 +1,6 @@
 /**
  * @file PokerEngine.cppm
- * @module bot.ninetail.game.poker.PokerEngine
+ * @module bot.ninetail.native.game.poker.PokerEngine
  * @brief Implementation of the PokerEngine class for managing a poker game.
  */
 
@@ -13,11 +13,11 @@ module;
 #include <sstream>
 #include <utility>
 
-export module bot.ninetail.game.poker.PokerEngine;
+export module bot.ninetail.native.game.poker.PokerEngine;
 
-import bot.ninetail.game.poker.Card;
-import bot.ninetail.game.poker.Deck;
-import bot.ninetail.game.poker.HandEvaluator;
+import bot.ninetail.native.game.poker.Card;
+import bot.ninetail.native.game.poker.Deck;
+import bot.ninetail.native.game.poker.HandEvaluator;
 
 /**
  * @enum PlayerAction

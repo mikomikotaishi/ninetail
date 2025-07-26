@@ -10,9 +10,9 @@ module;
 #include <stdexcept>
 #include <vector>
 
-export module bot.ninetail.game.poker.Deck;
+export module bot.ninetail.native.game.poker.Deck;
 
-import bot.ninetail.game.poker.Card;
+import bot.ninetail.native.game.poker.Card;
 
 /**
  * @class Deck

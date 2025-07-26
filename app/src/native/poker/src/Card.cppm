@@ -3,7 +3,7 @@
  * @brief Definition of the Card structure and related enums.
  */
 
-export module bot.ninetail.game.poker.Card;
+export module bot.ninetail.native.game.poker.Card;
 
 /**
  * @enum Rank

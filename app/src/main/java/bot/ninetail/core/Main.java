@@ -5,6 +5,7 @@ import java.util.EnumSet;
 import javax.security.auth.login.LoginException;
 
 import jakarta.annotation.Nonnull;
+
 import bot.ninetail.system.*;
 
 import lombok.experimental.UtilityClass;
