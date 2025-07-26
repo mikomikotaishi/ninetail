@@ -1,4 +1,4 @@
-package bot.ninetail.core;
+package bot.ninetail.core.logger;
 
 import jakarta.annotation.Nonnull;
 

@@ -6,10 +6,9 @@ import java.util.Queue;
 import jakarta.annotation.Nonnull;
 
 import bot.ninetail.audio.BotAudio;
-import bot.ninetail.core.LogLevel;
-import bot.ninetail.core.Logger;
+import bot.ninetail.core.logger.*;
 import bot.ninetail.structures.commands.AudioCommand;
-import bot.ninetail.utilities.TemporalFormatting;
+import bot.ninetail.util.TemporalFormatting;
 
 import lombok.experimental.UtilityClass;
 

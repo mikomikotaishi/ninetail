@@ -5,9 +5,8 @@ import java.nio.file.Paths;
 
 import jakarta.annotation.Nonnull;
 
-import bot.ninetail.core.LogLevel;
-import bot.ninetail.core.Logger;
 import bot.ninetail.core.config.*;
+import bot.ninetail.core.logger.*;
 
 /**
  * Abstract Engine class.

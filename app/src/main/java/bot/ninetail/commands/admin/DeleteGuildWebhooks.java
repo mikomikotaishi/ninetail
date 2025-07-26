@@ -4,8 +4,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import jakarta.annotation.Nonnull;
 
-import bot.ninetail.core.LogLevel;
-import bot.ninetail.core.Logger;
+import bot.ninetail.core.logger.*;
 import bot.ninetail.structures.commands.AdminCommand;
 import bot.ninetail.structures.commands.WebhookCommand;
 

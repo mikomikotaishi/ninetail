@@ -11,8 +11,7 @@ import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 
-import bot.ninetail.core.LogLevel;
-import bot.ninetail.core.Logger;
+import bot.ninetail.core.logger.*;
 import bot.ninetail.structures.clients.TextManipulatorClient;
 
 /**

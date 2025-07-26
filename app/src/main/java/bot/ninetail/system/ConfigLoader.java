@@ -7,9 +7,8 @@ import java.util.Properties;
 
 import jakarta.annotation.Nonnull;
 
-import bot.ninetail.core.LogLevel;
-import bot.ninetail.core.Logger;
 import bot.ninetail.core.config.ConfigNames;
+import bot.ninetail.core.logger.*;
 
 import lombok.Getter;
 import lombok.experimental.UtilityClass;

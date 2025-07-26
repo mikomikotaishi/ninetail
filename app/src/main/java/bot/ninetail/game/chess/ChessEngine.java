@@ -9,9 +9,8 @@ import java.util.Map;
 
 import jakarta.annotation.Nonnull;
 
-import bot.ninetail.core.LogLevel;
-import bot.ninetail.core.Logger;
 import bot.ninetail.core.config.ConfigNames;
+import bot.ninetail.core.logger.*;
 import bot.ninetail.game.Engine;
 
 /**
@@ -112,7 +111,7 @@ public class ChessEngine extends Engine {
         arena = Arena.ofShared();
         Linker linker = Linker.nativeLinker();
         Path libPath = Paths.get(System.getProperty("user.dir"), ConfigNames.ENGINE_CHESS_PATH).toAbsolutePath();
-        Logger.log(LogLevel.INFO, "Loading chess library from: " + libPath);
+        Logger.log(LogLevel.INFO, "Loading chess library from: %s", libPath);
         SymbolLookup symbolLookup = SymbolLookup.libraryLookup(libPath.toString(), arena);
         
         initChessEngineHandle = linker.downcallHandle(
@@ -202,10 +201,10 @@ public class ChessEngine extends Engine {
             }
             
             String resultStr = result.getString(0);
-            Logger.log(LogLevel.INFO, "Java: getBoardState returned: " + resultStr);
+            Logger.log(LogLevel.INFO, "Java: getBoardState returned: %s", resultStr);
             return resultStr;
         } catch (Throwable t) {
-            Logger.log(LogLevel.WARN, "getBoardState exception: " + t);
+            Logger.log(LogLevel.WARN, "getBoardState exception: %s", t);
             t.printStackTrace();
             return "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         }

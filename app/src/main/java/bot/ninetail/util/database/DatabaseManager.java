@@ -1,4 +1,4 @@
-package bot.ninetail.utilities.database;
+package bot.ninetail.util.database;
 
 import java.util.Properties;
 

@@ -3,8 +3,7 @@ package bot.ninetail.commands.audio;
 import jakarta.annotation.Nonnull;
 
 import bot.ninetail.audio.BotAudio;
-import bot.ninetail.core.LogLevel;
-import bot.ninetail.core.Logger;
+import bot.ninetail.core.logger.*;
 import bot.ninetail.structures.commands.AudioCommand;
 
 import lombok.experimental.UtilityClass;

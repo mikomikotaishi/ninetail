@@ -1,11 +1,9 @@
 package bot.ninetail.commands.webhook;
 
 import jakarta.annotation.Nonnull;
-
-import bot.ninetail.core.LogLevel;
-import bot.ninetail.core.Logger;
+import bot.ninetail.core.logger.*;
 import bot.ninetail.structures.commands.WebhookCommand;
-import bot.ninetail.utilities.WebhookUtilities;
+import bot.ninetail.util.WebhookUtilities;
 
 import lombok.experimental.UtilityClass;
 

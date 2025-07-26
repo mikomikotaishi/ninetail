@@ -4,8 +4,9 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import bot.ninetail.core.logger.*;
 import bot.ninetail.system.BotDatabaseManager;
-import bot.ninetail.utilities.database.DatabaseManager;
+import bot.ninetail.util.database.DatabaseManager;
 
 import lombok.experimental.UtilityClass;
 

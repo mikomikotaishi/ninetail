@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import jakarta.annotation.Nonnull;
 
 import bot.ninetail.core.config.ConfigNames;
+import bot.ninetail.core.logger.*;
 import bot.ninetail.game.Engine;
 
 /**
@@ -42,6 +43,7 @@ public class PokerEngine extends Engine {
         arena = Arena.ofShared();
         Linker linker = Linker.nativeLinker();
         Path libPath = Paths.get(ConfigNames.ENGINE_POKER_PATH).toAbsolutePath();
+        Logger.log(LogLevel.INFO, "Loading poker library from: %s", libPath);
         SymbolLookup symbolLookup = SymbolLookup.libraryLookup(libPath.toString(), arena);
 
         createGameHandle = linker.downcallHandle(

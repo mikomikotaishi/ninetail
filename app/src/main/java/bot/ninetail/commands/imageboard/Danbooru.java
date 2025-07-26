@@ -7,11 +7,10 @@ import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 
 import bot.ninetail.clients.DanbooruClient;
-import bot.ninetail.core.LogLevel;
-import bot.ninetail.core.Logger;
+import bot.ninetail.core.logger.*;
 import bot.ninetail.structures.commands.ApiCommand;
-import bot.ninetail.utilities.RandomNumberGenerator;
-import bot.ninetail.utilities.TextFormat;
+import bot.ninetail.util.RandomNumberGenerator;
+import bot.ninetail.util.TextFormat;
 import lombok.experimental.UtilityClass;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;

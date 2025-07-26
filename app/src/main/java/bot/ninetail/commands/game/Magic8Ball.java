@@ -2,8 +2,7 @@ package bot.ninetail.commands.game;
 
 import jakarta.annotation.Nonnull;
 
-import bot.ninetail.core.LogLevel;
-import bot.ninetail.core.Logger;
+import bot.ninetail.core.logger.*;
 import bot.ninetail.structures.commands.ContentResponder;
 import bot.ninetail.structures.commands.GameCommand;
 

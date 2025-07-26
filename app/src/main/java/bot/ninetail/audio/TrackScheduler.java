@@ -5,9 +5,8 @@ import java.util.Queue;
 
 import jakarta.annotation.Nonnull;
 
-import bot.ninetail.core.LogLevel;
-import bot.ninetail.core.Logger;
-import bot.ninetail.utilities.TemporalFormatting;
+import bot.ninetail.core.logger.*;
+import bot.ninetail.util.TemporalFormatting;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;

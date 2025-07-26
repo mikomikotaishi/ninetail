@@ -1,9 +1,9 @@
-package bot.ninetail.utilities;
+package bot.ninetail.util;
 
 import jakarta.annotation.Nonnull;
 
-import bot.ninetail.core.LogLevel;
-import bot.ninetail.core.Logger;
+import bot.ninetail.core.logger.LogLevel;
+import bot.ninetail.core.logger.Logger;
 
 import lombok.experimental.UtilityClass;
 

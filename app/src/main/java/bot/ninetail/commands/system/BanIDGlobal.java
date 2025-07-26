@@ -2,13 +2,12 @@ package bot.ninetail.commands.system;
 
 import jakarta.annotation.Nonnull;
 
-import bot.ninetail.core.LogLevel;
-import bot.ninetail.core.Logger;
+import bot.ninetail.core.logger.*;
 import bot.ninetail.structures.commands.JdaCommand;
 import bot.ninetail.system.BannedUsersManager;
 import bot.ninetail.system.ConfigLoader;
-import bot.ninetail.utilities.exceptions.IncorrectMasterIdException;
-import bot.ninetail.utilities.exceptions.IncorrectPasswordException;
+import bot.ninetail.util.exceptions.IncorrectMasterIdException;
+import bot.ninetail.util.exceptions.IncorrectPasswordException;
 
 import lombok.experimental.UtilityClass;
 

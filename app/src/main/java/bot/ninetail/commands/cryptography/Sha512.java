@@ -2,10 +2,9 @@ package bot.ninetail.commands.cryptography;
 
 import java.security.NoSuchAlgorithmException;
 
-import bot.ninetail.core.LogLevel;
-import bot.ninetail.core.Logger;
+import bot.ninetail.core.logger.*;
 import bot.ninetail.structures.commands.CryptographyCommand;
-import bot.ninetail.utilities.cryptography.Hash;
+import bot.ninetail.util.cryptography.Hash;
 
 import lombok.experimental.UtilityClass;
 

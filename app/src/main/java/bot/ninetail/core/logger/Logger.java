@@ -1,4 +1,4 @@
-package bot.ninetail.core;
+package bot.ninetail.core.logger;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -12,7 +12,7 @@ import jakarta.annotation.Nonnull;
 
 import bot.ninetail.core.config.ConfigNames;
 import bot.ninetail.core.config.ConfigPaths;
-import bot.ninetail.utilities.TemporalFormatting;
+import bot.ninetail.util.TemporalFormatting;
 
 import lombok.experimental.UtilityClass;
 

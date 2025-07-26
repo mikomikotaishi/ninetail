@@ -2,12 +2,12 @@ package bot.ninetail.commands.system;
 
 import jakarta.annotation.Nonnull;
 
-import bot.ninetail.core.LogLevel;
-import bot.ninetail.core.Logger;
+import bot.ninetail.core.logger.*;
 import bot.ninetail.structures.commands.JdaCommand;
 import bot.ninetail.system.ConfigLoader;
-import bot.ninetail.utilities.exceptions.IncorrectMasterIdException;
-import bot.ninetail.utilities.exceptions.IncorrectPasswordException;
+import bot.ninetail.util.MutablePair;
+import bot.ninetail.util.exceptions.IncorrectMasterIdException;
+import bot.ninetail.util.exceptions.IncorrectPasswordException;
 
 import lombok.experimental.UtilityClass;
 
@@ -54,11 +54,11 @@ public final class DeleteAllWebhooks implements JdaCommand {
             );
             
             // [processed, skipped]
-            int[] guildCounts = {0, 0};
+            MutablePair<Integer, Integer> guildCounts = new MutablePair<>(0, 0);
             
             for (Guild guild : instance.getGuilds()) {
                 if (guild.getSelfMember().hasPermission(Permission.MANAGE_WEBHOOKS)) {
-                    ++guildCounts[0];
+                    guildCounts.setFirst(guildCounts.getFirst() + 1);
                     guild.retrieveWebhooks().queue(
                         webhooks -> {
                         for (Webhook webhook: webhooks) {
@@ -76,7 +76,7 @@ public final class DeleteAllWebhooks implements JdaCommand {
                             guild.getName(), guild.getId(), error.getMessage())
                         );
                 } else {
-                    ++guildCounts[1];
+                    guildCounts.setSecond(guildCounts.getSecond() + 1);
                     Logger.log(LogLevel.INFO, "Skipped guild: %s (%s) - Missing MANAGE_WEBHOOKS permission", 
                         guild.getName(), guild.getId()
                     );
@@ -85,7 +85,7 @@ public final class DeleteAllWebhooks implements JdaCommand {
             
             event.getHook().editOriginal(
                 String.format("Webhook cleanup completed. Processed %d guilds, cleaned %d guilds, skipped %d guilds due to lack of permissions.", 
-                    guildCounts[0] + guildCounts[1], guildCounts[0], guildCounts[1]
+                    guildCounts.getFirst() + guildCounts.getSecond(), guildCounts.getFirst(), guildCounts.getSecond()
                 )
             ).queue();
         } catch (IncorrectPasswordException e) {

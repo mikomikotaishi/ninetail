@@ -1,4 +1,4 @@
-package bot.ninetail.utilities;
+package bot.ninetail.util;
 
 import java.util.concurrent.ThreadLocalRandom;
 

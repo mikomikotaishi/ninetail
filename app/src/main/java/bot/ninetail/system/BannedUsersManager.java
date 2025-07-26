@@ -7,11 +7,10 @@ import java.sql.SQLException;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import bot.ninetail.core.logger.*;
+
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
-
-import bot.ninetail.core.LogLevel;
-import bot.ninetail.core.Logger;
 
 import lombok.experimental.UtilityClass;
 

@@ -1,4 +1,4 @@
-package bot.ninetail.utilities.cryptography;
+package bot.ninetail.util.cryptography;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

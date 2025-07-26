@@ -8,8 +8,7 @@ import javax.sql.DataSource;
 
 import jakarta.annotation.Nonnull;
 
-import bot.ninetail.core.LogLevel;
-import bot.ninetail.core.Logger;
+import bot.ninetail.core.logger.*;
 
 import lombok.Getter;
 

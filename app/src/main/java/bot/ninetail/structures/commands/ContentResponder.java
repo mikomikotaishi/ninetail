@@ -5,9 +5,8 @@ import java.util.Map;
 
 import jakarta.annotation.Nonnull;
 
-import bot.ninetail.core.LogLevel;
-import bot.ninetail.core.Logger;
-import bot.ninetail.utilities.RandomNumberGenerator;
+import bot.ninetail.core.logger.*;
+import bot.ninetail.util.RandomNumberGenerator;
 
 /**
  * Class that holds an array of strings containing contents, to be queried.

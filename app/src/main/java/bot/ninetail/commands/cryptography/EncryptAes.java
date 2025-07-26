@@ -1,8 +1,6 @@
-
 package bot.ninetail.commands.cryptography;
 
-import bot.ninetail.core.LogLevel;
-import bot.ninetail.core.Logger;
+import bot.ninetail.core.logger.*;
 import bot.ninetail.structures.commands.CryptographyCommand;
 
 import lombok.experimental.UtilityClass;
