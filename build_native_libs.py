@@ -18,6 +18,9 @@ from enum import Enum
 from pathlib import Path
 from typing import List
 
+CMAKE_INIT_COMMAND: List[str] = ["cmake", "-S", ".", "-G", "Ninja", "-B", "build"]
+CMAKE_BUILD_COMMAND: List[str] = ["cmake", "--build", "build"]
+
 class Colour(Enum):
     """
     @enum Colour
@@ -26,10 +29,10 @@ class Colour(Enum):
 
     @brief Enum representing ANSI terminal colours.
     """
-    RED = "\033[31m"
-    GREEN = "\033[32m"
-    YELLOW = "\033[33m"
-    RESET = "\033[0m"
+    RED: str = "\033[31m"
+    GREEN: str = "\033[32m"
+    YELLOW: str = "\033[33m"
+    RESET: str = "\033[0m"
 
 class Project(Enum):
     """
@@ -39,8 +42,8 @@ class Project(Enum):
 
     @brief Enum for available native C++ projects.
     """
-    CHESS = "chess"
-    POKER = "poker"
+    CHESS: str = "chess"
+    POKER: str = "poker"
 
 def colour(text: str, colour_code: Colour) -> str:
     """
@@ -79,10 +82,10 @@ def buildProject(project: Project) -> None:
     shutil.rmtree(build_dir, ignore_errors = True)
 
     print(f"{colour("Initialising", Colour.GREEN)} {name} build")
-    runCommand(["cmake", "-S", ".", "-G", "Ninja", "-B", "build"], cwd = base_dir)
+    runCommand(CMAKE_INIT_COMMAND, cwd = base_dir)
 
     print(f"{colour("Building", Colour.GREEN)} {name}")
-    runCommand(["cmake", "--build", "build"], cwd = base_dir)
+    runCommand(CMAKE_BUILD_COMMAND, cwd = base_dir)
 
     print(f"{colour("Moving", Colour.GREEN)} {lib_name} to lib directory")
     built_so: Path = build_dir / "lib" / lib_name
