@@ -40,5 +40,8 @@ module bot.ninetail {
     exports bot.ninetail.game;
     exports bot.ninetail.game.chess;
     exports bot.ninetail.game.poker;
-    exports bot.ninetail.system;
+    exports bot.ninetail.structures;
+    exports bot.ninetail.structures.clients;
+    exports bot.ninetail.structures.commands;
+    exports bot.ninetail.webhook;
 }
