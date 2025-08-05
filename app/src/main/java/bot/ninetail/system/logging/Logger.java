@@ -1,4 +1,4 @@
-package bot.ninetail.core.logger;
+package bot.ninetail.system.logging;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -19,6 +19,7 @@ import lombok.experimental.UtilityClass;
 /**
  * Class to handle logging bot messages.
  */
+@Deprecated
 @UtilityClass
 public class Logger {
     /**

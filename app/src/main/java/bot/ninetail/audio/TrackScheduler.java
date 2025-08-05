@@ -1,11 +1,12 @@
 package bot.ninetail.audio;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.LinkedList;
 import java.util.Queue;
 
 import jakarta.annotation.Nonnull;
 
-import bot.ninetail.core.logger.*;
 import bot.ninetail.util.TemporalFormatting;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
@@ -20,6 +21,9 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
  * @extends AudioEventAdapter
  */
 public class TrackScheduler extends AudioEventAdapter {
+    @Nonnull
+    private static final Logger LOGGER = System.getLogger(TrackScheduler.class.getName());
+
     /**
      * The bot audio instance.
      */
@@ -68,11 +72,11 @@ public class TrackScheduler extends AudioEventAdapter {
     public void queue(@Nonnull AudioTrack track) {
         String trackInfo = String.format("%s (%s)", track.getInfo().title, TemporalFormatting.getFormattedTime(track.getInfo().length));
         if (!player.startTrack(track, true)) {
-            Logger.log(LogLevel.INFO, "Queued track: %s", track.getInfo().title);
+            LOGGER.log(Level.INFO, "Queued track: {0}", track.getInfo().title);
             queue.offer(track);
             botAudio.getTextChannel().sendMessage(String.format("Queued track: **%s**", trackInfo)).queue();
         } else {
-            Logger.log(LogLevel.INFO, "Now playing: %s", track.getInfo().title);
+            LOGGER.log(Level.INFO, "Now playing: {0}", track.getInfo().title);
             botAudio.markActive();
             sendNowPlayingMessage(track);
         }
@@ -90,12 +94,12 @@ public class TrackScheduler extends AudioEventAdapter {
         if (endReason.mayStartNext) {
             AudioTrack nextTrack = queue.poll();
             if (nextTrack != null) {
-                Logger.log(LogLevel.INFO, "Current song ended. Beginning next song...");
+                LOGGER.log(Level.INFO, "Current song ended. Beginning next song...");
                 player.startTrack(nextTrack, false);
                 botAudio.markActive();
                 sendNowPlayingMessage(nextTrack);
             } else {
-                Logger.log(LogLevel.INFO, "Song queue empty.");
+                LOGGER.log(Level.INFO, "Song queue empty.");
                 botAudio.getTextChannel().sendMessage("Queue is empty. Use `/play` to queue new songs.").queue();
             }
         }
@@ -107,10 +111,10 @@ public class TrackScheduler extends AudioEventAdapter {
     public void skip() {
         AudioTrack nextTrack = queue.poll();
         if (nextTrack != null) {
-            Logger.log(LogLevel.INFO, "Skipping to next track...");
+            LOGGER.log(Level.INFO, "Skipping to next track...");
             player.startTrack(nextTrack, false);
         } else {
-            Logger.log(LogLevel.INFO, "No more tracks to skip.");
+            LOGGER.log(Level.INFO, "No more tracks to skip.");
             player.stopTrack();
         }
     }

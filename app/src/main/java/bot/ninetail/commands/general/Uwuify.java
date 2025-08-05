@@ -1,11 +1,12 @@
 package bot.ninetail.commands.general;
 
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 
 import jakarta.annotation.Nonnull;
 
 import bot.ninetail.clients.UwuifyClient;
-import bot.ninetail.core.logger.*;
 import bot.ninetail.structures.commands.ApiCommand;
 
 import lombok.experimental.UtilityClass;
@@ -19,6 +20,9 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  */
 @UtilityClass
 public final class Uwuify implements ApiCommand {
+    @Nonnull
+    private static final Logger LOGGER = System.getLogger(Uwuify.class.getName());
+
     /**
      * The Uwuify client.
      */
@@ -31,7 +35,7 @@ public final class Uwuify implements ApiCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        Logger.log(LogLevel.INFO, "Uwuify command invoked by %s (%s) of guild %s (%s)", 
+        LOGGER.log(Level.INFO, "Uwuify command invoked by {0} ({1}) of guild {2} ({3})", 
             event.getUser().getGlobalName(), 
             event.getUser().getId(),
             event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
@@ -40,7 +44,7 @@ public final class Uwuify implements ApiCommand {
 
         String text = event.getOption("text").getAsString();
         try {
-            Logger.log(LogLevel.INFO, String.format("Attempting to uwuify text: %s.", text));
+            LOGGER.log(Level.INFO, "Attempting to uwuify text: {0}.", text);
             String uwuifiedText = uwuifyClient.getText(text);
 
             if (uwuifiedText != null && !uwuifiedText.isEmpty()) {
@@ -53,10 +57,10 @@ public final class Uwuify implements ApiCommand {
                 event.reply("That didn't work. Try some other text!").queue();
             }
         } catch (IOException e) {
-            Logger.log(LogLevel.INFO, "Failed to uwuify text: %s.", text);
+            LOGGER.log(Level.INFO, "Failed to uwuify text: {0}.", text);
             event.reply("Error processing your request. Please try again later.").queue();
         } catch (InterruptedException e) {
-            Logger.log(LogLevel.INFO, "Interrupted while uwuifying text: %s.", text);
+            LOGGER.log(Level.INFO, "Interrupted while uwuifying text: {0}.", text);
             event.reply("The request was interrupted. Please try again.").queue();
         }
     }

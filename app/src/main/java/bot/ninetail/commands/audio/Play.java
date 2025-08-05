@@ -1,9 +1,13 @@
 package bot.ninetail.commands.audio;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+
 import jakarta.annotation.Nonnull;
 
-import bot.ninetail.audio.*;
-import bot.ninetail.core.logger.*;
+import bot.ninetail.audio.AudioPlayerLoadResultHandler;
+import bot.ninetail.audio.AudioPlayerSendHandler;
+import bot.ninetail.audio.BotAudio;
 import bot.ninetail.structures.commands.AudioCommand;
 
 import lombok.experimental.UtilityClass;
@@ -19,13 +23,16 @@ import net.dv8tion.jda.api.managers.AudioManager;
  */
 @UtilityClass
 public final class Play implements AudioCommand {
+    @Nonnull
+    private static final Logger LOGGER = System.getLogger(Play.class.getName());
+
     /**
      * Invokes the command.
      *
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        Logger.log(LogLevel.INFO, "Play command invoked by %s (%s) of guild %s (%s)", 
+        LOGGER.log(Level.INFO, "Play command invoked by {0} ({1}) of guild {2} ({3})", 
             event.getUser().getGlobalName(), 
             event.getUser().getId(),
             event.getGuild().getName(),
@@ -46,13 +53,13 @@ public final class Play implements AudioCommand {
         AudioChannel userChannel = event.getMember().getVoiceState().getChannel();
 
         if (!botAudio.isActive()) {
-            Logger.log(LogLevel.INFO, "Bot audio currently inactive. Activating...");
+            LOGGER.log(Level.INFO, "Bot audio currently inactive. Activating...");
             botAudio.setVoiceChannel(userChannel);
             botAudio.activate();
             audioManager.openAudioConnection(userChannel);
             audioManager.setSendingHandler(new AudioPlayerSendHandler(botAudio.getAudioPlayer()));
         } else if (!botAudio.getVoiceChannel().equals(userChannel)) {
-            Logger.log(LogLevel.INFO, "Voice channel and user channel not the same!");
+            LOGGER.log(Level.INFO, "Voice channel and user channel not the same!");
             botAudio.setVoiceChannel(userChannel);
             audioManager.openAudioConnection(userChannel);
         }

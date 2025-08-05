@@ -1,5 +1,7 @@
 package bot.ninetail.game.poker;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.lang.foreign.*;
 import java.lang.invoke.MethodHandle;
 import java.nio.file.Path;
@@ -8,7 +10,6 @@ import java.nio.file.Paths;
 import jakarta.annotation.Nonnull;
 
 import bot.ninetail.core.config.ConfigNames;
-import bot.ninetail.core.logger.*;
 import bot.ninetail.game.Engine;
 
 /**
@@ -17,6 +18,9 @@ import bot.ninetail.game.Engine;
  * @extends Engine
  */
 public class PokerEngine extends Engine {
+    @Nonnull
+    private static final Logger LOGGER = System.getLogger(PokerEngine.class.getName());
+
     @Nonnull
     private final MethodHandle createGameHandle;
     
@@ -43,7 +47,7 @@ public class PokerEngine extends Engine {
         arena = Arena.ofShared();
         Linker linker = Linker.nativeLinker();
         Path libPath = Paths.get(ConfigNames.ENGINE_POKER_PATH).toAbsolutePath();
-        Logger.log(LogLevel.INFO, "Loading poker library from: %s", libPath);
+        LOGGER.log(Level.INFO, "Loading poker library from: {0}", libPath);
         SymbolLookup symbolLookup = SymbolLookup.libraryLookup(libPath.toString(), arena);
 
         createGameHandle = linker.downcallHandle(

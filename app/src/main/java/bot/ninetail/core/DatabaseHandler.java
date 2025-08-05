@@ -1,10 +1,13 @@
 package bot.ninetail.core;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import bot.ninetail.core.logger.*;
+import jakarta.annotation.Nonnull;
+
 import bot.ninetail.system.BotDatabaseManager;
 import bot.ninetail.util.database.DatabaseManager;
 
@@ -18,25 +21,28 @@ import com.zaxxer.hikari.pool.HikariPool.PoolInitializationException;
  */
 @UtilityClass
 public final class DatabaseHandler {
+    @Nonnull
+    private static final Logger LOGGER = System.getLogger(DatabaseHandler.class.getName());
+
     /**
      * Loads the database for all resources used by the bot.
      */
     public static void loadDatabase() {
         try {
-            Logger.log(LogLevel.INFO, "Initialising database connection...");
+            LOGGER.log(Level.INFO, "Initialising database connection...");
             DataSource dataSource = DatabaseManager.loadDatabase();
             BotDatabaseManager.initDatabase(dataSource);
             BotDatabaseManager.init(dataSource);
-            Logger.log(LogLevel.INFO, "Database connection successful.");
+            LOGGER.log(Level.INFO, "Database connection successful.");
         } catch (SQLException e) {
-            Logger.log(LogLevel.ERROR, "Failed to initialise database due to SQL exception: %s", e.getMessage());
-            Logger.log(LogLevel.WARN, "Social commands that require the database will be unavailable!");
+            LOGGER.log(Level.ERROR, "Failed to initialise database due to SQL exception: {0}", e.getMessage());
+            LOGGER.log(Level.WARNING, "Social commands that require the database will be unavailable!");
         } catch (PoolInitializationException e) {
-            Logger.log(LogLevel.ERROR, "Failed to initialise database due to database handling exception: %s", e.getMessage());
-            Logger.log(LogLevel.WARN, "Social commands that require the database will be unavailable!");
+            LOGGER.log(Level.ERROR, "Failed to initialise database due to database handling exception: {0}", e.getMessage());
+            LOGGER.log(Level.WARNING, "Social commands that require the database will be unavailable!");
         } catch (Exception e) {
-            Logger.log(LogLevel.ERROR, "Failed to initialise database: %s", e.getMessage());
-            Logger.log(LogLevel.WARN, "Social commands that require the database will be unavailable!");
+            LOGGER.log(Level.ERROR, "Failed to initialise database: {0}", e.getMessage());
+            LOGGER.log(Level.WARNING, "Social commands that require the database will be unavailable!");
         }
     }
 }

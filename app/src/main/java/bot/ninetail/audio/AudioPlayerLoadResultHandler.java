@@ -1,8 +1,9 @@
 package bot.ninetail.audio;
 
-import jakarta.annotation.Nonnull;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 
-import bot.ninetail.core.logger.*;
+import jakarta.annotation.Nonnull;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
@@ -10,6 +11,7 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
+import bot.ninetail.system.logging.LogLevel;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 
 /**
@@ -19,6 +21,9 @@ import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
  * @implements AudioLoadResultHandler
  */
 public class AudioPlayerLoadResultHandler implements AudioLoadResultHandler {
+    @Nonnull
+    private static final Logger LOGGER = System.getLogger(AudioPlayerLoadResultHandler.class.getName());
+
     /**
      * The text channel.
      */
@@ -57,7 +62,7 @@ public class AudioPlayerLoadResultHandler implements AudioLoadResultHandler {
      */
     @Override
     public void trackLoaded(@Nonnull AudioTrack track) {
-        Logger.log(LogLevel.INFO, "Loading track: %s", track.getInfo().title);
+        LOGGER.log(Level.INFO, "Loading track: {0}", track.getInfo().title);
         textChannel.sendMessage(String.format("Added to queue: **%s**", track.getInfo().title)).queue();
         scheduler.queue(track);
     }
@@ -69,7 +74,7 @@ public class AudioPlayerLoadResultHandler implements AudioLoadResultHandler {
      */
     @Override
     public void playlistLoaded(@Nonnull AudioPlaylist playlist) {
-        Logger.log(LogLevel.INFO, "Loading playlist: %s", playlist.getName());
+        LOGGER.log(Level.INFO, "Loading playlist: {0}", playlist.getName());
         if (playlist.isSearchResult()) {
             AudioTrack firstTrack = playlist.getTracks().get(0);
             textChannel.sendMessage(String.format("Added to queue: **%s**", firstTrack.getInfo().title)).queue();

@@ -1,8 +1,10 @@
 package bot.ninetail.commands.general;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+
 import jakarta.annotation.Nonnull;
 
-import bot.ninetail.core.logger.*;
 import bot.ninetail.structures.commands.BasicCommand;
 import bot.ninetail.structures.commands.ContentResponder;
 
@@ -18,6 +20,9 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  */
 @UtilityClass
 public final class Ping extends ContentResponder implements BasicCommand {
+    @Nonnull
+    private static final Logger LOGGER = System.getLogger(Ping.class.getName());
+
     /**
      * Static block to load contents.
      */
@@ -43,7 +48,7 @@ public final class Ping extends ContentResponder implements BasicCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        Logger.log(LogLevel.INFO, "Ping command invoked by %s (%s) of guild %s (%s)", 
+        LOGGER.log(Level.INFO, "Ping command invoked by {0} ({1}) of guild {2} ({3})", 
             event.getUser().getGlobalName(), 
             event.getUser().getId(),
             event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
@@ -56,7 +61,7 @@ public final class Ping extends ContentResponder implements BasicCommand {
             long endTime = System.currentTimeMillis();
             long latency = endTime - startTime;
             response.editOriginal(String.format("%s (Latency: %dms)", pingMessage, latency)).queue();
-            Logger.log(LogLevel.INFO, "Ping executed with latency %dms", latency);
+            LOGGER.log(Level.INFO, "Ping executed with latency {0}ms", latency);
         });
     }
 }

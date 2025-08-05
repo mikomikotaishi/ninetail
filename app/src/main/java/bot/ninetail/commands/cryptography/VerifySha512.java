@@ -1,8 +1,11 @@
 package bot.ninetail.commands.cryptography;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.NoSuchAlgorithmException;
 
-import bot.ninetail.core.logger.*;
+import jakarta.annotation.Nonnull;
+
 import bot.ninetail.structures.commands.CryptographyCommand;
 import bot.ninetail.util.cryptography.Hash;
 
@@ -17,13 +20,16 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  */
 @UtilityClass
 public final class VerifySha512 implements CryptographyCommand {
+    @Nonnull
+    private static final Logger LOGGER = System.getLogger(VerifySha512.class.getName());
+
     /**
      * Invokes the command.
      *
      * @param event The event that triggered the command.
      */
     public static void invoke(SlashCommandInteractionEvent event) {
-        Logger.log(LogLevel.INFO, "Verify SHA-512 command invoked by %s (%s) of guild %s (%s)", 
+        LOGGER.log(Level.INFO, "Verify SHA-512 command invoked by {0} ({1}) of guild {2} ({3})", 
             event.getUser().getGlobalName(), 
             event.getUser().getId(),
             event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",

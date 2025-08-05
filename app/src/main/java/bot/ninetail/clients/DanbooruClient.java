@@ -2,6 +2,8 @@ package bot.ninetail.clients;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.URI;
 import java.net.http.*;
 
@@ -11,7 +13,6 @@ import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 
-import bot.ninetail.core.logger.*;
 import bot.ninetail.structures.clients.ImageboardClient;
 import bot.ninetail.system.ConfigLoader;
 
@@ -21,6 +22,9 @@ import bot.ninetail.system.ConfigLoader;
  * @extends ImageboardClient
  */
 public class DanbooruClient extends ImageboardClient {
+    @Nonnull
+    private static final Logger LOGGER = System.getLogger(DanbooruClient.class.getName());
+
     /**
      * The base URL for Danbooru.
      */
@@ -47,7 +51,7 @@ public class DanbooruClient extends ImageboardClient {
     @Override
     public JsonArray getPosts(@Nonnull String tag1, String tag2) throws IOException, InterruptedException {
         if (getApiKey() == null || getApiKey().isEmpty()) {
-            Logger.log(LogLevel.ERROR, "Danbooru API key missing!");
+            LOGGER.log(Level.ERROR, "Danbooru API key missing!");
             throw new IllegalArgumentException("No Danbooru token found!");
         }
 
@@ -60,20 +64,20 @@ public class DanbooruClient extends ImageboardClient {
         HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create(url))
             .build();
-        Logger.log(LogLevel.INFO, "Issuing request to Danbooru for tags: %s", tags);
+        LOGGER.log(Level.INFO, "Issuing request to Danbooru for tags: {0}", tags);
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        Logger.log(LogLevel.INFO, "Obtaining response.");
+        LOGGER.log(Level.INFO, "Obtaining response.");
         if (response.statusCode() != 200) {
-            Logger.log(LogLevel.ERROR, "Failed to execute HTTP request!");
+            LOGGER.log(Level.ERROR, "Failed to execute HTTP request!");
             throw new IOException("Failed to execute HTTP request");
         }
-        Logger.log(LogLevel.INFO, "Successfully obtained response.");
+        LOGGER.log(Level.INFO, "Successfully obtained response.");
         String responseBody = response.body();
         
         try (JsonReader jsonReader = Json.createReader(new StringReader(responseBody))) {
             JsonObject jsonResponse = jsonReader.readObject();
             if (!jsonResponse.containsKey("post")) {
-                Logger.log(LogLevel.ERROR, "No 'post' key in Danbooru response");
+                LOGGER.log(Level.ERROR, "No 'post' key in Danbooru response");
                 return Json.createArrayBuilder().build();
             }
             return jsonResponse.getJsonArray("post");

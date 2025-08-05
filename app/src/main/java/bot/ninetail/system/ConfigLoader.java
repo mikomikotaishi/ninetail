@@ -3,6 +3,8 @@ package bot.ninetail.system;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -11,7 +13,6 @@ import java.util.stream.Collectors;
 import jakarta.annotation.Nonnull;
 
 import bot.ninetail.core.config.ConfigNames;
-import bot.ninetail.core.logger.*;
 
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
@@ -21,6 +22,9 @@ import lombok.experimental.UtilityClass;
  */
 @UtilityClass
 public final class ConfigLoader {
+    @Nonnull
+    private static final Logger LOGGER = System.getLogger(ConfigLoader.class.getName());
+
     /**
      * Properties object to store configuration properties.
      */
@@ -149,7 +153,7 @@ public final class ConfigLoader {
 
             if (input == null) {
                 String msg = "Unable to find " + ConfigNames.CONFIG_PROPERTIES_FILE;
-                Logger.log(LogLevel.ERROR, msg);
+                LOGGER.log(Level.ERROR, msg);
                 throw new FileNotFoundException(msg);
             }
 
@@ -173,10 +177,10 @@ public final class ConfigLoader {
                         .collect(Collectors.toList());
                     
                     if (verbose) {
-                        Logger.log(LogLevel.INFO, "Loaded %d pre-banned user IDs from config", prebannedUserIds.size());
+                        LOGGER.log(Level.INFO, "Loaded {0} pre-banned user IDs from config", prebannedUserIds.size());
                     }
                 } catch (NumberFormatException e) {
-                    Logger.log(LogLevel.ERROR, "Invalid format in PREBANNED_USER_IDS: %s", e.getMessage());
+                    LOGGER.log(Level.ERROR, "Invalid format in PREBANNED_USER_IDS: {0}", e.getMessage());
                     prebannedUserIds = List.of(); // Empty list on error
                 }
             } else {
@@ -210,7 +214,7 @@ public final class ConfigLoader {
             warnIfNull(rule34Token, "Rule34");
 
         } catch (IOException e) {
-            Logger.logException(LogLevel.ERROR, e);
+            LOGGER.log(Level.ERROR, "Exception occurred while loading config: {0}", e.getMessage());
         }
     }
 
@@ -220,19 +224,19 @@ public final class ConfigLoader {
      * @param what The missing item.
      */
     private static void throwRequired(String what) {
-        Logger.log(LogLevel.ERROR, "No %s found!", what);
+        LOGGER.log(Level.ERROR, "No {0} found!", what);
         throw new IllegalArgumentException(String.format("No %s found!", what));
     }
 
     /**
-     * Issues a warning to the logger about a potentially null field.
+     * Issues a warning to the LOGGER about a potentially null field.
      * 
      * @param token The token to check for null.
      * @param name The name of the token.
      */
     private static void warnIfNull(String token, String name) {
         if (token == null) {
-            Logger.log(LogLevel.WARN, "No %s token found!", name);
+            LOGGER.log(Level.WARNING, "No {0} token found!", name);
         }
     }
 }

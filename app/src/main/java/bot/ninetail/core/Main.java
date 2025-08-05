@@ -1,13 +1,15 @@
 package bot.ninetail.core;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.EnumSet;
 
 import javax.security.auth.login.LoginException;
 
 import jakarta.annotation.Nonnull;
 
-import bot.ninetail.core.logger.*;
 import bot.ninetail.system.*;
+import bot.ninetail.system.logging.LoggerConfig;
 
 import lombok.experimental.UtilityClass;
 
@@ -21,6 +23,13 @@ import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
  */
 @UtilityClass
 public final class Main {
+    @Nonnull
+    private static final Logger LOGGER = System.getLogger(Main.class.getName());
+    
+    static {
+        LoggerConfig.configure();
+    }
+    
     /**
      * Main method for the bot.
      * 
@@ -42,7 +51,7 @@ public final class Main {
             GatewayIntent.SCHEDULED_EVENTS
         );
 
-        Logger.log(LogLevel.INFO, "Starting bot.");
+        LOGGER.log(Level.INFO, "Starting bot.");
         JDA api = JDABuilder.createDefault(BOT_TOKEN, INTENTS)
             .build()
             .awaitReady();
@@ -52,14 +61,14 @@ public final class Main {
         CommandHandler.loadCommands(commands);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            Logger.log(LogLevel.INFO, "Invoking shutdown hook");
+            LOGGER.log(Level.INFO, "Invoking shutdown hook");
             System.out.println("Shutting down bot.");
-            Logger.close();
+            LoggerConfig.close();
         }));
 
         DatabaseHandler.loadDatabase();
 
-        Logger.log(LogLevel.INFO, "Instantiating instance.");
+        LOGGER.log(Level.INFO, "Instantiating instance.");
         Ninetail botInstance = new Ninetail(api);
         api.addEventListener(botInstance);
     }

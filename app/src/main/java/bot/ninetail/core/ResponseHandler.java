@@ -2,6 +2,8 @@ package bot.ninetail.core;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -12,7 +14,7 @@ import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 
 import bot.ninetail.core.config.ConfigNames;
-import bot.ninetail.core.logger.*;
+
 import lombok.experimental.UtilityClass;
 
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
@@ -23,6 +25,9 @@ import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
  */
 @UtilityClass
 public final class ResponseHandler {
+    @Nonnull
+    private static final Logger LOGGER = System.getLogger(ResponseHandler.class.getName());
+    
     /**
      * Map of keywords to responses.
      */
@@ -40,23 +45,23 @@ public final class ResponseHandler {
      * Reloads responses from responses.json.
      */
     public static void reloadResponses() {
-        Logger.log(LogLevel.INFO, "Emptying map");
+        LOGGER.log(Level.INFO, "Emptying map");
         RESPONSES.clear();
         try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(ConfigNames.RESPONSES_FILE)) {
             if (inputStream == null) {
-                Logger.log(LogLevel.WARN, "%s not found. Skipping loading responses.", ConfigNames.RESPONSES_FILE);
+                LOGGER.log(Level.WARNING, "{0} not found. Skipping loading responses.", ConfigNames.RESPONSES_FILE);
                 return;
             }
-            Logger.log(LogLevel.INFO, "Loading %s", ConfigNames.RESPONSES_FILE);
+            LOGGER.log(Level.INFO, "Loading {0}", ConfigNames.RESPONSES_FILE);
             try (JsonReader jsonReader = Json.createReader(inputStream)) {
                 JsonObject responsesJson = jsonReader.readObject();
                 for (String key: responsesJson.keySet()) {
-                    Logger.log(LogLevel.INFO, "Loading response for key %s", key);
+                    LOGGER.log(Level.INFO, "Loading response for key {0}", key);
                     RESPONSES.put(key, responsesJson.getString(key));
                 }
             }
         } catch (IOException e) {
-            Logger.logException(LogLevel.ERROR, e);
+            LOGGER.log(Level.ERROR, "Exception occurred while loading responses: {0}", e.getMessage());
         }
     }
 

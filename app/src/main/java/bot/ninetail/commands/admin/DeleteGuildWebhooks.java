@@ -1,10 +1,11 @@
 package bot.ninetail.commands.admin;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import jakarta.annotation.Nonnull;
 
-import bot.ninetail.core.logger.*;
 import bot.ninetail.structures.commands.AdminCommand;
 import bot.ninetail.structures.commands.WebhookCommand;
 
@@ -24,13 +25,16 @@ import net.dv8tion.jda.api.interactions.InteractionHook;
  */
 @UtilityClass
 public final class DeleteGuildWebhooks implements AdminCommand, WebhookCommand {
+    @Nonnull
+    private static final Logger LOGGER = System.getLogger(DeleteGuildWebhooks.class.getName());
+
     /**
      * Invokes the command.
      *
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        Logger.log(LogLevel.INFO, "Delete guild webhooks command invoked by %s (%s) of guild %s (%s)", 
+        LOGGER.log(Level.INFO, "Delete guild webhooks command invoked by {0} ({1}) of guild {2} ({3})", 
             event.getUser().getGlobalName(), 
             event.getUser().getId(),
             event.getGuild().getName(),
@@ -44,13 +48,13 @@ public final class DeleteGuildWebhooks implements AdminCommand, WebhookCommand {
         hook.setEphemeral(true);
         
         if (!event.getMember().hasPermission(Permission.MANAGE_WEBHOOKS)) {
-            Logger.log(LogLevel.INFO, "Attempted (failed) webhook deletion by %s (%s)", event.getUser().getGlobalName(), event.getUser().getId());
+            LOGGER.log(Level.INFO, "Attempted (failed) webhook deletion by {0} ({1})", event.getUser().getGlobalName(), event.getUser().getId());
             hook.sendMessage("You do not have the required permissions to delete webhooks in this server.").queue();
             return;
         }
 
         if (!guild.getSelfMember().hasPermission(Permission.MANAGE_WEBHOOKS)) {
-            Logger.log(LogLevel.INFO, "Attempted (failed) webhook deletion by %s (%s) - Bot lacks permission", event.getUser().getGlobalName(), event.getUser().getId());
+            LOGGER.log(Level.INFO, "Attempted (failed) webhook deletion by {0} ({1}) - Bot lacks permission", event.getUser().getGlobalName(), event.getUser().getId());
             hook.sendMessage("I don't have the required permissions to delete webhooks in this server.").queue();
             return;
         }
@@ -71,7 +75,7 @@ public final class DeleteGuildWebhooks implements AdminCommand, WebhookCommand {
             for (Webhook webhook: webhooks) {
                 webhook.delete().queue(
                     success -> {
-                        Logger.log(LogLevel.INFO, "Deleted webhook: %s in guild: %s (%s)", webhook.getName(), guild.getName(), guild.getId());
+                        LOGGER.log(Level.INFO, "Deleted webhook: {0} in guild: {1} ({2})", webhook.getName(), guild.getName(), guild.getId());
                         
                         int deleted = deletedCount.incrementAndGet();
                         if (deleted + failedCount.get() == totalWebhooks) {
@@ -80,7 +84,7 @@ public final class DeleteGuildWebhooks implements AdminCommand, WebhookCommand {
                         }
                     },
                     error -> {
-                        Logger.log(LogLevel.ERROR, "Failed to delete webhook: %s in guild: %s (%s) - %s", webhook.getName(), guild.getName(), guild.getId(), error.getMessage());
+                        LOGGER.log(Level.ERROR, "Failed to delete webhook: {0} in guild: {1} ({2}) - {3}", webhook.getName(), guild.getName(), guild.getId(), error.getMessage());
                         
                         int failed = failedCount.incrementAndGet();
                         if (deletedCount.get() + failed == totalWebhooks) {
@@ -91,7 +95,7 @@ public final class DeleteGuildWebhooks implements AdminCommand, WebhookCommand {
                 );
             }
         }, error -> {
-            Logger.log(LogLevel.ERROR, "Failed to retrieve webhooks for guild: %s (%s) - %s", guild.getName(), guild.getId(), error.getMessage());
+            LOGGER.log(Level.ERROR, "Failed to retrieve webhooks for guild: {0} ({1}) - {2}", guild.getName(), guild.getId(), error.getMessage());
             hook.editOriginal("Failed to retrieve webhooks: " + error.getMessage()).queue();
         });
     }

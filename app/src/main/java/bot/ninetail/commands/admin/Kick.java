@@ -1,8 +1,10 @@
 package bot.ninetail.commands.admin;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+
 import jakarta.annotation.Nonnull;
 
-import bot.ninetail.core.logger.*;
 import bot.ninetail.structures.commands.BasicCommand;
 
 import lombok.experimental.UtilityClass;
@@ -21,13 +23,16 @@ import net.dv8tion.jda.api.interactions.commands.OptionMapping;
  */
 @UtilityClass
 public final class Kick implements BasicCommand {
+    @Nonnull
+    private static final Logger LOGGER = System.getLogger(Kick.class.getName());
+
     /**
      * Invokes the command.
      *
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        Logger.log(LogLevel.INFO, "Kick command invoked by %s (%s) of guild %s (%s)", 
+        LOGGER.log(Level.INFO, "Kick command invoked by {0} ({1}) of guild {2} ({3})", 
             event.getUser().getGlobalName(), 
             event.getUser().getId(),
             event.getGuild().getName(),
@@ -42,7 +47,7 @@ public final class Kick implements BasicCommand {
         hook.setEphemeral(true);
         
         if (!event.getMember().hasPermission(Permission.KICK_MEMBERS)) {
-            Logger.log(LogLevel.INFO, "Attempted (failed) kick attempt by %s (%s)", 
+            LOGGER.log(Level.INFO, "Attempted (failed) kick attempt by {0} ({1})", 
                 event.getUser().getGlobalName(), event.getUser().getId()
             );
             hook.sendMessage("You do not have the required permissions to kick users from this server.").queue();
@@ -51,7 +56,7 @@ public final class Kick implements BasicCommand {
 
         Member selfMember = event.getGuild().getSelfMember();
         if (!selfMember.hasPermission(Permission.KICK_MEMBERS)) {
-            Logger.log(LogLevel.INFO, "Attempted (failed) kick attempt by %s (%s)", 
+            LOGGER.log(Level.INFO, "Attempted (failed) kick attempt by {0} ({1})", 
                 event.getUser().getGlobalName(), event.getUser().getId()
             );
             hook.sendMessage("I don't have the required permissions to kick users from this server.").queue();
@@ -59,7 +64,7 @@ public final class Kick implements BasicCommand {
         }
 
         if (member != null && !selfMember.canInteract(member)) {
-            Logger.log(LogLevel.INFO, "Attempted (failed) kick attempt by %s (%s)", 
+            LOGGER.log(Level.INFO, "Attempted (failed) kick attempt by {0} ({1})", 
                 event.getUser().getGlobalName(), event.getUser().getId()
             );
             hook.sendMessage("This user is too powerful for me to kick.").queue();
@@ -76,7 +81,7 @@ public final class Kick implements BasicCommand {
             .flatMap(v -> hook.sendMessage("Kicked user " + user.getName()))
             .queue();
 
-        Logger.log(LogLevel.INFO, "Kick executed by %s (%s) on %s (%s)", 
+        LOGGER.log(Level.INFO, "Kick executed by {0} ({1}) on {2} ({3})", 
             event.getUser().getGlobalName(), event.getUser().getId(), user.getName(), user.getId()
         );
     }

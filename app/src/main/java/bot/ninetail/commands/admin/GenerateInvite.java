@@ -1,10 +1,11 @@
 package bot.ninetail.commands.admin;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.concurrent.TimeUnit;
 
 import jakarta.annotation.Nonnull;
 
-import bot.ninetail.core.logger.*;
 import bot.ninetail.structures.commands.BasicCommand;
 
 import lombok.experimental.UtilityClass;
@@ -24,13 +25,16 @@ import net.dv8tion.jda.api.interactions.commands.OptionMapping;
  */
 @UtilityClass
 public final class GenerateInvite implements BasicCommand {
+    @Nonnull
+    private static final Logger LOGGER = System.getLogger(GenerateInvite.class.getName());
+
     /**
      * Invokes the command.
      *
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        Logger.log(LogLevel.INFO, "Generate invite command invoked by %s (%s) of guild %s (%s)", 
+        LOGGER.log(Level.INFO, "Generate invite command invoked by {0} ({1}) of guild {2} ({3})", 
             event.getUser().getGlobalName(), 
             event.getUser().getId(),
             event.getGuild().getName(),
@@ -41,13 +45,13 @@ public final class GenerateInvite implements BasicCommand {
         InteractionHook hook = event.getHook();
 
         if (!event.getMember().hasPermission(Permission.CREATE_INSTANT_INVITE)) {
-            Logger.log(LogLevel.INFO, "Failed invite generation attempt by %s (%s) - insufficient permissions", event.getUser().getGlobalName(), event.getUser().getId());
+            LOGGER.log(Level.INFO, "Failed invite generation attempt by {0} ({1}) - insufficient permissions", event.getUser().getGlobalName(), event.getUser().getId());
             hook.sendMessage("❌ You don't have permission to create invites for this server.").queue();
             return;
         }
 
         if (!event.getGuild().getSelfMember().hasPermission(Permission.CREATE_INSTANT_INVITE)) {
-            Logger.log(LogLevel.WARN, "Bot lacks CREATE_INSTANT_INVITE permission");
+            LOGGER.log(Level.WARNING, "Bot lacks CREATE_INSTANT_INVITE permission");
             hook.sendMessage("❌ I don't have permission to create invites for this server.").queue();
             return;
         }
@@ -77,10 +81,10 @@ public final class GenerateInvite implements BasicCommand {
                     String inviteInfo = buildInviteInfo(invite, maxAge, maxUses, temporary);
                     hook.sendMessage(String.format("🔗 **Invite Created Successfully!**\n\n**Invite Link:** %s\n\n%s", invite.getUrl(), inviteInfo)).queue();
 
-                    Logger.log(LogLevel.INFO, "Invite created by %s (%s) - %s", event.getUser().getGlobalName(), event.getUser().getId(), invite.getCode());
+                    LOGGER.log(Level.INFO, "Invite created by {0} ({1}) - {2}", event.getUser().getGlobalName(), event.getUser().getId(), invite.getCode());
                 },
                 error -> {
-                    Logger.log(LogLevel.ERROR, "Failed to create invite: %s", error.getMessage());
+                    LOGGER.log(Level.ERROR, "Failed to create invite: {0}", error.getMessage());
                     hook.sendMessage("❌ Failed to create invite. Please try again later.").queue();
                 }
             );

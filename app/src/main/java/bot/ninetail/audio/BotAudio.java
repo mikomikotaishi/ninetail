@@ -1,5 +1,7 @@
 package bot.ninetail.audio;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -8,13 +10,12 @@ import java.util.concurrent.TimeUnit;
 
 import jakarta.annotation.Nonnull;
 
-import bot.ninetail.core.logger.*;
-
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.track.playback.NonAllocatingAudioFrameBuffer;
 
+import bot.ninetail.system.logging.LogLevel;
 import dev.lavalink.youtube.YoutubeAudioSourceManager;
 
 import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
@@ -26,6 +27,9 @@ import net.dv8tion.jda.api.managers.AudioManager;
  * This class is used to manage the bot audio.
  */
 public class BotAudio {
+    @Nonnull
+    private static final Logger LOGGER = System.getLogger(BotAudio.class.getName());
+
     /**
      * Map of guild IDs to bot audio instances.
      */
@@ -247,7 +251,7 @@ public class BotAudio {
      * @param reason The reason for disconnection.
      */
     public void disconnect(String reason) {
-        Logger.log(LogLevel.INFO, reason);
+        LOGGER.log(Level.INFO, reason);
         disconnect();
     }
 
@@ -258,7 +262,7 @@ public class BotAudio {
      * @param args The arguments to format the reason with.
      */
     public void disconnect(String reason, Object... args) {
-        Logger.log(LogLevel.INFO, reason, args);
+        LOGGER.log(Level.INFO, reason, args);
         disconnect();
     }
 

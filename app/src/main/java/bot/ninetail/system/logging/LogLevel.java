@@ -1,4 +1,4 @@
-package bot.ninetail.core.logger;
+package bot.ninetail.system.logging;
 
 import jakarta.annotation.Nonnull;
 
@@ -7,6 +7,7 @@ import lombok.Getter;
 /**
  * Enum representing the levels (types) of logs to make on the Logger
  */
+@Deprecated
 public enum LogLevel {
     INFO(1, "INFO"),
     WARN(2, "WARN"),

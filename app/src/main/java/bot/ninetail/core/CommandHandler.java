@@ -1,5 +1,8 @@
 package bot.ninetail.core;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+
 import jakarta.annotation.Nonnull;
 
 import bot.ninetail.commands.admin.*;
@@ -13,7 +16,6 @@ import bot.ninetail.commands.imageboard.*;
 import bot.ninetail.commands.social.*;
 import bot.ninetail.commands.system.*;
 import bot.ninetail.commands.webhook.*;
-import bot.ninetail.core.logger.*;
 import bot.ninetail.system.BannedUsersManager;
 
 import lombok.experimental.UtilityClass;
@@ -34,13 +36,16 @@ import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
  */
 @UtilityClass
 public final class CommandHandler {
+    @Nonnull
+    private static final Logger LOGGER = System.getLogger(CommandHandler.class.getName());
+
     /**
      * Updates the list of commands to Discord and loads them on to the bot.
      * 
      * @param commands The CommandListUpdateAction of the bot.
      */
     public static void loadCommands(@Nonnull CommandListUpdateAction commands) {
-        Logger.log(LogLevel.INFO, "Loading bot commands.");
+        LOGGER.log(Level.INFO, "Loading bot commands.");
         System.out.println("Loading bot commands.");
 
         commands.addCommands(
@@ -242,7 +247,7 @@ public final class CommandHandler {
                 .setContexts(InteractionContextType.GUILD)
         ).queue();
 
-        Logger.log(LogLevel.INFO, "Commands finished loading!");
+        LOGGER.log(System.Logger.Level.INFO, "Commands finished loading!");
         System.out.println("Commands finished loading!");
     }
 
@@ -255,12 +260,11 @@ public final class CommandHandler {
     public static void handleSlashCommand(@Nonnull JDA jda, @Nonnull SlashCommandInteractionEvent event) {
         if (BannedUsersManager.isBanned(event.getUser().getIdLong())) {
             event.reply("❌ You are globally banned from using this bot.").setEphemeral(true).queue();
-            Logger.log(LogLevel.INFO, "Banned user %s (%s) attempted to use command: %s", 
+            LOGGER.log(Level.INFO, "Banned user {0} ({1}) attempted to use command: {2}", 
                 event.getUser().getGlobalName(), event.getUser().getId(), event.getName()
             );
             return;
         }
-
         switch (event.getName()) {
             // Admin
             case "ban":

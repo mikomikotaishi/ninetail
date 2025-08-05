@@ -1,8 +1,10 @@
 package bot.ninetail.commands.system;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+
 import jakarta.annotation.Nonnull;
 
-import bot.ninetail.core.logger.*;
 import bot.ninetail.structures.commands.JdaCommand;
 import bot.ninetail.system.BannedUsersManager;
 import bot.ninetail.system.ConfigLoader;
@@ -23,6 +25,9 @@ import net.dv8tion.jda.api.interactions.commands.OptionMapping;
  */
 @UtilityClass
 public final class BanIDGlobal implements JdaCommand {
+    @Nonnull
+    private static final Logger LOGGER = System.getLogger(BanIDGlobal.class.getName());
+
     /**
      * Invokes the command.
      *
@@ -30,7 +35,7 @@ public final class BanIDGlobal implements JdaCommand {
      * @param instance The JDA instance.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event, @Nonnull JDA instance) {
-        Logger.log(LogLevel.INFO, "Ban ID globally command attempted by %s (%s) of guild %s (%s)", 
+        LOGGER.log(Level.INFO, "Ban ID globally command attempted by {0} ({1}) of guild {2} ({3})", 
             event.getUser().getGlobalName(), 
             event.getUser().getId(),
             event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
@@ -59,7 +64,7 @@ public final class BanIDGlobal implements JdaCommand {
                     )
                 ).queue();
                 
-                Logger.log(LogLevel.INFO, "User %s globally banned by %s (%s). Reason: %s", 
+                LOGGER.log(Level.INFO, "User {0} globally banned by {1} ({2}). Reason: {3}", 
                     targetUserId, event.getUser().getGlobalName(), event.getUser().getId(), reason
                 );
             } else {
@@ -69,12 +74,12 @@ public final class BanIDGlobal implements JdaCommand {
         } catch (NumberFormatException e) {
             event.reply("❌ Invalid user ID format!").setEphemeral(true).queue();
         } catch (IncorrectPasswordException e) {
-            Logger.log(LogLevel.INFO, "Attempted (failed) ban by %s (%s) due to incorrect password", 
+            LOGGER.log(Level.INFO, "Attempted (failed) ban by {0} ({1}) due to incorrect password", 
                 event.getUser().getGlobalName(), event.getUser().getId()
             );
             event.reply("❌ Incorrect master password!").setEphemeral(true).queue();
         } catch (IncorrectMasterIdException e) {
-            Logger.log(LogLevel.INFO, "Attempted (failed) ban by %s (%s) due to incorrect ID", 
+            LOGGER.log(Level.INFO, "Attempted (failed) ban by {0} ({1}) due to incorrect ID", 
                 event.getUser().getGlobalName(), event.getUser().getId()
             );
             event.reply("❌ Incorrect bot master ID!").setEphemeral(true).queue();

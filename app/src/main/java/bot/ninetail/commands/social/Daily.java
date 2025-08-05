@@ -1,14 +1,17 @@
 package bot.ninetail.commands.social;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import jakarta.annotation.Nonnull;
-import bot.ninetail.core.logger.*;
+
 import bot.ninetail.structures.commands.SocialCommand;
 import bot.ninetail.system.BotDatabaseManager;
+
 import lombok.experimental.UtilityClass;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -20,13 +23,16 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
  */
 @UtilityClass
 public final class Daily implements SocialCommand {
+    @Nonnull
+    private static final Logger LOGGER = System.getLogger(Daily.class.getName());
+
     /**
      * Invokes the command.
      *
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        Logger.log(LogLevel.INFO, "Daily command invoked by %s (%s) of guild %s (%s)", 
+        LOGGER.log(Level.INFO, "Daily command invoked by {0} ({1}) of guild {2} ({3})", 
             event.getUser().getGlobalName(), 
             event.getUser().getId(),
             event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
@@ -81,7 +87,7 @@ public final class Daily implements SocialCommand {
                 }
             }
         } catch (SQLException e) { 
-            Logger.log(LogLevel.ERROR, "Database error in Daily command: %s", e.getMessage());
+            LOGGER.log(Level.ERROR, "Database error in Daily command: {0}", e.getMessage());
             event.reply("Sorry, I couldn't process your daily coins right now. Try again later!").setEphemeral(true).queue();
         }
     }
