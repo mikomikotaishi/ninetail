@@ -1,4 +1,4 @@
-package bot.ninetail.game.poker;
+package bot.ninetail.game.natives.poker;
 
 import jakarta.annotation.Nonnull;
 

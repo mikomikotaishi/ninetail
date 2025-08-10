@@ -1,4 +1,4 @@
-package bot.ninetail.game;
+package bot.ninetail.game.natives;
 
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;

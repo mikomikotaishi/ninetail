@@ -15,7 +15,6 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.track.playback.NonAllocatingAudioFrameBuffer;
 
-import bot.ninetail.system.logging.LogLevel;
 import dev.lavalink.youtube.YoutubeAudioSourceManager;
 
 import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;

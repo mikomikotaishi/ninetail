@@ -1,4 +1,4 @@
-package bot.ninetail.game.poker;
+package bot.ninetail.game.natives.poker;
 
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 import jakarta.annotation.Nonnull;
 
 import bot.ninetail.core.config.ConfigNames;
-import bot.ninetail.game.Engine;
+import bot.ninetail.game.natives.Engine;
 
 /**
  * Poker engine implementation using Java Foreign Function Interface

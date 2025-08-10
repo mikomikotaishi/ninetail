@@ -119,3 +119,9 @@ tasks.jar {
         )
     }
 }
+
+// spotless {
+//     java {
+//         importOrder 'java', 'javax', 'jakarta', 'bot.ninetail', ''
+//     }
+// }

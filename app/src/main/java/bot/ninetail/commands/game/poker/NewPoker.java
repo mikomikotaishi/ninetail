@@ -5,7 +5,7 @@ import java.lang.System.Logger.Level;
 
 import jakarta.annotation.Nonnull;
 
-import bot.ninetail.game.poker.*;
+import bot.ninetail.game.natives.poker.*;
 import bot.ninetail.structures.commands.GameCommand;
 
 import lombok.experimental.UtilityClass;

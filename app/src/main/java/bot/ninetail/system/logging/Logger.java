@@ -49,12 +49,13 @@ public class Logger {
      * 
      * @param level The log level (e.g., ERROR, WARN).
      * @param fmt The message to log.
+     * @param caller The class making the call to log.
      */
-    public static void log(LogLevel level, String message) {
+    public static void log(Level level, String message, Class<?> caller) {
         try {
             if (writer != null) {
                 String timestamp = LocalDateTime.now().format(TemporalFormatting.LOG_ENTRY_FORMAT);
-                writer.write(String.format("[%s] [%s] %s%n", timestamp, level, message));
+                writer.write(String.format("[%s] [%s] [%s] %s%n", timestamp, level, caller.getName(), message));
                 writer.flush();
             } else {
                 throw new IllegalStateException("Writer not initialised.");
@@ -71,11 +72,12 @@ public class Logger {
      * 
      * @param level The log level (e.g., ERROR, WARN).
      * @param fmt The (unformatted) message to log.
+     * @param caller The class making the call to log.
      * @param args The arguments to format the message with.
      */
-    public static void log(LogLevel level, String fmt, Object... args) {
+    public static void log(Level level, String fmt, Class<?> caller, Object... args) {
         String message = String.format(fmt, args);
-        log(level, message);
+        log(level, message, caller);
     }
 
     /**
@@ -84,7 +86,7 @@ public class Logger {
      * @param level The log level (e.g., ERROR, WARN).
      * @param exception The exception to log.
      */
-    public static void logException(LogLevel level, Exception exception) {
+    public static void logException(Level level, Exception exception) {
         try {
             if (writer != null) {
                 StringWriter stringWriter = new StringWriter();

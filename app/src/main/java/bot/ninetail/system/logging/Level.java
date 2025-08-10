@@ -8,7 +8,7 @@ import lombok.Getter;
  * Enum representing the levels (types) of logs to make on the Logger
  */
 @Deprecated
-public enum LogLevel {
+public enum Level {
     INFO(1, "INFO"),
     WARN(2, "WARN"),
     ERROR(3, "ERROR"),
@@ -26,7 +26,7 @@ public enum LogLevel {
      * @param priority The priority
      * @param displayName The display name
      */
-    LogLevel(int priority, @Nonnull String displayName) {
+    Level(int priority, @Nonnull String displayName) {
         this.priority = priority;
         this.displayName = displayName;
     }
@@ -38,7 +38,7 @@ public enum LogLevel {
      * 
      * @return True if other.priority is at least as serious, false otherwise
      */
-    public boolean isAtLeastAsSerious(LogLevel other) {
+    public boolean isAtLeastAsSerious(Level other) {
         return this.priority >= other.priority;
     }
 }

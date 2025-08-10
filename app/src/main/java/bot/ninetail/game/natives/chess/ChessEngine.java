@@ -1,4 +1,4 @@
-package bot.ninetail.game.chess;
+package bot.ninetail.game.natives.chess;
 
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
@@ -12,7 +12,7 @@ import java.util.Map;
 import jakarta.annotation.Nonnull;
 
 import bot.ninetail.core.config.ConfigNames;
-import bot.ninetail.game.Engine;
+import bot.ninetail.game.natives.Engine;
 
 /**
  * Chess engine implementation using Java Foreign Function Interface
