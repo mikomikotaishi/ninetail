@@ -46,7 +46,7 @@ dependencies {
     implementation("org.eclipse.parsson:parsson:+")
 
     // JDA
-    implementation("net.dv8tion:JDA:+")
+    implementation("net.dv8tion:JDA:6.0.0")
 
     // Jackson dependencies (required by JDA)
     implementation("com.fasterxml.jackson.core:jackson-core:+")
