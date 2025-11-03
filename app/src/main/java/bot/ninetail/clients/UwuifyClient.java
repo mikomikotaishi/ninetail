@@ -7,6 +7,7 @@ import java.lang.System.Logger.Level;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.*;
+import java.nio.charset.StandardCharsets;
 
 import jakarta.annotation.Nonnull;
 import jakarta.json.Json;
@@ -49,7 +50,7 @@ public class UwuifyClient extends TextManipulatorClient {
      */
     @Override
     public String getText(@Nonnull String text) throws IOException, InterruptedException {
-        String encodedText = URLEncoder.encode(text, java.nio.charset.StandardCharsets.UTF_8);
+        String encodedText = URLEncoder.encode(text, StandardCharsets.UTF_8);
         String url = String.format(BASE_URL, encodedText, getApiKey());
 
         HttpRequest request = HttpRequest.newBuilder()

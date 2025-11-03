@@ -1,4 +1,4 @@
-package bot.ninetail.commands.cryptography;
+package bot.ninetail.commands.crypto;
 
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
@@ -7,7 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import jakarta.annotation.Nonnull;
 
 import bot.ninetail.structures.commands.CryptographyCommand;
-import bot.ninetail.util.cryptography.Hash;
+import bot.ninetail.util.crypto.Hash;
 
 import lombok.experimental.UtilityClass;
 

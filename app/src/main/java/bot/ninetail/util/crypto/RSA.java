@@ -1,4 +1,4 @@
-package bot.ninetail.util.cryptography;
+package bot.ninetail.util.crypto;
 
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;

@@ -1,4 +1,4 @@
-package bot.ninetail.commands.cryptography;
+package bot.ninetail.commands.crypto;
 
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;

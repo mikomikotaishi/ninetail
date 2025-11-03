@@ -7,7 +7,7 @@ import jakarta.annotation.Nonnull;
 
 import bot.ninetail.commands.admin.*;
 import bot.ninetail.commands.audio.*;
-import bot.ninetail.commands.cryptography.*;
+import bot.ninetail.commands.crypto.*;
 import bot.ninetail.commands.game.*;
 import bot.ninetail.commands.game.chess.*;
 import bot.ninetail.commands.game.poker.*;
