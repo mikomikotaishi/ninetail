@@ -28,7 +28,7 @@ module bot.ninetail {
     exports bot.ninetail.clients;
     exports bot.ninetail.commands.admin;
     exports bot.ninetail.commands.audio;
-    exports bot.ninetail.commands.cryptography;
+    exports bot.ninetail.commands.crypto;
     exports bot.ninetail.commands.game;
     exports bot.ninetail.commands.general;
     exports bot.ninetail.commands.imageboard;
