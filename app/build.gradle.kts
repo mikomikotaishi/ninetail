@@ -9,8 +9,8 @@ plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     java
     application
-    kotlin("jvm") version "2.1.10"
-    id("io.freefair.lombok") version "8.13.1"
+    kotlin("jvm") version "2.2.21"
+    id("io.freefair.lombok") version "9.1.0"
 }
 
 repositories {
