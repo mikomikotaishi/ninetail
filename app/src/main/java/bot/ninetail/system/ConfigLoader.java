@@ -83,6 +83,13 @@ public final class ConfigLoader {
 
     // === General ===
     /**
+     * The Google Gemini token.
+     */
+    @Getter
+    @Nonnull
+    private String geminiToken;
+
+    /**
      * The weather token.
      */
     @Getter 
@@ -187,6 +194,7 @@ public final class ConfigLoader {
                 prebannedUserIds = List.of(); // Empty list if not specified
             }
 
+            geminiToken = PROPERTIES.getProperty("OPENAI_TOKEN");
             weatherToken = PROPERTIES.getProperty("WEATHER_TOKEN");
 
             danbooruToken = PROPERTIES.getProperty("DANBOORU_TOKEN");

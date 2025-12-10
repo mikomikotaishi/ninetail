@@ -67,6 +67,12 @@ dependencies {
     // HikariCP
     implementation("com.zaxxer:HikariCP:+")
 
+    // Google Gemini
+    implementation("com.google.genai:google-genai:+")
+
+    // OpenAI
+    // implementation("com.openai:openai-java:+")
+
     // Testing
     implementation("org.mockito:mockito-core:+")
 }

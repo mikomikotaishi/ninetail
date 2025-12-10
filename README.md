@@ -60,6 +60,8 @@ When you use Ninetail, we collect and store the following information:
    - Globally banned user IDs and ban reasons
    - Timestamps of certain user actions
 
+By using features that query the OpenAI API, the data of your query is subject to the privacy policy of OpenAI.
+
 ### How We Use Your Data
 Your data is used solely for:
 - Operating core bot functionality (commands, games, features)
