@@ -39,7 +39,9 @@ public final class Kick implements BasicCommand {
             event.getGuild().getId()
         );
 
+        @Nonnull
         Member member = event.getOption("user").getAsMember();
+        @Nonnull
         User user = event.getOption("user").getAsUser();
 
         event.deferReply(true).queue();

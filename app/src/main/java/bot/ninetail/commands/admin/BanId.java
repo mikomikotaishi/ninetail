@@ -18,14 +18,14 @@ import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 
 /**
- * Command to ban a user from the server.
+ * Command to ban a user by ID from the server.
  * 
  * @implements BasicCommand
  */
 @UtilityClass
-public final class Ban implements BasicCommand {
+public final class BanId implements BasicCommand {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(Ban.class.getName());
+    private static final Logger LOGGER = System.getLogger(BanId.class.getName());
 
     /**
      * Invokes the command.
@@ -33,17 +33,15 @@ public final class Ban implements BasicCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        LOGGER.log(Level.INFO, "Ban command invoked by {0} ({1}) of guild {2} ({3})", 
+        LOGGER.log(Level.INFO, "BanId command invoked by {0} ({1}) of guild {2} ({3})", 
             event.getUser().getGlobalName(), 
             event.getUser().getId(),
             event.getGuild().getName(),
             event.getGuild().getId()
         );
 
-        @Nonnull
-        Member member = event.getOption("user").getAsMember();
-        @Nonnull
-        User user = event.getOption("user").getAsUser();
+        @Nonnull 
+        String userId = event.getOption("id").getAsString();
 
         event.deferReply(true).queue();
         InteractionHook hook = event.getHook();
@@ -65,14 +63,6 @@ public final class Ban implements BasicCommand {
             return;
         }
 
-        if (member != null && !selfMember.canInteract(member)) {
-            LOGGER.log(Level.INFO, "Attempted (failed) ban attempt by {0} ({1})", 
-                event.getUser().getGlobalName(), event.getUser().getId()
-            );
-            hook.sendMessage("This user is too powerful for me to ban.").queue();
-            return;
-        }
-
         int delDays = event.getOption("del_days", 0, OptionMapping::getAsInt);
 
         String reason = event.getOption("reason",
@@ -80,13 +70,13 @@ public final class Ban implements BasicCommand {
                 OptionMapping::getAsString
         );
 
-        event.getGuild().ban(user, delDays, TimeUnit.DAYS)
+        event.getGuild().ban(User.fromId(userId), delDays, TimeUnit.DAYS)
             .reason(reason)
-            .flatMap(v -> hook.sendMessage("Banned user " + user.getName()))
+            .flatMap(v -> hook.sendMessage("Banned user with ID: " + userId))
             .queue();
 
-        LOGGER.log(Level.INFO, "Ban executed by {0} ({1}) on {2} ({3})", 
-            event.getUser().getGlobalName(), event.getUser().getId(), user.getName(), user.getId()
+        LOGGER.log(Level.INFO, "Ban executed by {0} ({1}) on user ID {2}", 
+            event.getUser().getGlobalName(), event.getUser().getId(), userId
         );
     }
 }

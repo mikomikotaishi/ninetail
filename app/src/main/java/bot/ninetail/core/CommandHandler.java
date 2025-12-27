@@ -59,6 +59,15 @@ public final class CommandHandler {
                 .addOptions(new OptionData(OptionType.STRING, "reason", "The ban reason to use (default: Banned by <user>)"))
                 .setContexts(InteractionContextType.GUILD)
                 .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.BAN_MEMBERS)),
+            // Ban by ID command
+            Commands.slash("banid", "Ban a user by ID from this server. Requires permission to ban users.")
+                .addOptions(new OptionData(OptionType.STRING, "id", "The ID of the user to ban")
+                    .setRequired(true))
+                .addOptions(new OptionData(OptionType.INTEGER, "del_days", "Delete messages from the past days.")
+                    .setRequiredRange(0, 7))
+                .addOptions(new OptionData(OptionType.STRING, "reason", "The ban reason to use (default: Banned by <user>)"))
+                .setContexts(InteractionContextType.GUILD)
+                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.BAN_MEMBERS)),
             // Kick command
             Commands.slash("kick", "Kick a user from this server. Requires permission to kick users.")
                 .addOptions(new OptionData(OptionType.USER, "user", "The user to kick")
@@ -68,6 +77,29 @@ public final class CommandHandler {
                 .addOptions(new OptionData(OptionType.STRING, "reason", "The kick reason to use (default: Kicked by <user>)"))
                 .setContexts(InteractionContextType.GUILD)
                 .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.KICK_MEMBERS)),
+            // Purge messages command
+            Commands.slash("purgemessages", "Delete the last N messages in the current channel. Requires permission to manage messages.")
+                .addOptions(new OptionData(OptionType.INTEGER, "count", "The number of messages to delete (1-100)")
+                    .setRequired(true)
+                    .setRequiredRange(1, 100))
+                .setContexts(InteractionContextType.GUILD)
+                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.MESSAGE_MANAGE)),
+            // Generate invite command
+            Commands.slash("generateinvite", "Generate an invite link for the server. Requires permission to create invites.")
+                .addOptions(new OptionData(OptionType.CHANNEL, "channel", "The channel to create an invite for (default: current channel)"))
+                .addOptions(new OptionData(OptionType.INTEGER, "max_age", "Maximum age of the invite in seconds (0 = never expires)")
+                    .setRequiredRange(0, 604800))
+                .addOptions(new OptionData(OptionType.INTEGER, "max_uses", "Maximum number of uses (0 = unlimited)")
+                    .setRequiredRange(0, 100))
+                .addOptions(new OptionData(OptionType.BOOLEAN, "temporary", "Grant temporary membership"))
+                .addOptions(new OptionData(OptionType.BOOLEAN, "unique", "Create a unique invite code"))
+                .setContexts(InteractionContextType.GUILD)
+                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.CREATE_INSTANT_INVITE)),
+            // Unban id command
+            Commands.slash("unbanid", "Unban a user ID from this server. Requires permission to ban users.")
+                .addOptions(new OptionData(OptionType.USER, "user", "The ID of the user to unban"))
+                .setContexts(InteractionContextType.GUILD)
+                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.BAN_MEMBERS)),
             
             // ====== Audio commands ======
             // Check queue command
@@ -161,16 +193,71 @@ public final class CommandHandler {
                 .addOptions(new OptionData(OptionType.STRING, "tag1", "The first tag to search")
                     .setRequired(true))
                 .addOptions(new OptionData(OptionType.STRING, "tag2", "The second tag to search")),
+            // Derpibooru command
+            Commands.slash("derpibooru", "Query derpibooru")
+                .addOptions(new OptionData(OptionType.STRING, "tag1", "The first tag to search")
+                    .setRequired(true))
+                .addOptions(new OptionData(OptionType.STRING, "tag2", "The second tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag3", "The third tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag4", "The fourth tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag5", "The fifth tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag6", "The sixth tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag7", "The seventh tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag8", "The eighth tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag9", "The ninth tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag10", "The tenth tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag11", "Tag 11"))
+                .addOptions(new OptionData(OptionType.STRING, "tag12", "Tag 12"))
+                .addOptions(new OptionData(OptionType.STRING, "tag13", "Tag 13"))
+                .addOptions(new OptionData(OptionType.STRING, "tag14", "Tag 14"))
+                .addOptions(new OptionData(OptionType.STRING, "tag15", "Tag 15"))
+                .addOptions(new OptionData(OptionType.STRING, "tag16", "Tag 16"))
+                .addOptions(new OptionData(OptionType.STRING, "tag17", "Tag 17"))
+                .addOptions(new OptionData(OptionType.STRING, "tag18", "Tag 18"))
+                .addOptions(new OptionData(OptionType.STRING, "tag19", "Tag 19"))
+                .addOptions(new OptionData(OptionType.STRING, "tag20", "Tag 20"))
+                .addOptions(new OptionData(OptionType.STRING, "tag21", "Tag 21"))
+                .addOptions(new OptionData(OptionType.STRING, "tag22", "Tag 22"))
+                .addOptions(new OptionData(OptionType.STRING, "tag23", "Tag 23"))
+                .addOptions(new OptionData(OptionType.STRING, "tag24", "Tag 24"))
+                .addOptions(new OptionData(OptionType.STRING, "tag25", "Tag 25")),
             // e621 command
             Commands.slash("e621", "Query e621")
                 .addOptions(new OptionData(OptionType.STRING, "tag1", "The first tag to search")
                     .setRequired(true))
-                .addOptions(new OptionData(OptionType.STRING, "tag2", "The second tag to search")),
+                .addOptions(new OptionData(OptionType.STRING, "tag2", "The second tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag3", "The third tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag4", "The fourth tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag5", "The fifth tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag6", "The sixth tag to search")),
             // Gelbooru command
             Commands.slash("gelbooru", "Query gelbooru")
                 .addOptions(new OptionData(OptionType.STRING, "tag1", "The first tag to search")
                     .setRequired(true))
-                .addOptions(new OptionData(OptionType.STRING, "tag2", "The second tag to search")),
+                .addOptions(new OptionData(OptionType.STRING, "tag2", "The second tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag3", "The third tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag4", "The fourth tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag5", "The fifth tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag6", "The sixth tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag7", "The seventh tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag8", "The eighth tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag9", "The ninth tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag10", "The tenth tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag11", "Tag 11"))
+                .addOptions(new OptionData(OptionType.STRING, "tag12", "Tag 12"))
+                .addOptions(new OptionData(OptionType.STRING, "tag13", "Tag 13"))
+                .addOptions(new OptionData(OptionType.STRING, "tag14", "Tag 14"))
+                .addOptions(new OptionData(OptionType.STRING, "tag15", "Tag 15"))
+                .addOptions(new OptionData(OptionType.STRING, "tag16", "Tag 16"))
+                .addOptions(new OptionData(OptionType.STRING, "tag17", "Tag 17"))
+                .addOptions(new OptionData(OptionType.STRING, "tag18", "Tag 18"))
+                .addOptions(new OptionData(OptionType.STRING, "tag19", "Tag 19"))
+                .addOptions(new OptionData(OptionType.STRING, "tag20", "Tag 20"))
+                .addOptions(new OptionData(OptionType.STRING, "tag21", "Tag 21"))
+                .addOptions(new OptionData(OptionType.STRING, "tag22", "Tag 22"))
+                .addOptions(new OptionData(OptionType.STRING, "tag23", "Tag 23"))
+                .addOptions(new OptionData(OptionType.STRING, "tag24", "Tag 24"))
+                .addOptions(new OptionData(OptionType.STRING, "tag25", "Tag 25")),
             // Gyate Booru command
             Commands.slash("gyatebooru", "Query gyate booru")
                 .addOptions(new OptionData(OptionType.STRING, "tag1", "The first tag to search")
@@ -180,7 +267,30 @@ public final class CommandHandler {
             Commands.slash("rule34", "Query Rule34")
                 .addOptions(new OptionData(OptionType.STRING, "tag1", "The first tag to search")
                     .setRequired(true))
-                .addOptions(new OptionData(OptionType.STRING, "tag2", "The second tag to search")),
+                .addOptions(new OptionData(OptionType.STRING, "tag2", "The second tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag3", "The third tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag4", "The fourth tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag5", "The fifth tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag6", "The sixth tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag7", "The seventh tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag8", "The eighth tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag9", "The ninth tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag10", "The tenth tag to search"))
+                .addOptions(new OptionData(OptionType.STRING, "tag11", "Tag 11"))
+                .addOptions(new OptionData(OptionType.STRING, "tag12", "Tag 12"))
+                .addOptions(new OptionData(OptionType.STRING, "tag13", "Tag 13"))
+                .addOptions(new OptionData(OptionType.STRING, "tag14", "Tag 14"))
+                .addOptions(new OptionData(OptionType.STRING, "tag15", "Tag 15"))
+                .addOptions(new OptionData(OptionType.STRING, "tag16", "Tag 16"))
+                .addOptions(new OptionData(OptionType.STRING, "tag17", "Tag 17"))
+                .addOptions(new OptionData(OptionType.STRING, "tag18", "Tag 18"))
+                .addOptions(new OptionData(OptionType.STRING, "tag19", "Tag 19"))
+                .addOptions(new OptionData(OptionType.STRING, "tag20", "Tag 20"))
+                .addOptions(new OptionData(OptionType.STRING, "tag21", "Tag 21"))
+                .addOptions(new OptionData(OptionType.STRING, "tag22", "Tag 22"))
+                .addOptions(new OptionData(OptionType.STRING, "tag23", "Tag 23"))
+                .addOptions(new OptionData(OptionType.STRING, "tag24", "Tag 24"))
+                .addOptions(new OptionData(OptionType.STRING, "tag25", "Tag 25")),
 
             // ====== Social commands ======
             // Daily credits command
@@ -267,136 +377,62 @@ public final class CommandHandler {
         }
         switch (event.getName()) {
             // Admin
-            case "ban":
-                Ban.invoke(event);
-                break;
-            case "deleteguildwebhooks":
-                DeleteGuildWebhooks.invoke(event);
-                break;
-            case "kick":
-                Kick.invoke(event);
-                break;
+            case "ban" -> Ban.invoke(event);
+            case "banid" -> BanId.invoke(event);
+            case "deleteguildwebhooks" -> DeleteGuildWebhooks.invoke(event);
+            case "generateinvite" -> GenerateInvite.invoke(event);
+            case "kick" -> Kick.invoke(event);
+            case "purgemessages" -> PurgeMessages.invoke(event);
+            case "unbanid" -> UnbanId.invoke(event);
             // Audio
-            case "checkqueue":
-                CheckQueue.invoke(event);
-                break;
-            case "clear":
-                Clear.invoke(event);
-                break;
-            case "disconnect":
-                Disconnect.invoke(event);
-                break;
-            case "play":
-                Play.invoke(event);
-                break;
-            case "skip":
-                Skip.invoke(event);
-                break;
+            case "checkqueue" -> CheckQueue.invoke(event);
+            case "clear" -> Clear.invoke(event);
+            case "disconnect" -> Disconnect.invoke(event);
+            case "play" -> Play.invoke(event);
+            case "skip" -> Skip.invoke(event);
             // Cryptography
-            case "encryptaes":
-                EncryptAes.invoke(event);
-                break;
-            case "sha256":
-                Sha256.invoke(event);
-                break;
-            case "sha512":
-                Sha512.invoke(event);
-                break;
-            case "verifysha256":
-                VerifySha256.invoke(event);
-                break;
-            case "verifysha512":
-                VerifySha512.invoke(event);
-                break;
+            case "encryptaes" -> EncryptAes.invoke(event);
+            case "sha256" -> Sha256.invoke(event);
+            case "sha512" -> Sha512.invoke(event);
+            case "verifysha256" -> VerifySha256.invoke(event);
+            case "verifysha512" -> VerifySha512.invoke(event);
             // Game
-            case "magic8ball":
-                Magic8Ball.invoke(event);
-                break;
+            case "magic8ball" -> Magic8Ball.invoke(event);
             /// Chess
-            case "newchess":
-                NewChess.invoke(event);
-                break;
-            case "chessmove":
-                ChessMove.invoke(event);
-                break;
+            case "newchess" -> NewChess.invoke(event);
+            case "chessmove" -> ChessMove.invoke(event);
             /// Poker
-            case "newpoker":
-                NewPoker.invoke(event);
-                break;
-            case "pokermove":
-                PokerMove.invoke(event);
-                break;
+            case "newpoker" -> NewPoker.invoke(event);
+            case "pokermove" -> PokerMove.invoke(event);
             // General
-            case "foxfacts":
-                FoxFacts.invoke(event);
-                break;
-            case "ping":
-                Ping.invoke(event);
-                break;
-            case "randomfox":
-                RandomFox.invoke(event);
-                break;
-            case "weather":
-                Weather.invoke(event);
-                break;
-            case "uwuify":
-                Uwuify.invoke(event);
-                break;
+            case "foxfacts" -> FoxFacts.invoke(event);
+            case "ping" -> Ping.invoke(event);
+            case "randomfox" -> RandomFox.invoke(event);
+            case "weather" -> Weather.invoke(event);
+            case "uwuify" -> Uwuify.invoke(event);
             // Imageboard
-            case "danbooru":
-                Danbooru.invoke(event);
-                break;
-            case "e621":
-                E621.invoke(event);
-                break;
-            case "gelbooru":
-                Gelbooru.invoke(event);
-                break;
-            case "gyatebooru":
-                GyateBooru.invoke(event);
-                break;
-            case "rule34":
-                Rule34.invoke(event);
-                break;
+            case "danbooru" -> Danbooru.invoke(event);
+            case "derpibooru" -> Derpibooru.invoke(event);
+            case "e621" -> E621.invoke(event);
+            case "gelbooru" -> Gelbooru.invoke(event);
+            case "gyatebooru" -> GyateBooru.invoke(event);
+            case "rule34" -> Rule34.invoke(event);
             // Social
-            case "daily":
-                Daily.invoke(event);
-                break;
+            case "daily" -> Daily.invoke(event);
             // System
-            case "banidglobal":
-                BanIDGlobal.invoke(event, jda);
-                break;
-            case "unbanidglobal":
-                UnbanIDGlobal.invoke(event, jda);
-                break;
-            case "wipeallwebhooks":
-                DeleteAllWebhooks.invoke(event, jda);
-                break;
-            case "listguilds":
-                ListGuilds.invoke(event, jda);
-                break;
-            case "reloadconfig":
-                ReloadConfig.invoke(event, jda);
-                break;
-            case "reloadresponses":
-                ReloadResponses.invoke(event, jda);
-                break;
-            case "shutdown":
-                Shutdown.invoke(event, jda);
-                break;
+            case "banidglobal" -> BanIdGlobal.invoke(event, jda);
+            case "unbanidglobal" -> UnbanIdGlobal.invoke(event, jda);
+            case "wipeallwebhooks" -> DeleteAllWebhooks.invoke(event, jda);
+            case "listguilds" -> ListGuilds.invoke(event, jda);
+            case "reloadconfig" -> ReloadConfig.invoke(event, jda);
+            case "reloadresponses" -> ReloadResponses.invoke(event, jda);
+            case "shutdown" -> Shutdown.invoke(event, jda);
             // Webhook
-            case "impersonatemember":
-                ImpersonateMember.invoke(event);
-                break;
-            case "impersonateuser":
-                ImpersonateUser.invoke(event);
-                break;
-            case "webhookmessage":
-                WebhookMessage.invoke(event);
-                break;
+            case "impersonatemember" -> ImpersonateMember.invoke(event);
+            case "impersonateuser" -> ImpersonateUser.invoke(event);
+            case "webhookmessage" -> WebhookMessage.invoke(event);
             // Default
-            default:
-                event.reply("Invalid command!").setEphemeral(true).queue();
+            default -> event.reply("Invalid command!").setEphemeral(true).queue();
         }
     }
 }

@@ -3,6 +3,7 @@ package bot.ninetail.commands.imageboard;
 import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import java.util.ArrayList;
 
 import jakarta.annotation.Nonnull;
 import jakarta.json.JsonArray;
@@ -16,6 +17,7 @@ import bot.ninetail.util.TextFormat;
 import lombok.experimental.UtilityClass;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 
 /**
  * Command to retrieve an image from Rule34.
@@ -51,17 +53,24 @@ public final class Rule34 implements ApiCommand {
             event.reply("Sorry, Rule34 API token was not provided, I cannot retrieve anything.").queue();
             return;
         }
-        String tag1 = event.getOption("tag1").getAsString();
-        String tag2 = event.getOption("tag2") != null ? event.getOption("tag2").getAsString() : null;
+
+        java.util.List<String> tagsList = new ArrayList<>();
+        for (int i = 1; i <= 25; ++i) {
+            OptionMapping option = event.getOption("tag" + i);
+            if (option != null) {
+                tagsList.add(option.getAsString());
+            }
+        }
+        
+        String[] tagsArray = tagsList.toArray(new String[0]);
+        String tagsDisplay = String.join(", ", tagsList);
+
         try {
-            LOGGER.log(Level.INFO, "Attempting to retrieve posts for tags: {0}{1}", 
-                tag1, (tag2 != null ? ", " + tag2 : "")
-            );
-            JsonArray posts = rule34Client.getPosts(tag1, tag2);
+            LOGGER.log(Level.INFO, "Attempting to retrieve posts for tags: {0}", tagsDisplay);
+            JsonArray posts = rule34Client.getPosts(tagsArray);
             if (posts.isEmpty()) {
-                event.reply(String.format("No posts found for tags: %s%s.", 
-                    TextFormat.markdownVerbatim(tag1), 
-                    tag2 != null ? " and " + TextFormat.markdownVerbatim(tag2) : "")
+                event.reply(String.format("No posts found for tags: %s.", 
+                    TextFormat.markdownVerbatim(tagsDisplay))
                 ).queue();
                 return;
             }
@@ -74,20 +83,14 @@ public final class Rule34 implements ApiCommand {
             String imageUrl = post.getString("file_url");
             event.reply(imageUrl).queue();
         } catch (IOException e) {
-            LOGGER.log(Level.WARNING, "Failed to retrieve posts for tags: {0}{1}", 
-                tag1, (tag2 != null ? ", " + tag2 : "")
-            );
-            event.reply(String.format("Error retrieving posts for tags: %s%s.", 
-                TextFormat.markdownVerbatim(tag1), 
-                tag2 != null ? " and " + TextFormat.markdownVerbatim(tag2) : "")
+            LOGGER.log(Level.WARNING, "Failed to retrieve posts for tags: {0}", tagsDisplay);
+            event.reply(String.format("Error retrieving posts for tags: %s.", 
+                TextFormat.markdownVerbatim(tagsDisplay))
             ).queue();
         } catch (InterruptedException e) {
-            LOGGER.log(Level.WARNING, "Interrupted while retrieving posts for tags: {0}{1}", 
-                tag1, (tag2 != null ? ", " + tag2 : "")
-            );
-            event.reply(String.format("Interrupted while retrieving posts for tags: %s%s.", 
-                TextFormat.markdownVerbatim(tag1), 
-                tag2 != null ? " and " + TextFormat.markdownVerbatim(tag2) : "")
+            LOGGER.log(Level.WARNING, "Interrupted while retrieving posts for tags: {0}", tagsDisplay);
+            event.reply(String.format("Interrupted while retrieving posts for tags: %s.", 
+                TextFormat.markdownVerbatim(tagsDisplay))
             ).queue();
         }
     }

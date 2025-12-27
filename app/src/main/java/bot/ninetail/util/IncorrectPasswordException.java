@@ -1,4 +1,4 @@
-package bot.ninetail.util.exceptions;
+package bot.ninetail.util;
 
 import bot.ninetail.structures.NinetailBotException;
 

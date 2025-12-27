@@ -7,10 +7,9 @@ import jakarta.annotation.Nonnull;
 
 import bot.ninetail.structures.commands.JdaCommand;
 import bot.ninetail.system.ConfigLoader;
+import bot.ninetail.util.IncorrectMasterIdException;
+import bot.ninetail.util.IncorrectPasswordException;
 import bot.ninetail.util.MutablePair;
-import bot.ninetail.util.exceptions.IncorrectMasterIdException;
-import bot.ninetail.util.exceptions.IncorrectPasswordException;
-
 import lombok.experimental.UtilityClass;
 
 import net.dv8tion.jda.api.JDA;

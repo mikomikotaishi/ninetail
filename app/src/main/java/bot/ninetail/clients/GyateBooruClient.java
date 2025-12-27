@@ -5,7 +5,9 @@ import java.io.StringReader;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.*;
+import java.nio.charset.StandardCharsets;
 
 import jakarta.annotation.Nonnull;
 import jakarta.json.Json;
@@ -35,7 +37,7 @@ public class GyateBooruClient extends ImageboardClient {
      * Constructs a new Gyate Booru client.
      */
     public GyateBooruClient() {
-        super(BASE_URL, ConfigLoader.getGyateBooruToken());
+        super(BASE_URL, "", ConfigLoader.getGyateBooruToken(), 1, 1000);
     }
 
     /**
@@ -56,12 +58,15 @@ public class GyateBooruClient extends ImageboardClient {
             throw new IllegalArgumentException("No Gyate Booru token found!");
         }
 
+        waitForRateLimit();
+
         String tags = tag1;
         if (tag2 != null && !tag2.isEmpty()) {
             tags += ("+" + tag2);
         }
-        
-        String url = String.format(BASE_URL, tags, getApiKey());
+
+        String encodedTags = URLEncoder.encode(tags, StandardCharsets.UTF_8);
+        String url = String.format(BASE_URL, encodedTags, getApiKey());
         HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create(url))
             .build();
@@ -74,7 +79,7 @@ public class GyateBooruClient extends ImageboardClient {
         }
         LOGGER.log(Level.INFO, "Successfully obtained response.");
         String responseBody = response.body();
-        
+
         try (JsonReader jsonReader = Json.createReader(new StringReader(responseBody))) {
             JsonObject jsonResponse = jsonReader.readObject();
             if (!jsonResponse.containsKey("post")) {

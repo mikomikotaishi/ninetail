@@ -8,9 +8,8 @@ import jakarta.annotation.Nonnull;
 import bot.ninetail.structures.commands.JdaCommand;
 import bot.ninetail.system.BannedUsersManager;
 import bot.ninetail.system.ConfigLoader;
-import bot.ninetail.util.exceptions.IncorrectMasterIdException;
-import bot.ninetail.util.exceptions.IncorrectPasswordException;
-
+import bot.ninetail.util.IncorrectMasterIdException;
+import bot.ninetail.util.IncorrectPasswordException;
 import lombok.experimental.UtilityClass;
 
 import net.dv8tion.jda.api.JDA;
@@ -24,9 +23,9 @@ import net.dv8tion.jda.api.interactions.commands.OptionMapping;
  * @implements JdaCommand
  */
 @UtilityClass
-public final class BanIDGlobal implements JdaCommand {
+public final class BanIdGlobal implements JdaCommand {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(BanIDGlobal.class.getName());
+    private static final Logger LOGGER = System.getLogger(BanIdGlobal.class.getName());
 
     /**
      * Invokes the command.

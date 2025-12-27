@@ -35,7 +35,7 @@ public class UwuifyClient extends TextManipulatorClient {
      * Constructs a new Uwuify client.
      */
     public UwuifyClient() {
-        super(BASE_URL, "placeholder"); // Modify ConfigLoader if needed
+        super(BASE_URL, "placeholder");
     }
 
     /**
