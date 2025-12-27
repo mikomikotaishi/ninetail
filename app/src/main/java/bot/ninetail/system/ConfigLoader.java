@@ -98,6 +98,13 @@ public final class ConfigLoader {
 
     // === Imageboards ===
     /**
+     * The Danbooru login (username).
+     */
+    @Getter 
+    @Nonnull 
+    private String danbooruLogin;
+
+    /**
      * The Danbooru token.
      */
     @Getter 
@@ -105,11 +112,25 @@ public final class ConfigLoader {
     private String danbooruToken;
 
     /**
+     * The e621 login (username).
+     */
+    @Getter 
+    @Nonnull 
+    private String e621Login;
+
+    /**
      * The e621 token.
      */
     @Getter 
     @Nonnull 
     private String e621Token;
+
+    /**
+     * The Gelbooru login (user ID).
+     */
+    @Getter 
+    @Nonnull 
+    private String gelbooruLogin;
 
     /**
      * The Gelbooru token.
@@ -126,11 +147,32 @@ public final class ConfigLoader {
     private String gyateBooruToken;
 
     /**
+     * The Rule34 login (user ID).
+     */
+    @Getter 
+    @Nonnull 
+    private String rule34Login;
+
+    /**
      * The Rule34 token.
      */
     @Getter 
     @Nonnull 
     private String rule34Token;
+
+    /**
+     * The Derpibooru login (user ID).
+     */
+    @Getter 
+    @Nonnull 
+    private String derpibooruLogin;
+
+    /**
+     * The Derpibooru token.
+     */
+    @Getter 
+    @Nonnull 
+    private String derpibooruToken;
 
     /**
      * Static block to load properties from config.properties.
@@ -197,11 +239,17 @@ public final class ConfigLoader {
             geminiToken = PROPERTIES.getProperty("OPENAI_TOKEN");
             weatherToken = PROPERTIES.getProperty("WEATHER_TOKEN");
 
+            danbooruLogin = PROPERTIES.getProperty("DANBOORU_LOGIN");
             danbooruToken = PROPERTIES.getProperty("DANBOORU_TOKEN");
+            e621Login = PROPERTIES.getProperty("E621_LOGIN");
             e621Token = PROPERTIES.getProperty("E621_TOKEN");
+            gelbooruLogin = PROPERTIES.getProperty("GELBOORU_LOGIN");
             gelbooruToken = PROPERTIES.getProperty("GELBOORU_TOKEN");
             gyateBooruToken = PROPERTIES.getProperty("GYATEBOORU_TOKEN");
+            rule34Login = PROPERTIES.getProperty("RULE34_LOGIN");
             rule34Token = PROPERTIES.getProperty("RULE34_TOKEN");
+            derpibooruLogin = PROPERTIES.getProperty("DERPIBOORU_LOGIN");
+            derpibooruToken = PROPERTIES.getProperty("DERPIBOORU_TOKEN");
 
             if (!verbose) {
                 return;
@@ -215,11 +263,17 @@ public final class ConfigLoader {
             }
 
             warnIfNull(weatherToken, "Weather");
-            warnIfNull(danbooruToken, "Danbooru");
-            warnIfNull(e621Token, "e621");
-            warnIfNull(gelbooruToken, "Gelbooru");
+            warnIfNull(danbooruLogin, "Danbooru login");
+            warnIfNull(danbooruToken, "Danbooru token");
+            warnIfNull(e621Login, "e621 login");
+            warnIfNull(e621Token, "e621 token");
+            warnIfNull(gelbooruLogin, "Gelbooru login");
+            warnIfNull(gelbooruToken, "Gelbooru token");
             warnIfNull(gyateBooruToken ,"Gyate Booru");
-            warnIfNull(rule34Token, "Rule34");
+            warnIfNull(rule34Login, "Rule34 login");
+            warnIfNull(rule34Token, "Rule34 token");
+            warnIfNull(derpibooruToken, "Derpibooru login");
+            warnIfNull(derpibooruToken, "Derpibooru token");
 
         } catch (IOException e) {
             LOGGER.log(Level.ERROR, "Exception occurred while loading config: {0}", e.getMessage());

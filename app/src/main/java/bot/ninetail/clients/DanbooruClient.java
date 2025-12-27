@@ -5,12 +5,13 @@ import java.io.StringReader;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.*;
+import java.nio.charset.StandardCharsets;
 
 import jakarta.annotation.Nonnull;
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
-import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 
 import bot.ninetail.structures.clients.ImageboardClient;
@@ -29,13 +30,13 @@ public class DanbooruClient extends ImageboardClient {
      * The base URL for Danbooru.
      */
     @Nonnull
-    private static final String BASE_URL = "https://danbooru.donmai.us/posts.json?tags=%s&api_key=%s";
+    private static final String BASE_URL = "https://danbooru.donmai.us/posts.json?tags=%s&login=%s&api_key=%s";
 
     /**
      * Constructs a new Danbooru client.
      */
     public DanbooruClient() {
-        super(BASE_URL, ConfigLoader.getDanbooruToken());
+        super(BASE_URL, ConfigLoader.getDanbooruLogin(), ConfigLoader.getDanbooruToken(), 1, 1000);
     }
     
     /**
@@ -55,12 +56,20 @@ public class DanbooruClient extends ImageboardClient {
             throw new IllegalArgumentException("No Danbooru token found!");
         }
 
+        if (getLogin() == null || getLogin().isEmpty()) {
+            LOGGER.log(Level.ERROR, "Danbooru login missing!");
+            throw new IllegalArgumentException("No Danbooru login found!");
+        }
+
+        waitForRateLimit();
+
         String tags = tag1;
         if (tag2 != null && !tag2.isEmpty()) {
-            tags += ("+" + tag2);
+            tags += (" " + tag2);
         }
-        
-        String url = String.format(BASE_URL, tags, getApiKey());
+
+        String encodedTags = URLEncoder.encode(tags, StandardCharsets.UTF_8);
+        String url = String.format(BASE_URL, encodedTags, getLogin(), getApiKey());
         HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create(url))
             .build();
@@ -68,19 +77,14 @@ public class DanbooruClient extends ImageboardClient {
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         LOGGER.log(Level.INFO, "Obtaining response.");
         if (response.statusCode() != 200) {
-            LOGGER.log(Level.ERROR, "Failed to execute HTTP request!");
+            LOGGER.log(Level.ERROR, "Failed to execute HTTP request! Status code: {0}, Response: {1}", response.statusCode(), response.body());
             throw new IOException("Failed to execute HTTP request");
         }
         LOGGER.log(Level.INFO, "Successfully obtained response.");
         String responseBody = response.body();
         
         try (JsonReader jsonReader = Json.createReader(new StringReader(responseBody))) {
-            JsonObject jsonResponse = jsonReader.readObject();
-            if (!jsonResponse.containsKey("post")) {
-                LOGGER.log(Level.ERROR, "No 'post' key in Danbooru response");
-                return Json.createArrayBuilder().build();
-            }
-            return jsonResponse.getJsonArray("post");
+            return jsonReader.readArray();
         }
     }
 }

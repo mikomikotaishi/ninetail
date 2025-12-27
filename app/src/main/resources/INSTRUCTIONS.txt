@@ -4,4 +4,16 @@ To use it, create a file called "config.properties" here and include the necessa
 BOT_TOKEN=<your bot token here>
 MASTER_PASSWORD=<your password here>
 
+For imageboard clients (optional), add:
+DANBOORU_LOGIN=<your danbooru username>
+DANBOORU_TOKEN=<your danbooru api key>
+DERPIBOORU_LOGIN=<your derpibooru user id>
+DERPIBOORU_TOKEN=<your derpibooru api key>
+E621_LOGIN=<your e621 username>
+E621_TOKEN=<your e621 api key>
+GELBOORU_LOGIN=<your gelbooru user id>
+GELBOORU_TOKEN=<your gelbooru api key>
+RULE34_LOGIN=<your rule34 user id>
+RULE34_TOKEN=<your rule34 api key>
+
 A JSON file containing all bot responses named responses.json must be included.

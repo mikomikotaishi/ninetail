@@ -24,7 +24,9 @@ public abstract class Client {
      * The HTTP client.
      */
     @Nonnull
-    protected final HttpClient httpClient = HttpClient.newHttpClient();
+    protected final HttpClient httpClient = HttpClient.newBuilder()
+        .followRedirects(HttpClient.Redirect.NORMAL)
+        .build();
 
     /**
      * Constructs a new Client.
