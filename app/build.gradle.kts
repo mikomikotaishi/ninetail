@@ -46,16 +46,25 @@ dependencies {
     implementation("org.eclipse.parsson:parsson:+")
 
     // JDA
-    implementation("net.dv8tion:JDA:6.0.0")
+    implementation("net.dv8tion:JDA:+")
 
     // Jackson dependencies (required by JDA)
-    implementation("com.fasterxml.jackson.core:jackson-core:+")
-    implementation("com.fasterxml.jackson.core:jackson-databind:+")
-    implementation("com.fasterxml.jackson.core:jackson-annotations:+")
+    implementation("tools.jackson.core:jackson-core:+")
+    implementation("tools.jackson.core:jackson-databind:+")
 
     // Audio
     implementation("dev.arbjerg:lavaplayer:+")
     implementation("dev.lavalink.youtube:common:+")
+
+    // Libdave
+    // Interface to use for libraries
+    implementation("club.minnced:jdave-api:+")
+
+    // Compiled natives for libdave for the specified platform
+    implementation("club.minnced:jdave-native-linux-x86-64:+")
+    implementation("club.minnced:jdave-native-linux-aarch64:+")
+    implementation("club.minnced:jdave-native-win-x86-64:+")
+    implementation("club.minnced:jdave-native-darwin:+")
 
     // SLF4J
     implementation("org.slf4j:slf4j-api:+")
@@ -68,7 +77,7 @@ dependencies {
     implementation("com.zaxxer:HikariCP:+")
 
     // Google Gemini
-    implementation("com.google.genai:google-genai:+")
+    implementation("com.google.genai:google-genai:1.47.0")
 
     // OpenAI
     // implementation("com.openai:openai-java:+")

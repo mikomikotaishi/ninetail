@@ -13,8 +13,13 @@ import bot.ninetail.system.logging.LoggerConfig;
 
 import lombok.experimental.UtilityClass;
 
+import club.minnced.discord.jdave.interop.JDaveSessionFactory;
+
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.audio.AudioModuleConfig;
+import net.dv8tion.jda.api.audio.dave.DaveSession;
+import net.dv8tion.jda.api.audio.dave.DaveSessionFactory;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 
@@ -53,6 +58,7 @@ public final class Main {
 
         LOGGER.log(Level.INFO, "Starting bot.");
         JDA api = JDABuilder.createDefault(BOT_TOKEN, INTENTS)
+            .setAudioModuleConfig(new AudioModuleConfig().withDaveSessionFactory(new JDaveSessionFactory()))
             .build()
             .awaitReady();
 
