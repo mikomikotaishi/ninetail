@@ -16,7 +16,7 @@ public class PokerGameManager {
     private static PokerEngine pokerEngine;
 
     /**
-     * Initialises a new poker game.
+     * initializes a new poker game.
      */
     public static void startNewGame() {
         pokerEngine = new PokerEngine();

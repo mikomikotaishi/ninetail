@@ -1,7 +1,5 @@
 package bot.ninetail.audio;
 
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 
 import jakarta.annotation.Nonnull;
 
@@ -21,7 +19,7 @@ import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
  */
 public class AudioPlayerLoadResultHandler implements AudioLoadResultHandler {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(AudioPlayerLoadResultHandler.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(AudioPlayerLoadResultHandler.class.getName());
 
     /**
      * The text channel.
@@ -61,7 +59,7 @@ public class AudioPlayerLoadResultHandler implements AudioLoadResultHandler {
      */
     @Override
     public void trackLoaded(@Nonnull AudioTrack track) {
-        LOGGER.log(Level.INFO, "Loading track: {0}", track.getInfo().title);
+        LOGGER.log(System.Logger.Level.INFO, "Loading track: {0}", track.getInfo().title);
         textChannel.sendMessage(String.format("Added to queue: **%s**", track.getInfo().title)).queue();
         scheduler.queue(track);
     }
@@ -73,7 +71,7 @@ public class AudioPlayerLoadResultHandler implements AudioLoadResultHandler {
      */
     @Override
     public void playlistLoaded(@Nonnull AudioPlaylist playlist) {
-        LOGGER.log(Level.INFO, "Loading playlist: {0}", playlist.getName());
+        LOGGER.log(System.Logger.Level.INFO, "Loading playlist: {0}", playlist.getName());
         if (playlist.isSearchResult()) {
             AudioTrack firstTrack = playlist.getTracks().get(0);
             textChannel.sendMessage(String.format("Added to queue: **%s**", firstTrack.getInfo().title)).queue();
@@ -101,6 +99,8 @@ public class AudioPlayerLoadResultHandler implements AudioLoadResultHandler {
      */
     @Override
     public void loadFailed(FriendlyException exception) {
-        textChannel.sendMessage("Failed to load track: " + exception.getMessage()).queue();
+        String reason = AudioErrors.summarize(exception);
+        LOGGER.log(System.Logger.Level.WARNING, "Failed to load track: {0}", reason);
+        textChannel.sendMessage(String.format("Failed to load track: %s", reason)).queue();
     }
 }

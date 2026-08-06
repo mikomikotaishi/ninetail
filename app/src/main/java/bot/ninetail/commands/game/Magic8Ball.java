@@ -1,8 +1,5 @@
 package bot.ninetail.commands.game;
 
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
-
 import jakarta.annotation.Nonnull;
 
 import bot.ninetail.structures.commands.ContentResponder;
@@ -21,7 +18,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 @UtilityClass
 public final class Magic8Ball extends ContentResponder implements GameCommand {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(Magic8Ball.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(Magic8Ball.class.getName());
 
     /**
      * Static block to load contents.
@@ -62,7 +59,7 @@ public final class Magic8Ball extends ContentResponder implements GameCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        LOGGER.log(Level.INFO, "Magic 8 Ball command invoked by {0} ({1}) of guild {2} ({3})", 
+        LOGGER.log(System.Logger.Level.INFO, "Magic 8 Ball command invoked by {0} ({1}) of guild {2} ({3})", 
             event.getUser().getGlobalName(), 
             event.getUser().getId(),
             event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",

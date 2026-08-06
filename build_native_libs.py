@@ -21,13 +21,13 @@ from typing import List
 CMAKE_INIT_COMMAND: List[str] = ["cmake", "-S", ".", "-G", "Ninja", "-B", "build"]
 CMAKE_BUILD_COMMAND: List[str] = ["cmake", "--build", "build"]
 
-class Colour(Enum):
+class Color(Enum):
     """
-    @enum Colour
+    @enum Color
 
     @extends Enum
 
-    @brief Enum representing ANSI terminal colours.
+    @brief Enum representing ANSI terminal colors.
     """
     RED: str = "\033[31m"
     GREEN: str = "\033[32m"
@@ -45,15 +45,15 @@ class Project(Enum):
     CHESS: str = "chess"
     POKER: str = "poker"
 
-def colour(text: str, colour_code: Colour) -> str:
+def color(text: str, color_code: Color) -> str:
     """
-    @brief Wrap text in ANSI colour codes.
+    @brief Wrap text in ANSI color codes.
 
-    @param text The text to colour.
-    @param colour_code The Colour enum value to apply.
-    @return A string wrapped with ANSI escape codes for terminal colourization.
+    @param text The text to color.
+    @param color_code The Color enum value to apply.
+    @return A string wrapped with ANSI escape codes for terminal colorization.
     """
-    return f"{colour_code.value}{text}{Colour.RESET.value}"
+    return f"{color_code.value}{text}{Color.RESET.value}"
 
 def runCommand(command: List[str], cwd: Path) -> None:
     """
@@ -78,21 +78,21 @@ def buildProject(project: Project) -> None:
     lib_name: Path = f"lib{name}.so"
     output_path: Path = base_dir / "lib" / lib_name
 
-    print(f"{colour("Removing", Colour.RED)} build directory for {name}")
+    print(f"{color("Removing", Color.RED)} build directory for {name}")
     shutil.rmtree(build_dir, ignore_errors = True)
 
-    print(f"{colour("Initialising", Colour.GREEN)} {name} build")
+    print(f"{color("initializing", Color.GREEN)} {name} build")
     runCommand(CMAKE_INIT_COMMAND, cwd = base_dir)
 
-    print(f"{colour("Building", Colour.GREEN)} {name}")
+    print(f"{color("Building", Color.GREEN)} {name}")
     runCommand(CMAKE_BUILD_COMMAND, cwd = base_dir)
 
-    print(f"{colour("Moving", Colour.GREEN)} {lib_name} to lib directory")
+    print(f"{color("Moving", Color.GREEN)} {lib_name} to lib directory")
     built_so: Path = build_dir / "lib" / lib_name
     output_path.parent.mkdir(parents = True, exist_ok = True)
     shutil.move(str(built_so), str(output_path))
 
-    print(colour("Build complete!", Colour.GREEN))
+    print(color("Build complete!", Color.GREEN))
 
 def main() -> None:
     """

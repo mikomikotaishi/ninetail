@@ -1,8 +1,5 @@
 package bot.ninetail.commands.general;
 
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
-
 import jakarta.annotation.Nonnull;
 
 import bot.ninetail.structures.commands.BasicCommand;
@@ -21,7 +18,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 @UtilityClass
 public final class FoxFacts extends ContentResponder implements BasicCommand {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(FoxFacts.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(FoxFacts.class.getName());
 
     /**
      * Static block to load contents.
@@ -37,7 +34,7 @@ public final class FoxFacts extends ContentResponder implements BasicCommand {
                 "The thick, bushy tails of foxes (called \"brushes\") help with balance, warmth, and even communication.",
                 "Foxes are great climbers and swimmers, and some have even been spotted snoozing in trees.",
                 "Fennec foxes, the smallest species, have enormous ears that help dissipate heat and hear insects underground.",
-                "Arctic foxes change colour with the seasons—white in winter for snow camouflage, and brown in summer to match the tundra.",
+                "Arctic foxes change color with the seasons—white in winter for snow camouflage, and brown in summer to match the tundra.",
                 "Foxes are incredibly adaptable, living everywhere from deserts and forests to cities and suburbs.",
                 "Foxes use their urine to mark food caches, helping them remember where they've stored leftovers for later snacking.",
                 "Foxes have partially retractable claws, much like cats, giving them excellent grip for climbing and silent movement.",
@@ -47,7 +44,7 @@ public final class FoxFacts extends ContentResponder implements BasicCommand {
                 "Foxes communicate with each other using body language, ear position, tail movement, and facial expressions.",
                 "Foxes can jump high fences and cover over 6 feet in a single leap, making them surprisingly agile escape artists.",
                 "Some foxes \"play dead\" to lure in curious prey, especially when hunting birds.",
-                "Urban foxes have learned to navigate traffic, wait at crosswalks, and even recognise garbage collection schedules.",
+                "Urban foxes have learned to navigate traffic, wait at crosswalks, and even recognize garbage collection schedules.",
                 "The grey fox can climb trees—it's one of the few members of the dog family with this talent, often using it to escape predators or find food.",
                 "Foxes are omnivores, and their diets can include fruit, berries, insects, small mammals, and even garbage if they live near humans.",
                 "A fox's hearing is so sharp it can detect a mouse squeaking from 100 feet away—even under snow!",
@@ -69,7 +66,7 @@ public final class FoxFacts extends ContentResponder implements BasicCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        LOGGER.log(Level.INFO, "Fox facts command invoked by {0} ({1}) of guild {2} ({3})", 
+        LOGGER.log(System.Logger.Level.INFO, "Fox facts command invoked by {0} ({1}) of guild {2} ({3})", 
             event.getUser().getGlobalName(), 
             event.getUser().getId(),
             event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",

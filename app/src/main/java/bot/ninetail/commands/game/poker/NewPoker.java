@@ -1,8 +1,5 @@
 package bot.ninetail.commands.game.poker;
 
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
-
 import jakarta.annotation.Nonnull;
 
 import bot.ninetail.game.natives.poker.*;
@@ -20,7 +17,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 @UtilityClass
 public final class NewPoker implements GameCommand {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(NewPoker.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(NewPoker.class.getName());
 
     /**
      * Invokes the command.
@@ -28,7 +25,7 @@ public final class NewPoker implements GameCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        LOGGER.log(Level.INFO, "New poker game command invoked by {0} ({1}) of guild {2} ({3})", 
+        LOGGER.log(System.Logger.Level.INFO, "New poker game command invoked by {0} ({1}) of guild {2} ({3})", 
             event.getUser().getGlobalName(), 
             event.getUser().getId(),
             event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
@@ -36,7 +33,7 @@ public final class NewPoker implements GameCommand {
         );
         
         PokerGameManager.startNewGame();
-        LOGGER.log(Level.INFO, "A new poker game has been started by {0} of guild {1}", event.getUser(), event.getGuild());
+        LOGGER.log(System.Logger.Level.INFO, "A new poker game has been started by {0} of guild {1}", event.getUser(), event.getGuild());
         event.reply("A new poker game has been started!").queue();
     }
 }

@@ -118,13 +118,13 @@ public:
     }
 
     /**
-     * @brief Checks if the specified colour is in check.
-     * @param colour The colour to check.
-     * @return True if the specified colour is in check, false otherwise.
+     * @brief Checks if the specified color is in check.
+     * @param color The color to check.
+     * @return True if the specified color is in check, false otherwise.
      */
     [[nodiscard]]
-    bool isInCheck(const std::string& colour) const noexcept {
-        PieceColour pieceColour = (colour == "white") ? PieceColour::White : PieceColour::Black;
-        return board->isInCheck(pieceColour);
+    bool isInCheck(const std::string& color) const noexcept {
+        PieceColor pieceColor = (color == "white") ? PieceColor::White : PieceColor::Black;
+        return board->isInCheck(pieceColor);
     }
 };

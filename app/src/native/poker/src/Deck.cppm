@@ -24,7 +24,7 @@ private:
     std::mt19937 rng; ///< Random number generator for shuffling the deck.
 public:
     /**
-     * @brief Constructs a new Deck object and initialises it with a standard 52-card deck.
+     * @brief Constructs a new Deck object and initializes it with a standard 52-card deck.
      */
     Deck():
         rng{std::random_device{}()} {

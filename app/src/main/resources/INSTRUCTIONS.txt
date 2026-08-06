@@ -3,6 +3,12 @@ To use it, create a file called "config.properties" here and include the necessa
 
 BOT_TOKEN=<your bot token here>
 MASTER_PASSWORD=<your password here>
+BOT_MASTER_ID=<your discord user id>
+
+For the database (required by the wallet, global ban and guild disabling features), add:
+DB_URL=jdbc:postgresql://<host>:<port>/<database>
+DB_USERNAME=<your database user>
+DB_PASSWORD=<your database password>
 
 For imageboard clients (optional), add:
 DANBOORU_LOGIN=<your danbooru username>

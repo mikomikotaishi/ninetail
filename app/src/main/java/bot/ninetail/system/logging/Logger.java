@@ -40,7 +40,7 @@ public class Logger {
 
             writer = new BufferedWriter(new FileWriter(logFile, true));
         } catch (IOException e) {
-            System.err.println("Failed to initialise logger: " + e.getMessage());
+            System.err.println("Failed to initialize logger: " + e.getMessage());
         }
     }
 
@@ -58,10 +58,10 @@ public class Logger {
                 writer.write(String.format("[%s] [%s] [%s] %s%n", timestamp, level, caller.getName(), message));
                 writer.flush();
             } else {
-                throw new IllegalStateException("Writer not initialised.");
+                throw new IllegalStateException("Writer not initialized.");
             }
         } catch (IllegalStateException e) {
-            System.err.println("Failed to write to log file, improperly initialised writer: " + e.getMessage()); 
+            System.err.println("Failed to write to log file, improperly initialized writer: " + e.getMessage()); 
         } catch (IOException e) {
             System.err.println("Failed to write to log file: " + e.getMessage());
         }
@@ -98,10 +98,10 @@ public class Logger {
                 writer.write(String.format("[%s] [%s] %s%n", timestamp, level, stringWriter.toString()));
                 writer.flush();
             } else {
-                throw new IllegalStateException("Writer not initialised.");
+                throw new IllegalStateException("Writer not initialized.");
             }
         } catch (IllegalStateException e) {
-            System.err.println("Failed to write to log file, improperly initialised writer: " + e.getMessage()); 
+            System.err.println("Failed to write to log file, improperly initialized writer: " + e.getMessage()); 
         } catch (IOException e) {
             System.err.println("Failed to write exception to log file: " + e.getMessage());
         }

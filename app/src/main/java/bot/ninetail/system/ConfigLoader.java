@@ -3,8 +3,6 @@ package bot.ninetail.system;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -23,7 +21,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public final class ConfigLoader {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(ConfigLoader.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(ConfigLoader.class.getName());
 
     /**
      * Properties object to store configuration properties.
@@ -202,7 +200,7 @@ public final class ConfigLoader {
 
             if (input == null) {
                 String msg = "Unable to find " + ConfigNames.CONFIG_PROPERTIES_FILE;
-                LOGGER.log(Level.ERROR, msg);
+                LOGGER.log(System.Logger.Level.ERROR, msg);
                 throw new FileNotFoundException(msg);
             }
 
@@ -211,9 +209,9 @@ public final class ConfigLoader {
             botToken = PROPERTIES.getProperty("BOT_TOKEN");
             masterPassword = PROPERTIES.getProperty("MASTER_PASSWORD");
             botMasterId = PROPERTIES.getProperty("BOT_MASTER_ID");
-            coinsRegistryDbUsername = PROPERTIES.getProperty("COINS_REGISTRY_DB_USERNAME");
-            coinsRegistryDbPassword = PROPERTIES.getProperty("COINS_REGISTRY_DB_PASSWORD");
-            coinsRegistryDbUrl = PROPERTIES.getProperty("COINS_REGISTRY_DB_URL");
+            coinsRegistryDbUsername = PROPERTIES.getProperty("DB_USERNAME");
+            coinsRegistryDbPassword = PROPERTIES.getProperty("DB_PASSWORD");
+            coinsRegistryDbUrl = PROPERTIES.getProperty("DB_URL");
 
             // Load pre-banned user IDs
             String bannedIdsString = PROPERTIES.getProperty("PREBANNED_USER_IDS");
@@ -226,10 +224,10 @@ public final class ConfigLoader {
                         .collect(Collectors.toList());
                     
                     if (verbose) {
-                        LOGGER.log(Level.INFO, "Loaded {0} pre-banned user IDs from config", prebannedUserIds.size());
+                        LOGGER.log(System.Logger.Level.INFO, "Loaded {0} pre-banned user IDs from config", prebannedUserIds.size());
                     }
                 } catch (NumberFormatException e) {
-                    LOGGER.log(Level.ERROR, "Invalid format in PREBANNED_USER_IDS: {0}", e.getMessage());
+                    LOGGER.log(System.Logger.Level.ERROR, "Invalid format in PREBANNED_USER_IDS: {0}", e.getMessage());
                     prebannedUserIds = List.of(); // Empty list on error
                 }
             } else {
@@ -276,7 +274,7 @@ public final class ConfigLoader {
             warnIfNull(derpibooruToken, "Derpibooru token");
 
         } catch (IOException e) {
-            LOGGER.log(Level.ERROR, "Exception occurred while loading config: {0}", e.getMessage());
+            LOGGER.log(System.Logger.Level.ERROR, "Exception occurred while loading config: {0}", e.getMessage());
         }
     }
 
@@ -286,7 +284,7 @@ public final class ConfigLoader {
      * @param what The missing item.
      */
     private static void throwRequired(String what) {
-        LOGGER.log(Level.ERROR, "No {0} found!", what);
+        LOGGER.log(System.Logger.Level.ERROR, "No {0} found!", what);
         throw new IllegalArgumentException(String.format("No %s found!", what));
     }
 
@@ -298,7 +296,7 @@ public final class ConfigLoader {
      */
     private static void warnIfNull(String token, String name) {
         if (token == null) {
-            LOGGER.log(Level.WARNING, "No {0} token found!", name);
+            LOGGER.log(System.Logger.Level.WARNING, "No {0} token found!", name);
         }
     }
 }

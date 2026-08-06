@@ -1,7 +1,5 @@
 package bot.ninetail.system;
 
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -9,6 +7,7 @@ import java.sql.Statement;
 import javax.sql.DataSource;
 
 import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 import lombok.Getter;
 
@@ -18,7 +17,7 @@ import lombok.Getter;
  */
 public class BotDatabaseManager {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(BotDatabaseManager.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(BotDatabaseManager.class.getName());
 
     /**
      * The singleton instance of CoinsRegistry.
@@ -43,7 +42,7 @@ public class BotDatabaseManager {
     }
 
     /**
-     * Initialises the database used by the coin registry.
+     * Initializes the database used by the coin registry.
      * 
      * @param dataSource
      * 
@@ -70,16 +69,25 @@ public class BotDatabaseManager {
                     banned_at TIMESTAMP NOT NULL DEFAULT NOW()
                 )
             """);
-            
-            LOGGER.log(Level.INFO, "Database tables initialized successfully");
+
+            statement.execute("""
+                CREATE TABLE IF NOT EXISTS disabled_guilds (
+                    guild_id BIGINT PRIMARY KEY,
+                    disabled_by BIGINT NOT NULL,
+                    reason TEXT,
+                    disabled_at TIMESTAMP NOT NULL DEFAULT NOW()
+                )
+            """);
+
+            LOGGER.log(System.Logger.Level.INFO, "Database tables initialized successfully");
         } catch (SQLException e) {
-            LOGGER.log(Level.ERROR, "Failed to initialize database: {0}", e.getMessage());
+            LOGGER.log(System.Logger.Level.ERROR, "Failed to initialize database: {0}", e.getMessage());
             throw e;
         }
     }
     
     /**
-     * Initialises the singleton instance. Should be called once at application startup.
+     * Initializes the singleton instance. Should be called once at application startup.
      * 
      * @param db The DataSource to use
      */
@@ -90,16 +98,14 @@ public class BotDatabaseManager {
     }
 
     /**
-     * Returns the singleton instance.
-     * 
-     * @return The initialised CoinsRegistry
-     * 
-     * @throws IllegalStateException if called before initialisation
+     * Returns the singleton instance, or null if the database has not been initialised.
+     * Callers are expected to check for null and degrade gracefully, as the bot is allowed to run
+     * without a database.
+     *
+     * @return The initialized BotDatabaseManager, or null if there is none
      */
+    @Nullable
     public static BotDatabaseManager getInstance() {
-        if (instance != null) {
-            throw new IllegalStateException("CoinsRegistry has not been initialized");
-        }
         return instance;
     }
 }

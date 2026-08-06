@@ -1,8 +1,5 @@
 package bot.ninetail.commands.system;
 
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
-
 import jakarta.annotation.Nonnull;
 
 import bot.ninetail.core.ResponseHandler;
@@ -24,7 +21,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 @UtilityClass
 public final class ReloadResponses implements JdaCommand {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(ReloadResponses.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(ReloadResponses.class.getName());
 
     /**
      * Invokes the command.
@@ -33,7 +30,7 @@ public final class ReloadResponses implements JdaCommand {
      * @param instance The JDA instance.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event, @Nonnull JDA instance) {
-        LOGGER.log(Level.INFO, "Response reload command attempted by {0} ({1}) of guild {2} ({3})", 
+        LOGGER.log(System.Logger.Level.INFO, "Response reload command attempted by {0} ({1}) of guild {2} ({3})", 
             event.getUser().getGlobalName(), 
             event.getUser().getId(),
             event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
@@ -49,15 +46,15 @@ public final class ReloadResponses implements JdaCommand {
             }
                 
             event.reply("Reloading response files.").setEphemeral(true).queue();
-            LOGGER.log(Level.INFO, "Reloading response files");
+            LOGGER.log(System.Logger.Level.INFO, "Reloading response files");
             ResponseHandler.reloadResponses();
         } catch (IncorrectPasswordException e) {
-            LOGGER.log(Level.INFO, "Attempted (failed) response reload by {0} ({1}) due to incorrect password", 
+            LOGGER.log(System.Logger.Level.INFO, "Attempted (failed) response reload by {0} ({1}) due to incorrect password", 
                 event.getUser().getGlobalName(), event.getUser().getId()
             );
             event.reply("Incorrect master password!").setEphemeral(true).queue();
         } catch (IncorrectMasterIdException e) {
-            LOGGER.log(Level.INFO, "Attempted (failed) response reload by {0} ({1}) due to incorrect ID", 
+            LOGGER.log(System.Logger.Level.INFO, "Attempted (failed) response reload by {0} ({1}) due to incorrect ID", 
                 event.getUser().getGlobalName(), event.getUser().getId()
             );
             event.reply("Incorrect bot master ID!").setEphemeral(true).queue();

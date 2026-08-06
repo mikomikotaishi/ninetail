@@ -1,7 +1,5 @@
 package bot.ninetail.game.natives;
 
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -15,7 +13,7 @@ import bot.ninetail.core.config.*;
  */
 public abstract class Engine {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(Engine.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(Engine.class.getName());
 
     /**
      * The name of the library used by the engine.
@@ -34,7 +32,7 @@ public abstract class Engine {
         String os = System.getProperty("os.name").toLowerCase();
         String libName = os.contains("win") ? String.format(ConfigNames.DLL_FILE_NAME, libraryName) : String.format(ConfigNames.SO_FILE_NAME, libraryName);
         Path libPath = Paths.get(String.format(ConfigPaths.LIB_PATH, libraryName), libName).toAbsolutePath();
-        LOGGER.log(Level.INFO, "Loading library at {0}", libPath.toString());
+        LOGGER.log(System.Logger.Level.INFO, "Loading library at {0}", libPath.toString());
         System.load(libPath.toString());
     }
 }

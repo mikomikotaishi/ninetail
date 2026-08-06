@@ -26,11 +26,11 @@ export enum class PieceType {
 };
 
 /**
- * @enum PieceColour
- * @brief Enum representing the colour of a chess piece.
+ * @enum PieceColor
+ * @brief Enum representing the color of a chess piece.
  */
-export enum class PieceColour {
-    None, ///< No colour
+export enum class PieceColor {
+    None, ///< No color
     Black, ///< Black piece
     White ///< White piece
 };
@@ -42,15 +42,15 @@ export enum class PieceColour {
 export class Piece {
 private:
     PieceType type; ///< The type of the piece.
-    PieceColour colour; ///< The colour of the piece.
+    PieceColor color; ///< The color of the piece.
 public:
     /**
      * @brief Constructs a new Piece object.
      * @param type The type of the piece.
-     * @param colour The colour of the piece.
+     * @param color The color of the piece.
      */
-    Piece(PieceType type = PieceType::Empty, PieceColour colour = PieceColour::None):
-        type{type}, colour{colour} {}
+    Piece(PieceType type = PieceType::Empty, PieceColor color = PieceColor::None):
+        type{type}, color{color} {}
     
     /**
      * @brief Gets the type of the piece.
@@ -62,12 +62,12 @@ public:
     }
 
     /**
-     * @brief Gets the colour of the piece.
-     * @return The colour of the piece.
+     * @brief Gets the color of the piece.
+     * @return The color of the piece.
      */
     [[nodiscard]]
-    PieceColour getColour() const noexcept { 
-        return colour; 
+    PieceColor getColor() const noexcept { 
+        return color; 
     }
     
     /**
@@ -103,7 +103,7 @@ public:
                 std::unreachable();
         }
         
-        return (colour == PieceColour::White) ? std::toupper(pieceChar) : pieceChar;
+        return (color == PieceColor::White) ? std::toupper(pieceChar) : pieceChar;
     }
     
     /**

@@ -4,7 +4,7 @@
 # Ignore Gradle build output directory
 build
 
-# Bot token and personalised information
+# Bot token and personalized information
 app/src/main/resources/config.properties
 app/src/main/resources/responses.json
 app/bin

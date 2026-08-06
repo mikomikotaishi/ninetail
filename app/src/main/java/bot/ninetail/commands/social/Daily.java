@@ -1,7 +1,5 @@
 package bot.ninetail.commands.social;
 
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,7 +22,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 @UtilityClass
 public final class Daily implements SocialCommand {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(Daily.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(Daily.class.getName());
 
     /**
      * Invokes the command.
@@ -32,7 +30,7 @@ public final class Daily implements SocialCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        LOGGER.log(Level.INFO, "Daily command invoked by {0} ({1}) of guild {2} ({3})", 
+        LOGGER.log(System.Logger.Level.INFO, "Daily command invoked by {0} ({1}) of guild {2} ({3})", 
             event.getUser().getGlobalName(), 
             event.getUser().getId(),
             event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
@@ -87,7 +85,7 @@ public final class Daily implements SocialCommand {
                 }
             }
         } catch (SQLException e) { 
-            LOGGER.log(Level.ERROR, "Database error in Daily command: {0}", e.getMessage());
+            LOGGER.log(System.Logger.Level.ERROR, "Database error in Daily command: {0}", e.getMessage());
             event.reply("Sorry, I couldn't process your daily coins right now. Try again later!").setEphemeral(true).queue();
         }
     }

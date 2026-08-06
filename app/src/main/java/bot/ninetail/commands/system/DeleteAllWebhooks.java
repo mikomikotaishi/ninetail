@@ -1,8 +1,5 @@
 package bot.ninetail.commands.system;
 
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
-
 import jakarta.annotation.Nonnull;
 
 import bot.ninetail.structures.commands.JdaCommand;
@@ -27,7 +24,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 @UtilityClass
 public final class DeleteAllWebhooks implements JdaCommand {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(DeleteAllWebhooks.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(DeleteAllWebhooks.class.getName());
 
     /**
      * Invokes the command.
@@ -36,7 +33,7 @@ public final class DeleteAllWebhooks implements JdaCommand {
      * @param instance The JDA instance.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event, @Nonnull JDA instance) {
-        LOGGER.log(Level.INFO, "Wipe all webhooks command attempted by {0} ({1}) of guild {2} ({3})", 
+        LOGGER.log(System.Logger.Level.INFO, "Wipe all webhooks command attempted by {0} ({1}) of guild {2} ({3})", 
             event.getUser().getGlobalName(), 
             event.getUser().getId(),
             event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
@@ -53,7 +50,7 @@ public final class DeleteAllWebhooks implements JdaCommand {
             
             event.deferReply(true).queue();
             
-            LOGGER.log(Level.INFO, "Successful webhook wipe initiated by {0} ({1})", 
+            LOGGER.log(System.Logger.Level.INFO, "Successful webhook wipe initiated by {0} ({1})", 
                 event.getUser().getGlobalName(), event.getUser().getId()
             );
             
@@ -67,21 +64,21 @@ public final class DeleteAllWebhooks implements JdaCommand {
                         webhooks -> {
                         for (Webhook webhook: webhooks) {
                             webhook.delete().queue(
-                                success -> LOGGER.log(Level.INFO, "Deleted webhook: {0} in guild: {1} ({2})", 
+                                success -> LOGGER.log(System.Logger.Level.INFO, "Deleted webhook: {0} in guild: {1} ({2})", 
                                     webhook.getName(), guild.getName(), guild.getId()
                                 ),
-                                error -> LOGGER.log(Level.ERROR, "Failed to delete webhook: {0} in guild: {1} ({2}) - {3}", 
+                                error -> LOGGER.log(System.Logger.Level.ERROR, "Failed to delete webhook: {0} in guild: {1} ({2}) - {3}", 
                                     webhook.getName(), guild.getName(), guild.getId(), error.getMessage()
                                 )
                             );
                         }
                         }, 
-                        error -> LOGGER.log(Level.ERROR, "Failed to retrieve webhooks for guild: {0} ({1}) - {2}", 
+                        error -> LOGGER.log(System.Logger.Level.ERROR, "Failed to retrieve webhooks for guild: {0} ({1}) - {2}", 
                             guild.getName(), guild.getId(), error.getMessage())
                         );
                 } else {
                     guildCounts.setSecond(guildCounts.getSecond() + 1);
-                    LOGGER.log(Level.INFO, "Skipped guild: {0} ({1}) - Missing MANAGE_WEBHOOKS permission", 
+                    LOGGER.log(System.Logger.Level.INFO, "Skipped guild: {0} ({1}) - Missing MANAGE_WEBHOOKS permission", 
                         guild.getName(), guild.getId()
                     );
                 }
@@ -93,12 +90,12 @@ public final class DeleteAllWebhooks implements JdaCommand {
                 )
             ).queue();
         } catch (IncorrectPasswordException e) {
-            LOGGER.log(Level.INFO, "Attempted (failed) webhook wipe by {0} ({1}) due to incorrect password", 
+            LOGGER.log(System.Logger.Level.INFO, "Attempted (failed) webhook wipe by {0} ({1}) due to incorrect password", 
                 event.getUser().getGlobalName(), event.getUser().getId()
             );
             event.reply("Incorrect master password!").setEphemeral(true).queue();
         } catch (IncorrectMasterIdException e) {
-            LOGGER.log(Level.INFO, "Attempted (failed) webhook wipe by {0} ({1}) due to incorrect ID", 
+            LOGGER.log(System.Logger.Level.INFO, "Attempted (failed) webhook wipe by {0} ({1}) due to incorrect ID", 
                 event.getUser().getGlobalName(), event.getUser().getId()
             );
             event.reply("Incorrect bot master ID!").setEphemeral(true).queue();

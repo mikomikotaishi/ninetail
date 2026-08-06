@@ -27,14 +27,14 @@ export extern "C" {
     static std::unique_ptr<ChessEngine> chessEngine = nullptr;
     
     /**
-     * @brief Initialises the chess engine.
+     * @brief initializes the chess engine.
      */
     EXPORT_API void initChessEngine() {
         if (!chessEngine) {
             std::println("C++: Creating new chess engine");
             chessEngine = std::make_unique<ChessEngine>();
             chessEngine->resetBoard();
-            std::println("C++: Chess engine initialised");
+            std::println("C++: Chess engine initialized");
         } else {
             std::println("C++: Chess engine already exists");
         }
@@ -82,7 +82,7 @@ export extern "C" {
         if (chessEngine) {
             boardDisplay = chessEngine->getBoardDisplay();
         } else {
-            boardDisplay = "Engine not initialised";
+            boardDisplay = "Engine not initialized";
         }
         return boardDisplay.c_str();
     }
@@ -151,14 +151,14 @@ export extern "C" {
     }
     
     /**
-     * @brief Checks if the specified colour is in check.
-     * @param colour The colour to check ("white" or "black").
-     * @return 1 if the specified colour is in check, 0 otherwise.
+     * @brief Checks if the specified color is in check.
+     * @param color The color to check ("white" or "black").
+     * @return 1 if the specified color is in check, 0 otherwise.
      */
     [[nodiscard]]
-    EXPORT_API inline int isInCheck(const char* colour) noexcept {
+    EXPORT_API inline int isInCheck(const char* color) noexcept {
         if (chessEngine) {
-            return chessEngine->isInCheck(colour) ? 1 : 0;
+            return chessEngine->isInCheck(color) ? 1 : 0;
         }
         return 0;
     }

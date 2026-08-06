@@ -140,7 +140,7 @@ private:
 
 public:
     /**
-     * @brief Constructs a new Board object and initialises the board.
+     * @brief Constructs a new Board object and initializes the board.
      */
     Board(): 
         whiteToMove{true},
@@ -152,13 +152,13 @@ public:
         fullMoveNumber{1} {
         enPassantTargetSquare[0] = -1;
         enPassantTargetSquare[1] = -1;
-        initialiseBoard();
+        initializeBoard();
     }
     
     /**
-     * @brief Initialises the board to the starting position.
+     * @brief initializes the board to the starting position.
      */
-    void initialiseBoard() {
+    void initializeBoard() {
         for (int row = 0; row < 8; ++row) {
             for (int col = 0; col < 8; ++col) {
                 board[row][col] = Piece();
@@ -166,28 +166,28 @@ public:
         }
         
         for (int col = 0; col < 8; ++col) {
-            board[1][col] = Piece(PieceType::Pawn, PieceColour::Black);
-            board[6][col] = Piece(PieceType::Pawn, PieceColour::White);
+            board[1][col] = Piece(PieceType::Pawn, PieceColor::Black);
+            board[6][col] = Piece(PieceType::Pawn, PieceColor::White);
         }
         
-        setupBackRank(0, PieceColour::Black);
-        setupBackRank(7, PieceColour::White);
+        setupBackRank(0, PieceColor::Black);
+        setupBackRank(7, PieceColor::White);
     }
     
     /**
-     * @brief Sets up the back rank for a given colour.
+     * @brief Sets up the back rank for a given color.
      * @param row The row to set up the back rank.
-     * @param colour The colour of the pieces.
+     * @param color The color of the pieces.
      */
-    void setupBackRank(int row, PieceColour colour) noexcept {
-        board[row][0] = Piece(PieceType::Rook, colour);
-        board[row][1] = Piece(PieceType::Knight, colour);
-        board[row][2] = Piece(PieceType::Bishop, colour);
-        board[row][3] = Piece(PieceType::Queen, colour);
-        board[row][4] = Piece(PieceType::King, colour);
-        board[row][5] = Piece(PieceType::Bishop, colour);
-        board[row][6] = Piece(PieceType::Knight, colour);
-        board[row][7] = Piece(PieceType::Rook, colour);
+    void setupBackRank(int row, PieceColor color) noexcept {
+        board[row][0] = Piece(PieceType::Rook, color);
+        board[row][1] = Piece(PieceType::Knight, color);
+        board[row][2] = Piece(PieceType::Bishop, color);
+        board[row][3] = Piece(PieceType::Queen, color);
+        board[row][4] = Piece(PieceType::King, color);
+        board[row][5] = Piece(PieceType::Bishop, color);
+        board[row][6] = Piece(PieceType::Knight, color);
+        board[row][7] = Piece(PieceType::Rook, color);
     }
     
     /**
@@ -267,13 +267,13 @@ public:
     bool loadFEN(std::string_view fen) {
         std::istringstream ss(fen);
         std::string placement; 
-        std::string activeColour; 
+        std::string activeColor; 
         std::string castling; 
         std::string enPassant; 
         std::string halfMoves; 
         std::string fullMoves;
         
-        ss >> placement >> activeColour >> castling >> enPassant >> halfMoves >> fullMoves;
+        ss >> placement >> activeColor >> castling >> enPassant >> halfMoves >> fullMoves;
 
         if (ss.fail()) {
             throw std::invalid_argument("Invalid FEN string: missing fields");
@@ -293,7 +293,7 @@ public:
             } else if (std::isdigit(c)) {
                 col += c - '0';
             } else {
-                PieceColour colour = std::isupper(c) ? PieceColour::White : PieceColour::Black;
+                PieceColor color = std::isupper(c) ? PieceColor::White : PieceColor::Black;
                 PieceType type;
                 switch (std::tolower(c)) {
                     case 'p': 
@@ -317,12 +317,12 @@ public:
                     default: 
                         return false;
                 }
-                board[row][col] = Piece(type, colour);
+                board[row][col] = Piece(type, color);
                 col++;
             }
         }
         
-        whiteToMove = (activeColour == "w");
+        whiteToMove = (activeColor == "w");
         
         whiteCanCastleKingside = (castling.find('K') != std::string::npos);
         whiteCanCastleQueenside = (castling.find('Q') != std::string::npos);
@@ -362,8 +362,8 @@ public:
         Piece& fromPiece = board[fromRow][fromCol];
         Piece& toPiece = board[toRow][toCol];
 
-        if ((whiteToMove && fromPiece.getColour() != PieceColour::White) ||
-            (!whiteToMove && fromPiece.getColour() != PieceColour::Black)) {
+        if ((whiteToMove && fromPiece.getColor() != PieceColor::White) ||
+            (!whiteToMove && fromPiece.getColor() != PieceColor::Black)) {
             return false;
         }
 
@@ -382,15 +382,15 @@ public:
             isCastling = true;
             if (toCol > fromCol) {
                 board[fromRow][7] = Piece();
-                board[fromRow][5] = Piece(PieceType::Rook, fromPiece.getColour());
+                board[fromRow][5] = Piece(PieceType::Rook, fromPiece.getColor());
             } else {
                 board[fromRow][0] = Piece();
-                board[fromRow][3] = Piece(PieceType::Rook, fromPiece.getColour());
+                board[fromRow][3] = Piece(PieceType::Rook, fromPiece.getColor());
             }
         }
 
         if (fromPiece.getType() == PieceType::King) {
-            if (fromPiece.getColour() == PieceColour::White) {
+            if (fromPiece.getColor() == PieceColor::White) {
                 whiteCanCastleKingside = false;
                 whiteCanCastleQueenside = false;
             } else {
@@ -433,7 +433,7 @@ public:
                         break;
                 }
             }
-            fromPiece = Piece(promotionType, fromPiece.getColour());
+            fromPiece = Piece(promotionType, fromPiece.getColor());
         }
 
         if (fromPiece.getType() == PieceType::Pawn && abs(fromRow - toRow) == 2) {
@@ -507,17 +507,17 @@ public:
     }
     
     /**
-     * @brief Checks if the specified colour is in check.
-     * @param colour The colour to check.
-     * @return True if the specified colour is in check, false otherwise.
+     * @brief Checks if the specified color is in check.
+     * @param color The color to check.
+     * @return True if the specified color is in check, false otherwise.
      */
     [[nodiscard]]
-    bool isInCheck(PieceColour colour) const noexcept {
+    bool isInCheck(PieceColor color) const noexcept {
         int kingRow = -1, kingCol = -1;
         for (int row = 0; row < 8; ++row) {
             for (int col = 0; col < 8; ++col) {
                 Piece piece = board[row][col];
-                if (piece.getType() == PieceType::King && piece.getColour() == colour) {
+                if (piece.getType() == PieceType::King && piece.getColor() == color) {
                     kingRow = row;
                     kingCol = col;
                     break;
@@ -532,16 +532,16 @@ public:
             return false;
         }
 
-        PieceColour opponentColour = (colour == PieceColour::White) ? PieceColour::Black : PieceColour::White;
+        PieceColor opponentColor = (color == PieceColor::White) ? PieceColor::Black : PieceColor::White;
 
-        int pawnDirection = (colour == PieceColour::White) ? -1 : 1;
+        int pawnDirection = (color == PieceColor::White) ? -1 : 1;
         if (kingRow + pawnDirection >= 0 && kingRow + pawnDirection < 8) {
             if (kingCol - 1 >= 0 && board[kingRow + pawnDirection][kingCol - 1].getType() == PieceType::Pawn &&
-                board[kingRow + pawnDirection][kingCol - 1].getColour() == opponentColour) {
+                board[kingRow + pawnDirection][kingCol - 1].getColor() == opponentColor) {
                 return true;
             }
             if (kingCol + 1 < 8 && board[kingRow + pawnDirection][kingCol + 1].getType() == PieceType::Pawn &&
-                board[kingRow + pawnDirection][kingCol + 1].getColour() == opponentColour) {
+                board[kingRow + pawnDirection][kingCol + 1].getColor() == opponentColor) {
                 return true;
             }
         }
@@ -551,7 +551,7 @@ public:
             int newCol = kingCol + dc;
             if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8 &&
                 board[newRow][newCol].getType() == PieceType::Knight &&
-                board[newRow][newCol].getColour() == opponentColour) {
+                board[newRow][newCol].getColor() == opponentColor) {
                 return true;
             }
         }
@@ -562,7 +562,7 @@ public:
             while (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
                 Piece piece = board[newRow][newCol];
                 if (piece.getType() != PieceType::Empty) {
-                    if (piece.getColour() == opponentColour &&
+                    if (piece.getColor() == opponentColor &&
                         ((piece.getType() == PieceType::Rook && (dr == 0 || dc == 0)) ||
                          (piece.getType() == PieceType::Bishop && (dr != 0 && dc != 0)) ||
                           piece.getType() == PieceType::Queen)) {
@@ -580,7 +580,7 @@ public:
             int newCol = kingCol + dc;
             if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8 &&
                 board[newRow][newCol].getType() == PieceType::King &&
-                board[newRow][newCol].getColour() == opponentColour) {
+                board[newRow][newCol].getColor() == opponentColor) {
                 return true;
             }
         }
@@ -595,12 +595,12 @@ public:
     [[nodiscard]]
     std::vector<Move> getLegalMoves() const noexcept {
         std::vector<Move> legalMoves;
-        PieceColour currentPlayer = whiteToMove ? PieceColour::White : PieceColour::Black;
+        PieceColor currentPlayer = whiteToMove ? PieceColor::White : PieceColor::Black;
 
         for (int row = 0; row < 8; ++row) {
             for (int col = 0; col < 8; ++col) {
                 Piece piece = board[row][col];
-                if (piece.getColour() == currentPlayer) {
+                if (piece.getColor() == currentPlayer) {
                     switch (piece.getType()) {
                         case PieceType::Pawn:
                             generatePawnMoves(row, col, legalMoves);
@@ -638,10 +638,10 @@ public:
      */
     void generatePawnMoves(int row, int col, std::vector<Move>& legalMoves) const noexcept {
         Piece pawn = board[row][col];
-        PieceColour colour = pawn.getColour();
-        int direction = (colour == PieceColour::White) ? -1 : 1;
-        int startRow = (colour == PieceColour::White) ? 6 : 1;
-        int promotionRow = (colour == PieceColour::White) ? 0 : 7;
+        PieceColor color = pawn.getColor();
+        int direction = (color == PieceColor::White) ? -1 : 1;
+        int startRow = (color == PieceColor::White) ? 6 : 1;
+        int promotionRow = (color == PieceColor::White) ? 0 : 7;
 
         int newRow = row + direction;
         if (newRow >= 0 && newRow < 8 && board[newRow][col].getType() == PieceType::Empty) {
@@ -663,7 +663,7 @@ public:
             int newCol = col + dc;
             if (newCol >= 0 && newCol < 8) {
                 Piece target = board[newRow][newCol];
-                if (target.getType() != PieceType::Empty && target.getColour() != colour) {
+                if (target.getType() != PieceType::Empty && target.getColor() != color) {
                     if (newRow == promotionRow) {
                         legalMoves.push_back(Move(row, col, newRow, newCol, 'q'));
                         legalMoves.push_back(Move(row, col, newRow, newCol, 'r'));
@@ -689,14 +689,14 @@ public:
      */
     void generateKnightMoves(int row, int col, std::vector<Move>& legalMoves) const noexcept {
         Piece knight = board[row][col];
-        PieceColour colour = knight.getColour();
+        PieceColor color = knight.getColor();
 
         for (const auto& [dr, dc]: Moves::KnightMoves) {
             int newRow = row + dr;
             int newCol = col + dc;
             if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
                 Piece target = board[newRow][newCol];
-                if (target.getType() == PieceType::Empty || target.getColour() != colour) {
+                if (target.getType() == PieceType::Empty || target.getColor() != color) {
                     legalMoves.push_back(Move(row, col, newRow, newCol));
                 }
             }
@@ -711,7 +711,7 @@ public:
      */
     void generateBishopMoves(int row, int col, std::vector<Move>& legalMoves) const noexcept {
         Piece bishop = board[row][col];
-        PieceColour colour = bishop.getColour();
+        PieceColor color = bishop.getColor();
 
         for (const auto& [dr, dc]: Moves::Directions) {
             if (std::abs(dr) != std::abs(dc)) {
@@ -725,7 +725,7 @@ public:
                 if (target.getType() == PieceType::Empty) {
                     legalMoves.push_back(Move(row, col, newRow, newCol));
                 } else {
-                    if (target.getColour() != colour) {
+                    if (target.getColor() != color) {
                         legalMoves.push_back(Move(row, col, newRow, newCol));
                     }
                     break;
@@ -744,7 +744,7 @@ public:
      */
     void generateRookMoves(int row, int col, std::vector<Move>& legalMoves) const noexcept {
         Piece rook = board[row][col];
-        PieceColour colour = rook.getColour();
+        PieceColor color = rook.getColor();
 
         for (const auto& [dr, dc] : Moves::Directions) {
             if (dr != 0 && dc != 0) {
@@ -758,7 +758,7 @@ public:
                 if (target.getType() == PieceType::Empty) {
                     legalMoves.push_back(Move(row, col, newRow, newCol));
                 } else {
-                    if (target.getColour() != colour)
+                    if (target.getColor() != color)
                         legalMoves.push_back(Move(row, col, newRow, newCol));
                     break; 
                 }
@@ -776,7 +776,7 @@ public:
      */
     void generateQueenMoves(int row, int col, std::vector<Move>& legalMoves) const noexcept {
         Piece queen = board[row][col];
-        PieceColour colour = queen.getColour();
+        PieceColor color = queen.getColor();
 
         for (const auto& [dr, dc]: Moves::Directions) {
             int newRow = row + dr;
@@ -786,7 +786,7 @@ public:
                 if (target.getType() == PieceType::Empty) {
                     legalMoves.push_back(Move(row, col, newRow, newCol));
                 } else {
-                    if (target.getColour() != colour)
+                    if (target.getColor() != color)
                         legalMoves.push_back(Move(row, col, newRow, newCol));
                     break;
                 }
@@ -804,20 +804,20 @@ public:
      */
     void generateKingMoves(int row, int col, std::vector<Move>& legalMoves) const noexcept {
         Piece king = board[row][col];
-        PieceColour colour = king.getColour();
+        PieceColor color = king.getColor();
 
         for (const auto& [dr, dc]: Moves::KingMoves) {
             int newRow = row + dr;
             int newCol = col + dc;
             if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
                 Piece target = board[newRow][newCol];
-                if (target.getType() == PieceType::Empty || target.getColour() != colour) {
+                if (target.getType() == PieceType::Empty || target.getColor() != color) {
                     legalMoves.push_back(Move(row, col, newRow, newCol));
                 }
             }
         }
 
-        if (colour == PieceColour::White) {
+        if (color == PieceColor::White) {
             if (whiteCanCastleKingside && board[7][5].getType() == PieceType::Empty && board[7][6].getType() == PieceType::Empty) {
                 legalMoves.push_back(Move(row, col, 7, 6));
             }
@@ -876,7 +876,7 @@ public:
                         default: 
                             break;
                     }
-                    score += (piece.getColour() == PieceColour::White) ? (pieceValue + positionalValue) : -(pieceValue + positionalValue);
+                    score += (piece.getColor() == PieceColor::White) ? (pieceValue + positionalValue) : -(pieceValue + positionalValue);
                 }
             }
         }
@@ -900,7 +900,7 @@ public:
 
         std::vector<Move> legalMoves = getLegalMoves();
         if (legalMoves.empty()) {
-            return (isInCheck(maximisingPlayer ? PieceColour::White : PieceColour::Black)) ? -10000 : 0;
+            return (isInCheck(maximisingPlayer ? PieceColor::White : PieceColor::Black)) ? -10000 : 0;
         }
 
         if (maximisingPlayer) {

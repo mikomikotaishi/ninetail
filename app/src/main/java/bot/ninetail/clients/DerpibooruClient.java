@@ -2,8 +2,6 @@ package bot.ninetail.clients;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.*;
@@ -25,7 +23,7 @@ import bot.ninetail.system.ConfigLoader;
  */
 public class DerpibooruClient extends ImageboardClient {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(DerpibooruClient.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(DerpibooruClient.class.getName());
 
     /**
      * The base URL for Derpibooru API.
@@ -52,7 +50,7 @@ public class DerpibooruClient extends ImageboardClient {
      */
     public JsonArray getPosts(@Nonnull String... tags) throws IOException, InterruptedException {
         if (getApiKey() == null || getApiKey().isEmpty()) {
-            LOGGER.log(Level.ERROR, "Derpibooru API key missing!");
+            LOGGER.log(System.Logger.Level.ERROR, "Derpibooru API key missing!");
             throw new IllegalArgumentException("No Derpibooru token found!");
         }
 
@@ -81,23 +79,23 @@ public class DerpibooruClient extends ImageboardClient {
             .header("User-Agent", "NinetailBot/1.0")
             .build();
 
-        LOGGER.log(Level.INFO, "Issuing request to Derpibooru for tags: {0}", combinedTags);
+        LOGGER.log(System.Logger.Level.INFO, "Issuing request to Derpibooru for tags: {0}", combinedTags);
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        LOGGER.log(Level.INFO, "Obtaining response.");
+        LOGGER.log(System.Logger.Level.INFO, "Obtaining response.");
 
         if (response.statusCode() != 200) {
-            LOGGER.log(Level.ERROR, "Failed to execute HTTP request! Status code: {0}, Response: {1}", 
+            LOGGER.log(System.Logger.Level.ERROR, "Failed to execute HTTP request! Status code: {0}, Response: {1}", 
                 response.statusCode(), response.body());
             throw new IOException("Failed to execute HTTP request");
         }
 
-        LOGGER.log(Level.INFO, "Successfully obtained response.");
+        LOGGER.log(System.Logger.Level.INFO, "Successfully obtained response.");
         String responseBody = response.body();
         
         try (JsonReader jsonReader = Json.createReader(new StringReader(responseBody))) {
             JsonObject jsonResponse = jsonReader.readObject();
             if (!jsonResponse.containsKey("images")) {
-                LOGGER.log(Level.ERROR, "No 'images' key in Derpibooru response");
+                LOGGER.log(System.Logger.Level.ERROR, "No 'images' key in Derpibooru response");
                 return Json.createArrayBuilder().build();
             }
             return jsonResponse.getJsonArray("images");

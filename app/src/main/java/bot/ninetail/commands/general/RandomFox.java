@@ -1,8 +1,6 @@
 package bot.ninetail.commands.general;
 
 import java.io.IOException;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 
 import jakarta.annotation.Nonnull;
 import jakarta.json.JsonArray;
@@ -25,7 +23,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 @UtilityClass
 public final class RandomFox extends ContentResponder implements ApiCommand {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(RandomFox.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(RandomFox.class.getName());
 
     /**
      * Invokes the command.
@@ -33,7 +31,7 @@ public final class RandomFox extends ContentResponder implements ApiCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        LOGGER.log(Level.INFO, "Random fox image command invoked by {0} ({1}) of guild {2} ({3})", 
+        LOGGER.log(System.Logger.Level.INFO, "Random fox image command invoked by {0} ({1}) of guild {2} ({3})", 
             event.getUser().getGlobalName(), 
             event.getUser().getId(),
             event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
@@ -52,10 +50,10 @@ public final class RandomFox extends ContentResponder implements ApiCommand {
                 event.reply("Could not retrieve a fox image at this time.").queue();
             }
         } catch (IOException e) {
-            LOGGER.log(Level.WARNING, "An error occurred while retrieving random fox image: {0}", e.getMessage());
+            LOGGER.log(System.Logger.Level.WARNING, "An error occurred while retrieving random fox image: {0}", e.getMessage());
             event.reply("An error occurred while fetching a fox image.").queue();
         } catch (InterruptedException e) {
-            LOGGER.log(Level.WARNING, "Interrupted while retrieving random fox image.");
+            LOGGER.log(System.Logger.Level.WARNING, "Interrupted while retrieving random fox image.");
             event.reply("Interrupted while retrieving random fox image.").queue();
         }
     }

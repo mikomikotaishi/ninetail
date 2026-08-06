@@ -16,7 +16,7 @@ public final class ChessGameManager {
     private static ChessEngine chessEngine;
 
     /**
-     * Initialises a new chess game.
+     * initializes a new chess game.
      */
     public static void startNewGame() {
         chessEngine = new ChessEngine();

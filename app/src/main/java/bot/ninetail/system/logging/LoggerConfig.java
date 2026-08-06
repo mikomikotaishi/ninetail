@@ -56,7 +56,7 @@ public final class LoggerConfig {
             
             configured = true;
         } catch (IOException e) {
-            System.err.println("Failed to initialise logger: " + e.getMessage());
+            System.err.println("Failed to initialize logger: " + e.getMessage());
         }
     }
     

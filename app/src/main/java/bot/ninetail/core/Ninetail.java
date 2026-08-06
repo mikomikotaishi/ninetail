@@ -2,6 +2,8 @@ package bot.ninetail.core;
 
 import jakarta.annotation.Nonnull;
 
+import bot.ninetail.system.DisabledGuildsManager;
+
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -14,7 +16,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 /**
  * The bot body class.
- * This class initialises the bot, registers commands, and listens for events.
+ * This class initializes the bot, registers commands, and listens for events.
  * 
  * @extends ListenerAdapter
  */
@@ -56,6 +58,10 @@ public final class Ninetail extends ListenerAdapter {
         Guild guild = message.getGuild();
 
         if (event.getAuthor().isBot() || !event.isFromGuild()) {
+            return;
+        }
+
+        if (DisabledGuildsManager.isDisabled(guild.getIdLong())) {
             return;
         }
 

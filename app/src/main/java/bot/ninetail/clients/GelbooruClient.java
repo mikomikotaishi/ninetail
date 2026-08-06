@@ -2,8 +2,6 @@ package bot.ninetail.clients;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.*;
@@ -25,7 +23,7 @@ import bot.ninetail.system.ConfigLoader;
  */
 public class GelbooruClient extends ImageboardClient {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(GelbooruClient.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(GelbooruClient.class.getName());
 
     /**
      * The base URL for Gelbooru.
@@ -52,12 +50,12 @@ public class GelbooruClient extends ImageboardClient {
      */
     public JsonArray getPosts(@Nonnull String... tags) throws IOException, InterruptedException {
         if (getApiKey() == null || getApiKey().isEmpty()) {
-            LOGGER.log(Level.ERROR, "Gelbooru API key missing!");
+            LOGGER.log(System.Logger.Level.ERROR, "Gelbooru API key missing!");
             throw new IllegalArgumentException("No Gelbooru token found!");
         }
 
         if (getLogin() == null || getLogin().isEmpty()) {
-            LOGGER.log(Level.ERROR, "Gelbooru user ID missing!");
+            LOGGER.log(System.Logger.Level.ERROR, "Gelbooru user ID missing!");
             throw new IllegalArgumentException("No Gelbooru user ID found!");
         }
 
@@ -83,15 +81,15 @@ public class GelbooruClient extends ImageboardClient {
         HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create(url))
             .build();
-        LOGGER.log(Level.INFO, "Issuing request to Gelbooru for tags: {0}", combinedTags);
+        LOGGER.log(System.Logger.Level.INFO, "Issuing request to Gelbooru for tags: {0}", combinedTags);
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        LOGGER.log(Level.INFO, "Obtaining response.");
+        LOGGER.log(System.Logger.Level.INFO, "Obtaining response.");
         if (response.statusCode() != 200) {
-            LOGGER.log(Level.ERROR, "Failed to execute HTTP request! Status code: {0}, Response: {1}", 
+            LOGGER.log(System.Logger.Level.ERROR, "Failed to execute HTTP request! Status code: {0}, Response: {1}", 
                 response.statusCode(), response.body());
             throw new IOException("Failed to execute HTTP request");
         }
-        LOGGER.log(Level.INFO, "Successfully obtained response.");
+        LOGGER.log(System.Logger.Level.INFO, "Successfully obtained response.");
         String responseBody = response.body();
         
         try (JsonReader jsonReader = Json.createReader(new StringReader(responseBody))) {
@@ -100,13 +98,13 @@ public class GelbooruClient extends ImageboardClient {
             if (jsonResponse.containsKey("@attributes")) {
                 JsonObject attributes = jsonResponse.getJsonObject("@attributes");
                 if (attributes.containsKey("count") && attributes.getInt("count") == 0) {
-                    LOGGER.log(Level.INFO, "No posts found for tags");
+                    LOGGER.log(System.Logger.Level.INFO, "No posts found for tags");
                     return Json.createArrayBuilder().build();
                 }
             }
 
             if (!jsonResponse.containsKey("post")) {
-                LOGGER.log(Level.ERROR, "No 'post' key in Gelbooru response");
+                LOGGER.log(System.Logger.Level.ERROR, "No 'post' key in Gelbooru response");
                 return Json.createArrayBuilder().build();
             }
             return jsonResponse.getJsonArray("post");

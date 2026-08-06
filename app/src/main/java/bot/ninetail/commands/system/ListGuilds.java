@@ -4,8 +4,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -33,7 +31,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 @UtilityClass
 public final class ListGuilds implements JdaCommand {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(ListGuilds.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(ListGuilds.class.getName());
 
     /**
      * Invokes the command.
@@ -42,7 +40,7 @@ public final class ListGuilds implements JdaCommand {
      * @param instance The JDA instance.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event, @Nonnull JDA instance) {
-        LOGGER.log(Level.INFO, "Guild list command attempted by {0} ({1}) of guild {2} ({3})", 
+        LOGGER.log(System.Logger.Level.INFO, "Guild list command attempted by {0} ({1}) of guild {2} ({3})", 
             event.getUser().getGlobalName(), 
             event.getUser().getId(),
             event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
@@ -57,7 +55,7 @@ public final class ListGuilds implements JdaCommand {
                 throw new IncorrectMasterIdException();
             }
             
-            LOGGER.log(Level.INFO, "Successful guild list by {0} ({1})", 
+            LOGGER.log(System.Logger.Level.INFO, "Successful guild list by {0} ({1})", 
                 event.getUser().getGlobalName(), event.getUser().getId()
             );
             event.reply("Writing list of guilds.").setEphemeral(true).queue();
@@ -79,18 +77,18 @@ public final class ListGuilds implements JdaCommand {
                     writer.write(String.format("%s (%s)\n", guild.getName(), guild.getId()));
                 }
                 
-                LOGGER.log(Level.INFO, "Guild list written to {0}", guildListFile.getAbsolutePath());
+                LOGGER.log(System.Logger.Level.INFO, "Guild list written to {0}", guildListFile.getAbsolutePath());
             } catch (IOException e) {
-                LOGGER.log(Level.ERROR, "Failed to write guild list: {0}", e.getMessage());
+                LOGGER.log(System.Logger.Level.ERROR, "Failed to write guild list: {0}", e.getMessage());
                 event.getHook().sendMessage("Error writing guild list to file.").setEphemeral(true).queue();
             }
         } catch (IncorrectPasswordException e) {
-            LOGGER.log(Level.INFO, "Attempted (failed) guild list by {0} ({1}) due to incorrect password", 
+            LOGGER.log(System.Logger.Level.INFO, "Attempted (failed) guild list by {0} ({1}) due to incorrect password", 
                 event.getUser().getGlobalName(), event.getUser().getId()
             );
             event.reply("Incorrect master password!").setEphemeral(true).queue();
         } catch (IncorrectMasterIdException e) {
-            LOGGER.log(Level.INFO, "Attempted (failed) guild list by {0} ({1}) due to incorrect ID", 
+            LOGGER.log(System.Logger.Level.INFO, "Attempted (failed) guild list by {0} ({1}) due to incorrect ID", 
                 event.getUser().getGlobalName(), event.getUser().getId()
             );
             event.reply("Incorrect bot master ID!").setEphemeral(true).queue();

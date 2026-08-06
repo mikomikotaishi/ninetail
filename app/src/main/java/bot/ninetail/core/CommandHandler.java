@@ -1,7 +1,6 @@
 package bot.ninetail.core;
 
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
+import java.util.Set;
 
 import jakarta.annotation.Nonnull;
 
@@ -17,6 +16,7 @@ import bot.ninetail.commands.social.*;
 import bot.ninetail.commands.system.*;
 import bot.ninetail.commands.webhook.*;
 import bot.ninetail.system.BannedUsersManager;
+import bot.ninetail.system.DisabledGuildsManager;
 
 import lombok.experimental.UtilityClass;
 
@@ -32,12 +32,29 @@ import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 
 /**
  * Class to handle operations with slash commands.
- * This class is used to handle operations with slash commands recognised by the bot.
+ * This class is used to handle operations with slash commands recognized by the bot.
  */
 @UtilityClass
 public final class CommandHandler {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(CommandHandler.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(CommandHandler.class.getName());
+
+    /**
+     * The commands reserved for the bot master.
+     * These remain usable in a disabled guild, so that the bot master can still re-enable it from
+     * inside that guild and retains control of the bot everywhere.
+     */
+    @Nonnull
+    private static final Set<String> BOT_MASTER_COMMANDS = Set.of(
+        "banidglobal",
+        "deleteallwebhooks",
+        "listguilds",
+        "reloadconfig",
+        "reloadresponses",
+        "setguildenabled",
+        "shutdown",
+        "unbanidglobal"
+    );
 
     /**
      * Updates the list of commands to Discord and loads them on to the bot.
@@ -45,7 +62,7 @@ public final class CommandHandler {
      * @param commands The CommandListUpdateAction of the bot.
      */
     public static void loadCommands(@Nonnull CommandListUpdateAction commands) {
-        LOGGER.log(Level.INFO, "Loading bot commands.");
+        LOGGER.log(System.Logger.Level.INFO, "Loading bot commands.");
         System.out.println("Loading bot commands.");
 
         commands.addCommands(
@@ -155,7 +172,7 @@ public final class CommandHandler {
             // === Chess ===
             // New chess command
             Commands.slash("newchess", "Begins a new chess game")
-                .addOptions(new OptionData(OptionType.STRING, "colour", "The colour to play (black/white)")
+                .addOptions(new OptionData(OptionType.STRING, "color", "The color to play (black/white)")
                     .setRequired(true)),
             // Chess move command
             Commands.slash("chessmove", "Makes a move on the current chess game (if any)")
@@ -318,6 +335,15 @@ public final class CommandHandler {
             Commands.slash("listguilds", "(Bot master only) List all guilds the bot is present in")
                 .addOptions(new OptionData(OptionType.STRING, "password", "The master pasword (specified in config.properties)")
                     .setRequired(true)),      
+            // Set guild enabled command
+            Commands.slash("setguildenabled", "(Bot master only) Enable or disable all bot activity in a guild")
+                .addOptions(new OptionData(OptionType.STRING, "password", "The master password (specified in config.properties)")
+                    .setRequired(true))
+                .addOptions(new OptionData(OptionType.STRING, "id", "The guild ID to enable or disable the bot in")
+                    .setRequired(true))
+                .addOptions(new OptionData(OptionType.BOOLEAN, "enabled", "False to disable all bot activity, true to re-enable it")
+                    .setRequired(true))
+                .addOptions(new OptionData(OptionType.STRING, "reason", "The reason for disabling")),
             // Reload config command
             Commands.slash("reloadconfig", "(Bot master only) Reloads config.properties")
                 .addOptions(new OptionData(OptionType.STRING, "password", "The master pasword (specified in config.properties)")
@@ -370,8 +396,16 @@ public final class CommandHandler {
     public static void handleSlashCommand(@Nonnull JDA jda, @Nonnull SlashCommandInteractionEvent event) {
         if (BannedUsersManager.isBanned(event.getUser().getIdLong())) {
             event.reply("❌ You are globally banned from using this bot.").setEphemeral(true).queue();
-            LOGGER.log(Level.INFO, "Banned user {0} ({1}) attempted to use command: {2}", 
+            LOGGER.log(System.Logger.Level.INFO, "Banned user {0} ({1}) attempted to use command: {2}",
                 event.getUser().getGlobalName(), event.getUser().getId(), event.getName()
+            );
+            return;
+        }
+        if (event.isFromGuild() && !BOT_MASTER_COMMANDS.contains(event.getName())
+                && DisabledGuildsManager.isDisabled(event.getGuild().getIdLong())) {
+            event.reply("❌ The bot has been disabled in this server.").setEphemeral(true).queue();
+            LOGGER.log(System.Logger.Level.INFO, "User {0} ({1}) attempted to use command {2} in disabled guild {3}",
+                event.getUser().getGlobalName(), event.getUser().getId(), event.getName(), event.getGuild().getId()
             );
             return;
         }
@@ -426,6 +460,7 @@ public final class CommandHandler {
             case "listguilds" -> ListGuilds.invoke(event, jda);
             case "reloadconfig" -> ReloadConfig.invoke(event, jda);
             case "reloadresponses" -> ReloadResponses.invoke(event, jda);
+            case "setguildenabled" -> SetGuildEnabled.invoke(event, jda);
             case "shutdown" -> Shutdown.invoke(event, jda);
             // Webhook
             case "impersonatemember" -> ImpersonateMember.invoke(event);
