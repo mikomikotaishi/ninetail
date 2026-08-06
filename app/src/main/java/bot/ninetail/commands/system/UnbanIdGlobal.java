@@ -1,8 +1,5 @@
 package bot.ninetail.commands.system;
 
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
-
 import jakarta.annotation.Nonnull;
 
 import bot.ninetail.structures.commands.JdaCommand;
@@ -24,7 +21,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 @UtilityClass
 public final class UnbanIdGlobal implements JdaCommand {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(UnbanIdGlobal.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(UnbanIdGlobal.class.getName());
 
     /**
      * Invokes the command.
@@ -33,7 +30,7 @@ public final class UnbanIdGlobal implements JdaCommand {
      * @param instance The JDA instance.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event, @Nonnull JDA instance) {
-        LOGGER.log(Level.INFO, "Unban ID globally command attempted by {0} ({1}) of guild {2} ({3})", 
+        LOGGER.log(System.Logger.Level.INFO, "Unban ID globally command attempted by {0} ({1}) of guild {2} ({3})", 
             event.getUser().getGlobalName(), 
             event.getUser().getId(),
             event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
@@ -59,7 +56,7 @@ public final class UnbanIdGlobal implements JdaCommand {
                     String.format("✅ User ID `%s` has been globally unbanned from the bot.", targetUserId)
                 ).queue();
                 
-                LOGGER.log(Level.INFO, "User {0} globally unbanned by {1} ({2})", 
+                LOGGER.log(System.Logger.Level.INFO, "User {0} globally unbanned by {1} ({2})", 
                     targetUserId, event.getUser().getGlobalName(), event.getUser().getId()
                 );
             } else {
@@ -69,12 +66,12 @@ public final class UnbanIdGlobal implements JdaCommand {
         } catch (NumberFormatException e) {
             event.reply("❌ Invalid user ID format!").setEphemeral(true).queue();
         } catch (IncorrectPasswordException e) {
-            LOGGER.log(Level.INFO, "Attempted (failed) unban by {0} ({1}) due to incorrect password", 
+            LOGGER.log(System.Logger.Level.INFO, "Attempted (failed) unban by {0} ({1}) due to incorrect password", 
                 event.getUser().getGlobalName(), event.getUser().getId()
             );
             event.reply("❌ Incorrect master password!").setEphemeral(true).queue();
         } catch (IncorrectMasterIdException e) {
-            LOGGER.log(Level.INFO, "Attempted (failed) unban by {0} ({1}) due to incorrect ID", 
+            LOGGER.log(System.Logger.Level.INFO, "Attempted (failed) unban by {0} ({1}) due to incorrect ID", 
                 event.getUser().getGlobalName(), event.getUser().getId()
             );
             event.reply("❌ Incorrect bot master ID!").setEphemeral(true).queue();

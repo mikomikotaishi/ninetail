@@ -1,8 +1,5 @@
 package bot.ninetail.core;
 
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
-
 import jakarta.annotation.Nonnull;
 
 import bot.ninetail.commands.admin.*;
@@ -37,7 +34,7 @@ import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 @UtilityClass
 public final class CommandHandler {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(CommandHandler.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(CommandHandler.class.getName());
 
     /**
      * Updates the list of commands to Discord and loads them on to the bot.
@@ -45,7 +42,7 @@ public final class CommandHandler {
      * @param commands The CommandListUpdateAction of the bot.
      */
     public static void loadCommands(@Nonnull CommandListUpdateAction commands) {
-        LOGGER.log(Level.INFO, "Loading bot commands.");
+        LOGGER.log(System.Logger.Level.INFO, "Loading bot commands.");
         System.out.println("Loading bot commands.");
 
         commands.addCommands(
@@ -370,7 +367,7 @@ public final class CommandHandler {
     public static void handleSlashCommand(@Nonnull JDA jda, @Nonnull SlashCommandInteractionEvent event) {
         if (BannedUsersManager.isBanned(event.getUser().getIdLong())) {
             event.reply("❌ You are globally banned from using this bot.").setEphemeral(true).queue();
-            LOGGER.log(Level.INFO, "Banned user {0} ({1}) attempted to use command: {2}", 
+            LOGGER.log(System.Logger.Level.INFO, "Banned user {0} ({1}) attempted to use command: {2}", 
                 event.getUser().getGlobalName(), event.getUser().getId(), event.getName()
             );
             return;

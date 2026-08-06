@@ -1,7 +1,5 @@
 package bot.ninetail.system;
 
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,7 +19,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public final class BannedUsersManager {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(BannedUsersManager.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(BannedUsersManager.class.getName());
 
     /**
      * In-memory cache of banned user IDs for fast lookup.
@@ -39,12 +37,12 @@ public final class BannedUsersManager {
         List<Long> prebannedIds = ConfigLoader.getPrebannedUserIds();
         if (!prebannedIds.isEmpty()) {
             bannedUserCache.addAll(prebannedIds);
-            LOGGER.log(Level.INFO, "Loaded {0} pre-banned user IDs from config", prebannedIds.size());
+            LOGGER.log(System.Logger.Level.INFO, "Loaded {0} pre-banned user IDs from config", prebannedIds.size());
         }
         
         // Then, load banned IDs from database
         if (BotDatabaseManager.getInstance() == null || BotDatabaseManager.getInstance().getData() == null) {
-            LOGGER.log(Level.WARNING, "Database not available, only config-based banned users loaded");
+            LOGGER.log(System.Logger.Level.WARNING, "Database not available, only config-based banned users loaded");
             return;
         }
         
@@ -61,11 +59,11 @@ public final class BannedUsersManager {
                 }
             }
             
-            LOGGER.log(Level.INFO, "Loaded {0} banned users from database, {1} total banned users", 
+            LOGGER.log(System.Logger.Level.INFO, "Loaded {0} banned users from database, {1} total banned users", 
                 dbBannedCount, bannedUserCache.size());
             
         } catch (SQLException e) {
-            LOGGER.log(Level.ERROR, "Failed to load banned users from database: {0}", e.getMessage());
+            LOGGER.log(System.Logger.Level.ERROR, "Failed to load banned users from database: {0}", e.getMessage());
         }
     }
     
@@ -89,7 +87,7 @@ public final class BannedUsersManager {
      */
     public static boolean banUser(long userId, long bannedBy, @Nullable String reason) {
         if (BotDatabaseManager.getInstance() == null || BotDatabaseManager.getInstance().getData() == null) {
-            LOGGER.log(Level.ERROR, "Database not available, cannot ban user");
+            LOGGER.log(System.Logger.Level.ERROR, "Database not available, cannot ban user");
             return false;
         }
         
@@ -106,15 +104,15 @@ public final class BannedUsersManager {
             
             if (rowsAffected > 0) {
                 bannedUserCache.add(userId);
-                LOGGER.log(Level.INFO, "User {0} banned by {1}. Reason: {2}", userId, bannedBy, reason != null ? reason : "No reason provided");
+                LOGGER.log(System.Logger.Level.INFO, "User {0} banned by {1}. Reason: {2}", userId, bannedBy, reason != null ? reason : "No reason provided");
                 return true;
             } else {
-                LOGGER.log(Level.WARNING, "User {0} was already banned", userId);
+                LOGGER.log(System.Logger.Level.WARNING, "User {0} was already banned", userId);
                 return false;
             }
             
         } catch (SQLException e) {
-            LOGGER.log(Level.ERROR, "Failed to ban user {0}: {1}", userId, e.getMessage());
+            LOGGER.log(System.Logger.Level.ERROR, "Failed to ban user {0}: {1}", userId, e.getMessage());
             return false;
         }
     }
@@ -127,7 +125,7 @@ public final class BannedUsersManager {
      */
     public static boolean unbanUser(long userId) {
         if (BotDatabaseManager.getInstance() == null || BotDatabaseManager.getInstance().getData() == null) {
-            LOGGER.log(Level.ERROR, "Database not available, cannot unban user");
+            LOGGER.log(System.Logger.Level.ERROR, "Database not available, cannot unban user");
             return false;
         }
         
@@ -139,15 +137,15 @@ public final class BannedUsersManager {
             
             if (rowsAffected > 0) {
                 bannedUserCache.remove(userId);
-                LOGGER.log(Level.INFO, "User {0} unbanned", userId);
+                LOGGER.log(System.Logger.Level.INFO, "User {0} unbanned", userId);
                 return true;
             } else {
-                LOGGER.log(Level.WARNING, "User {0} was not banned", userId);
+                LOGGER.log(System.Logger.Level.WARNING, "User {0} was not banned", userId);
                 return false;
             }
             
         } catch (SQLException e) {
-            LOGGER.log(Level.ERROR, "Failed to unban user {0}: {1}", userId, e.getMessage());
+            LOGGER.log(System.Logger.Level.ERROR, "Failed to unban user {0}: {1}", userId, e.getMessage());
             return false;
         }
     }

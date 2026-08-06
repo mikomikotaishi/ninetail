@@ -1,8 +1,5 @@
 package bot.ninetail.commands.game.chess;
 
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
-
 import jakarta.annotation.Nonnull;
 
 import bot.ninetail.game.natives.chess.*;
@@ -20,7 +17,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 @UtilityClass
 public final class NewChess implements GameCommand {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(NewChess.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(NewChess.class.getName());
 
     /**
      * Invokes the command.
@@ -28,7 +25,7 @@ public final class NewChess implements GameCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        LOGGER.log(Level.INFO, "New chess game command invoked by {0} ({1}) of guild {2} ({3})", 
+        LOGGER.log(System.Logger.Level.INFO, "New chess game command invoked by {0} ({1}) of guild {2} ({3})", 
             event.getUser().getGlobalName(), 
             event.getUser().getId(),
             event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
@@ -39,7 +36,7 @@ public final class NewChess implements GameCommand {
         ChessEngine chessEngine = ChessGameManager.getChessEngine();
         
         String boardState = chessEngine.getBoardState();
-        LOGGER.log(Level.INFO, "NewChess command - received board state: {0}", boardState);
+        LOGGER.log(System.Logger.Level.INFO, "NewChess command - received board state: {0}", boardState);
         
         if (boardState.startsWith("ERROR:")) {
             boardState = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";

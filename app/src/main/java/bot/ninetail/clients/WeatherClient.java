@@ -2,8 +2,6 @@ package bot.ninetail.clients;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.net.URI;
 import java.net.http.*;
 
@@ -22,7 +20,7 @@ import bot.ninetail.system.ConfigLoader;
  */
 public class WeatherClient extends LocationInformationClient {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(WeatherClient.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(WeatherClient.class.getName());
 
     /**
      * The base URL for OpenWeatherMap.
@@ -50,7 +48,7 @@ public class WeatherClient extends LocationInformationClient {
     @Override
     public JsonObject getInfo(@Nonnull String location) throws IOException, InterruptedException {
         if (getApiKey() == null || getApiKey().isEmpty()) {
-            LOGGER.log(Level.ERROR, "Weather API key missing!");
+            LOGGER.log(System.Logger.Level.ERROR, "Weather API key missing!");
             throw new IllegalArgumentException("No Weather token found!");
         }
 
@@ -58,14 +56,14 @@ public class WeatherClient extends LocationInformationClient {
         HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create(url))
             .build();
-        LOGGER.log(Level.INFO, "Issuing request to OpenWeatherMap for location: {0}", location);
+        LOGGER.log(System.Logger.Level.INFO, "Issuing request to OpenWeatherMap for location: {0}", location);
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        LOGGER.log(Level.INFO, "Obtaining response.");
+        LOGGER.log(System.Logger.Level.INFO, "Obtaining response.");
         if (response.statusCode() != 200) {
-            LOGGER.log(Level.ERROR, "Failed to execute HTTP request! Status: {0}", response.statusCode());
+            LOGGER.log(System.Logger.Level.ERROR, "Failed to execute HTTP request! Status: {0}", response.statusCode());
             throw new IOException("Failed to execute HTTP request: " + response.statusCode());
         }
-        LOGGER.log(Level.INFO, "Successfully obtained response.");
+        LOGGER.log(System.Logger.Level.INFO, "Successfully obtained response.");
         String responseBody = response.body();
         
         try (JsonReader jsonReader = Json.createReader(new StringReader(responseBody))) {

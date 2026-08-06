@@ -1,7 +1,5 @@
 package bot.ninetail.commands.webhook;
 
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.util.function.Consumer;
 
 import jakarta.annotation.Nonnull;
@@ -24,7 +22,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 @UtilityClass
 public final class ImpersonateUser implements WebhookCommand {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(ImpersonateUser.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(ImpersonateUser.class.getName());
 
     /**
      * The webhook name used for impersonating users.
@@ -38,7 +36,7 @@ public final class ImpersonateUser implements WebhookCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        LOGGER.log(Level.INFO, "Global impersonate user command invoked by {0} ({1}) of guild {2} ({3})", 
+        LOGGER.log(System.Logger.Level.INFO, "Global impersonate user command invoked by {0} ({1}) of guild {2} ({3})", 
             event.getUser().getGlobalName(), 
             event.getUser().getId(),
             event.getGuild().getName(),
@@ -71,26 +69,26 @@ public final class ImpersonateUser implements WebhookCommand {
                     }, 
                     error -> {
                         event.getHook().editOriginal("Couldn't fetch user: " + error.getMessage()).queue();
-                        LOGGER.log(Level.ERROR, "Failed to fetch user {0}: {1}", 
+                        LOGGER.log(System.Logger.Level.ERROR, "Failed to fetch user {0}: {1}", 
                             userId, error.getMessage()
                         );
                     }
                 );
 
             if (webhook != null) {
-                LOGGER.log(Level.DEBUG, "Using existing impersonator webhook in #{0} of guild {1}",
+                LOGGER.log(System.Logger.Level.DEBUG, "Using existing impersonator webhook in #{0} of guild {1}",
                     channel.getName(), guild.getName()
                 );
                 sendWithWebhook.accept(webhook);
             } else {
-                LOGGER.log(Level.INFO, "Creating impersonator webhook in #{0} of guild {1}",
+                LOGGER.log(System.Logger.Level.INFO, "Creating impersonator webhook in #{0} of guild {1}",
                     channel.getName(), guild.getName()
                 );
                 channel.createWebhook(IMPERSONATOR_WEBHOOK_NAME).queue(
                     newWebhook -> sendWithWebhook.accept(newWebhook),
                     error -> {
                         event.getHook().editOriginal(String.format("Failed to create webhook: %s", error.getMessage())).queue();
-                        LOGGER.log(Level.ERROR, "Failed to create webhook in guild {0}: {1}", 
+                        LOGGER.log(System.Logger.Level.ERROR, "Failed to create webhook in guild {0}: {1}", 
                             guild.getName(), error.getMessage()
                         );
                     }
@@ -98,7 +96,7 @@ public final class ImpersonateUser implements WebhookCommand {
             }
         }, error -> {
             event.getHook().editOriginal("Failed to retrieve webhooks: " + error.getMessage()).queue();
-            LOGGER.log(Level.ERROR, "Failed to retrieve webhooks for guild {0}: {1}", 
+            LOGGER.log(System.Logger.Level.ERROR, "Failed to retrieve webhooks for guild {0}: {1}", 
                 guild.getName(), error.getMessage()
             );
         });

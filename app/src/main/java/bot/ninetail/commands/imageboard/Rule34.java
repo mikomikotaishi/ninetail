@@ -1,8 +1,6 @@
 package bot.ninetail.commands.imageboard;
 
 import java.io.IOException;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.util.ArrayList;
 
 import jakarta.annotation.Nonnull;
@@ -27,7 +25,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 @UtilityClass
 public final class Rule34 implements ApiCommand {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(Rule34.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(Rule34.class.getName());
 
     /**
      * The Rule34 client.
@@ -41,7 +39,7 @@ public final class Rule34 implements ApiCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        LOGGER.log(Level.INFO, "Rule34 command invoked by {0} ({1}) of guild {2} ({3})", 
+        LOGGER.log(System.Logger.Level.INFO, "Rule34 command invoked by {0} ({1}) of guild {2} ({3})", 
             event.getUser().getGlobalName(), 
             event.getUser().getId(),
             event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
@@ -49,7 +47,7 @@ public final class Rule34 implements ApiCommand {
         );
         
         if (rule34Client.getApiKey() == null) {
-            LOGGER.log(Level.WARNING, "Failed to invoke Rule34 command due to missing API token.");
+            LOGGER.log(System.Logger.Level.WARNING, "Failed to invoke Rule34 command due to missing API token.");
             event.reply("Sorry, Rule34 API token was not provided, I cannot retrieve anything.").queue();
             return;
         }
@@ -66,7 +64,7 @@ public final class Rule34 implements ApiCommand {
         String tagsDisplay = String.join(", ", tagsList);
 
         try {
-            LOGGER.log(Level.INFO, "Attempting to retrieve posts for tags: {0}", tagsDisplay);
+            LOGGER.log(System.Logger.Level.INFO, "Attempting to retrieve posts for tags: {0}", tagsDisplay);
             JsonArray posts = rule34Client.getPosts(tagsArray);
             if (posts.isEmpty()) {
                 event.reply(String.format("No posts found for tags: %s.", 
@@ -83,12 +81,12 @@ public final class Rule34 implements ApiCommand {
             String imageUrl = post.getString("file_url");
             event.reply(imageUrl).queue();
         } catch (IOException e) {
-            LOGGER.log(Level.WARNING, "Failed to retrieve posts for tags: {0}", tagsDisplay);
+            LOGGER.log(System.Logger.Level.WARNING, "Failed to retrieve posts for tags: {0}", tagsDisplay);
             event.reply(String.format("Error retrieving posts for tags: %s.", 
                 TextFormat.markdownVerbatim(tagsDisplay))
             ).queue();
         } catch (InterruptedException e) {
-            LOGGER.log(Level.WARNING, "Interrupted while retrieving posts for tags: {0}", tagsDisplay);
+            LOGGER.log(System.Logger.Level.WARNING, "Interrupted while retrieving posts for tags: {0}", tagsDisplay);
             event.reply(String.format("Interrupted while retrieving posts for tags: %s.", 
                 TextFormat.markdownVerbatim(tagsDisplay))
             ).queue();

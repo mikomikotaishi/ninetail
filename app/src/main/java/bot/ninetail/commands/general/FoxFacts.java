@@ -1,8 +1,5 @@
 package bot.ninetail.commands.general;
 
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
-
 import jakarta.annotation.Nonnull;
 
 import bot.ninetail.structures.commands.BasicCommand;
@@ -21,7 +18,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 @UtilityClass
 public final class FoxFacts extends ContentResponder implements BasicCommand {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(FoxFacts.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(FoxFacts.class.getName());
 
     /**
      * Static block to load contents.
@@ -69,7 +66,7 @@ public final class FoxFacts extends ContentResponder implements BasicCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        LOGGER.log(Level.INFO, "Fox facts command invoked by {0} ({1}) of guild {2} ({3})", 
+        LOGGER.log(System.Logger.Level.INFO, "Fox facts command invoked by {0} ({1}) of guild {2} ({3})", 
             event.getUser().getGlobalName(), 
             event.getUser().getId(),
             event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",

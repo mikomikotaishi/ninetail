@@ -1,7 +1,5 @@
 package bot.ninetail.audio;
 
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -13,9 +11,17 @@ import jakarta.annotation.Nonnull;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.source.bandcamp.BandcampAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.http.HttpAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.track.playback.NonAllocatingAudioFrameBuffer;
 
 import dev.lavalink.youtube.YoutubeAudioSourceManager;
+import dev.lavalink.youtube.clients.AndroidVr;
+import dev.lavalink.youtube.clients.Music;
+import dev.lavalink.youtube.clients.Web;
+import dev.lavalink.youtube.clients.WebEmbedded;
 
 import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
@@ -27,7 +33,7 @@ import net.dv8tion.jda.api.managers.AudioManager;
  */
 public class BotAudio {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(BotAudio.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(BotAudio.class.getName());
 
     /**
      * Map of guild IDs to bot audio instances.
@@ -115,7 +121,17 @@ public class BotAudio {
     private BotAudio() {
         this.manager = new DefaultAudioPlayerManager();
         this.manager.getConfiguration().setFrameBufferFactory(NonAllocatingAudioFrameBuffer::new);
-        this.manager.registerSourceManager(new YoutubeAudioSourceManager(true));
+        // The default clients, with the YouTube Kids client added behind them to pick up the
+        // videos that are marked as made for kids, which the others all refuse to serve.
+        this.manager.registerSourceManager(new YoutubeAudioSourceManager(
+            true, new Music(), new AndroidVr(), new AndroidKids(), new Web(), new WebEmbedded()
+        ));
+        this.manager.registerSourceManager(SoundCloudAudioSourceManager.createDefault());
+        this.manager.registerSourceManager(new BandcampAudioSourceManager());
+        this.manager.registerSourceManager(new TwitchStreamAudioSourceManager());
+        // Registered last, as it accepts any remaining link and would otherwise take the links
+        // belonging to the sources above.
+        this.manager.registerSourceManager(new HttpAudioSourceManager());
         this.player = manager.createPlayer();
         this.scheduler = new TrackScheduler(this, player);
         player.addListener(scheduler);
@@ -250,7 +266,7 @@ public class BotAudio {
      * @param reason The reason for disconnection.
      */
     public void disconnect(String reason) {
-        LOGGER.log(Level.INFO, reason);
+        LOGGER.log(System.Logger.Level.INFO, reason);
         disconnect();
     }
 
@@ -261,7 +277,7 @@ public class BotAudio {
      * @param args The arguments to format the reason with.
      */
     public void disconnect(String reason, Object... args) {
-        LOGGER.log(Level.INFO, reason, args);
+        LOGGER.log(System.Logger.Level.INFO, reason, args);
         disconnect();
     }
 

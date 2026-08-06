@@ -2,8 +2,6 @@ package bot.ninetail.clients;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.net.URI;
 import java.net.http.*;
 
@@ -21,7 +19,7 @@ import com.google.genai.Client;
  */
 public class GeminiClient extends AIClient {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(RandomFoxClient.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(GeminiClient.class.getName());
 
     @Nonnull
     private final Client geminiClient;

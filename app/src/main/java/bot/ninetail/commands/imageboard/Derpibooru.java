@@ -1,8 +1,6 @@
 package bot.ninetail.commands.imageboard;
 
 import java.io.IOException;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.util.ArrayList;
 
 import jakarta.annotation.Nonnull;
@@ -27,7 +25,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 @UtilityClass
 public final class Derpibooru implements ApiCommand {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(Derpibooru.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(Derpibooru.class.getName());
 
     /**
      * The Derpibooru client.
@@ -41,7 +39,7 @@ public final class Derpibooru implements ApiCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        LOGGER.log(Level.INFO, "Derpibooru command invoked by {0} ({1}) of guild {2} ({3})", 
+        LOGGER.log(System.Logger.Level.INFO, "Derpibooru command invoked by {0} ({1}) of guild {2} ({3})", 
             event.getUser().getGlobalName(), 
             event.getUser().getId(),
             event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
@@ -49,7 +47,7 @@ public final class Derpibooru implements ApiCommand {
         );
         
         if (derpibooruClient.getApiKey() == null) {
-            LOGGER.log(Level.WARNING, "Failed to invoke Derpibooru command due to missing API token.");
+            LOGGER.log(System.Logger.Level.WARNING, "Failed to invoke Derpibooru command due to missing API token.");
             event.reply("Sorry, Derpibooru API token was not provided, I cannot retrieve anything.").queue();
             return;
         }
@@ -66,7 +64,7 @@ public final class Derpibooru implements ApiCommand {
         String tagsDisplay = String.join(", ", tagsList);
 
         try {
-            LOGGER.log(Level.INFO, "Attempting to retrieve images for tags: {0}", tagsDisplay);
+            LOGGER.log(System.Logger.Level.INFO, "Attempting to retrieve images for tags: {0}", tagsDisplay);
             JsonArray images = derpibooruClient.getPosts(tagsArray);
             if (images.isEmpty()) {
                 event.reply(String.format("No images found for tags: %s.", 
@@ -86,12 +84,12 @@ public final class Derpibooru implements ApiCommand {
             String imageUrl = image.getString("view_url");
             event.reply(imageUrl).queue();
         } catch (IOException e) {
-            LOGGER.log(Level.WARNING, "Failed to retrieve images for tags: {0}", tagsDisplay);
+            LOGGER.log(System.Logger.Level.WARNING, "Failed to retrieve images for tags: {0}", tagsDisplay);
             event.reply(String.format("Error retrieving images for tags: %s.", 
                 TextFormat.markdownVerbatim(tagsDisplay))
             ).queue();
         } catch (InterruptedException e) {
-            LOGGER.log(Level.WARNING, "Interrupted while retrieving images for tags: {0}", tagsDisplay);
+            LOGGER.log(System.Logger.Level.WARNING, "Interrupted while retrieving images for tags: {0}", tagsDisplay);
             event.reply(String.format("Interrupted while retrieving images for tags: %s.", 
                 TextFormat.markdownVerbatim(tagsDisplay))
             ).queue();

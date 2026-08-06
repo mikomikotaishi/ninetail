@@ -1,7 +1,5 @@
 package bot.ninetail.system;
 
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -18,7 +16,7 @@ import lombok.Getter;
  */
 public class BotDatabaseManager {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(BotDatabaseManager.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(BotDatabaseManager.class.getName());
 
     /**
      * The singleton instance of CoinsRegistry.
@@ -71,9 +69,9 @@ public class BotDatabaseManager {
                 )
             """);
             
-            LOGGER.log(Level.INFO, "Database tables initialized successfully");
+            LOGGER.log(System.Logger.Level.INFO, "Database tables initialized successfully");
         } catch (SQLException e) {
-            LOGGER.log(Level.ERROR, "Failed to initialize database: {0}", e.getMessage());
+            LOGGER.log(System.Logger.Level.ERROR, "Failed to initialize database: {0}", e.getMessage());
             throw e;
         }
     }

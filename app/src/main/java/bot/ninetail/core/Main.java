@@ -1,7 +1,5 @@
 package bot.ninetail.core;
 
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.util.EnumSet;
 
 import javax.security.auth.login.LoginException;
@@ -29,7 +27,7 @@ import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 @UtilityClass
 public final class Main {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(Main.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(Main.class.getName());
     
     static {
         LoggerConfig.configure();
@@ -56,7 +54,7 @@ public final class Main {
             GatewayIntent.SCHEDULED_EVENTS
         );
 
-        LOGGER.log(Level.INFO, "Starting bot.");
+        LOGGER.log(System.Logger.Level.INFO, "Starting bot.");
         JDA api = JDABuilder.createDefault(BOT_TOKEN, INTENTS)
             .setAudioModuleConfig(new AudioModuleConfig().withDaveSessionFactory(new JDaveSessionFactory()))
             .build()
@@ -67,14 +65,14 @@ public final class Main {
         CommandHandler.loadCommands(commands);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            LOGGER.log(Level.INFO, "Invoking shutdown hook");
+            LOGGER.log(System.Logger.Level.INFO, "Invoking shutdown hook");
             System.out.println("Shutting down bot.");
             LoggerConfig.close();
         }));
 
         DatabaseHandler.loadDatabase();
 
-        LOGGER.log(Level.INFO, "Instantiating instance.");
+        LOGGER.log(System.Logger.Level.INFO, "Instantiating instance.");
         Ninetail botInstance = new Ninetail(api);
         api.addEventListener(botInstance);
     }

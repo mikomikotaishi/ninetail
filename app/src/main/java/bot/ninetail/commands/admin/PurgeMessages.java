@@ -1,7 +1,5 @@
 package bot.ninetail.commands.admin;
 
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.util.List;
 
 import jakarta.annotation.Nonnull;
@@ -24,7 +22,7 @@ import net.dv8tion.jda.api.interactions.InteractionHook;
 @UtilityClass
 public final class PurgeMessages implements BasicCommand {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(PurgeMessages.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(PurgeMessages.class.getName());
 
     /**
      * Invokes the command.
@@ -32,7 +30,7 @@ public final class PurgeMessages implements BasicCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        LOGGER.log(Level.INFO, "PurgeMessages command invoked by {0} ({1}) of guild {2} ({3})", 
+        LOGGER.log(System.Logger.Level.INFO, "PurgeMessages command invoked by {0} ({1}) of guild {2} ({3})", 
             event.getUser().getGlobalName(), 
             event.getUser().getId(),
             event.getGuild().getName(),
@@ -46,7 +44,7 @@ public final class PurgeMessages implements BasicCommand {
         hook.setEphemeral(true);
 
         if (!event.getMember().hasPermission(Permission.MESSAGE_MANAGE)) {
-            LOGGER.log(Level.INFO, "Attempted (failed) purge attempt by {0} ({1})", 
+            LOGGER.log(System.Logger.Level.INFO, "Attempted (failed) purge attempt by {0} ({1})", 
                 event.getUser().getGlobalName(), event.getUser().getId()
             );
             hook.sendMessage("You do not have the required permissions to manage messages in this server.").queue();
@@ -54,7 +52,7 @@ public final class PurgeMessages implements BasicCommand {
         }
 
         if (!event.getGuild().getSelfMember().hasPermission(Permission.MESSAGE_MANAGE)) {
-            LOGGER.log(Level.INFO, "Attempted (failed) purge attempt by {0} ({1})", 
+            LOGGER.log(System.Logger.Level.INFO, "Attempted (failed) purge attempt by {0} ({1})", 
                 event.getUser().getGlobalName(), event.getUser().getId()
             );
             hook.sendMessage("I don't have the required permissions to manage messages in this server.").queue();
@@ -78,13 +76,13 @@ public final class PurgeMessages implements BasicCommand {
                 messages.get(0).delete().queue(
                     v -> {
                         hook.sendMessage(String.format("Successfully deleted %s messages.", messages.size())).queue();
-                        LOGGER.log(Level.INFO, "PurgeMessages executed by {0} ({1}): deleted {2} message(s)", 
+                        LOGGER.log(System.Logger.Level.INFO, "PurgeMessages executed by {0} ({1}): deleted {2} message(s)", 
                             event.getUser().getGlobalName(), event.getUser().getId(), messages.size()
                         );
                     },
                     error -> {
                         hook.sendMessage("Failed to delete messages: " + error.getMessage()).queue();
-                        LOGGER.log(Level.WARNING, "Failed to delete messages: {0}", error.getMessage());
+                        LOGGER.log(System.Logger.Level.WARNING, "Failed to delete messages: {0}", error.getMessage());
                     }
                 );
             } else {
@@ -100,19 +98,19 @@ public final class PurgeMessages implements BasicCommand {
                 channel.deleteMessages(recentMessages).queue(
                     v -> {
                         hook.sendMessage("Successfully deleted " + recentMessages.size() + " message(s).").queue();
-                        LOGGER.log(Level.INFO, "PurgeMessages executed by {0} ({1}): deleted {2} message(s)", 
+                        LOGGER.log(System.Logger.Level.INFO, "PurgeMessages executed by {0} ({1}): deleted {2} message(s)", 
                             event.getUser().getGlobalName(), event.getUser().getId(), recentMessages.size()
                         );
                     },
                     error -> {
                         hook.sendMessage("Failed to delete messages: " + error.getMessage()).queue();
-                        LOGGER.log(Level.WARNING, "Failed to delete messages: {0}", error.getMessage());
+                        LOGGER.log(System.Logger.Level.WARNING, "Failed to delete messages: {0}", error.getMessage());
                     }
                 );
             }
         }, error -> {
             hook.sendMessage("Failed to retrieve messages: " + error.getMessage()).queue();
-            LOGGER.log(Level.WARNING, "Failed to retrieve messages: {0}", error.getMessage());
+            LOGGER.log(System.Logger.Level.WARNING, "Failed to retrieve messages: {0}", error.getMessage());
         });
     }
 }

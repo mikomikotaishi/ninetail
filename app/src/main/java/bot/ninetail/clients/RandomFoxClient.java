@@ -2,8 +2,6 @@ package bot.ninetail.clients;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.net.URI;
 import java.net.http.*;
 
@@ -22,7 +20,7 @@ import bot.ninetail.structures.clients.RandomImageClient;
  */
 public class RandomFoxClient extends RandomImageClient {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(RandomFoxClient.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(RandomFoxClient.class.getName());
 
     /**
      * The base URL for the RandomFox API.
@@ -52,13 +50,13 @@ public class RandomFoxClient extends RandomImageClient {
             .build();
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        LOGGER.log(Level.INFO, "Obtaining response.");
+        LOGGER.log(System.Logger.Level.INFO, "Obtaining response.");
 
         if (response.statusCode() != 200) {
-            LOGGER.log(Level.ERROR, "Failed to execute HTTP request!");
+            LOGGER.log(System.Logger.Level.ERROR, "Failed to execute HTTP request!");
             throw new IOException("Unexpected response code: " + response.statusCode());
         }
-        LOGGER.log(Level.INFO, "Successfully obtained response.");
+        LOGGER.log(System.Logger.Level.INFO, "Successfully obtained response.");
         String responseBody = response.body();
 
         try (JsonReader jsonReader = Json.createReader(new StringReader(responseBody))) {

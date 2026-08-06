@@ -1,7 +1,5 @@
 package bot.ninetail.game.natives.chess;
 
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.lang.foreign.*;
 import java.lang.invoke.MethodHandle;
 import java.nio.file.Path;
@@ -21,7 +19,7 @@ import bot.ninetail.game.natives.Engine;
  */
 public class ChessEngine extends Engine {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(ChessEngine.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(ChessEngine.class.getName());
     
     @Nonnull
     private final MethodHandle initChessEngineHandle;
@@ -115,7 +113,7 @@ public class ChessEngine extends Engine {
         arena = Arena.ofShared();
         Linker linker = Linker.nativeLinker();
         Path libPath = Paths.get(System.getProperty("user.dir"), ConfigNames.ENGINE_CHESS_PATH).toAbsolutePath();
-        LOGGER.log(Level.INFO, "Loading chess library from: {0}", libPath);
+        LOGGER.log(System.Logger.Level.INFO, "Loading chess library from: {0}", libPath);
         SymbolLookup symbolLookup = SymbolLookup.libraryLookup(libPath.toString(), arena);
         
         initChessEngineHandle = linker.downcallHandle(
@@ -176,9 +174,9 @@ public class ChessEngine extends Engine {
      */
     public void initChessEngine() {
         try {
-            LOGGER.log(Level.INFO, "Initialising chess engine...");
+            LOGGER.log(System.Logger.Level.INFO, "Initialising chess engine...");
             initChessEngineHandle.invoke();
-            LOGGER.log(Level.INFO, "Chess engine initialised successfully");
+            LOGGER.log(System.Logger.Level.INFO, "Chess engine initialised successfully");
         } catch (Throwable t) {
             throw new RuntimeException("Failed to initialise chess engine", t);
         }
@@ -194,21 +192,21 @@ public class ChessEngine extends Engine {
             MemorySegment result = (MemorySegment)getBoardStateHandle.invoke();
             
             if (result == null) {
-                LOGGER.log(Level.WARNING, "getBoardState: Native call returned null");
+                LOGGER.log(System.Logger.Level.WARNING, "getBoardState: Native call returned null");
                 return "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
             }
             
             long strLen = strlen(result);
             if (strLen <= 0) {
-                LOGGER.log(Level.WARNING, "getBoardState: Native call returned empty string");
+                LOGGER.log(System.Logger.Level.WARNING, "getBoardState: Native call returned empty string");
                 return "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
             }
             
             String resultStr = result.getString(0);
-            LOGGER.log(Level.INFO, "Java: getBoardState returned: {0}", resultStr);
+            LOGGER.log(System.Logger.Level.INFO, "Java: getBoardState returned: {0}", resultStr);
             return resultStr;
         } catch (Throwable t) {
-            LOGGER.log(Level.WARNING, "getBoardState exception: {0}", t);
+            LOGGER.log(System.Logger.Level.WARNING, "getBoardState exception: {0}", t);
             t.printStackTrace();
             return "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         }

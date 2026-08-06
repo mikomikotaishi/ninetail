@@ -1,7 +1,5 @@
 package bot.ninetail.structures.commands;
 
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +12,7 @@ import bot.ninetail.util.RandomNumberGenerator;
  */
 public abstract class ContentResponder {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(ContentResponder.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(ContentResponder.class.getName());
 
     /**
      * Maps each ContentResponder subclass to its specific contents.
@@ -72,10 +70,10 @@ public abstract class ContentResponder {
                 }
             } catch (ClassNotFoundException e) {
                 unfoundClass = className;
-                LOGGER.log(Level.WARNING, "Warning: class not found: {0}", unfoundClass);
+                LOGGER.log(System.Logger.Level.WARNING, "Warning: class not found: {0}", unfoundClass);
             }
         }
-        LOGGER.log(Level.ERROR, "Failed to determine caller class: No ContentResponder subclass ({0}) found in stack trace", unfoundClass);
+        LOGGER.log(System.Logger.Level.ERROR, "Failed to determine caller class: No ContentResponder subclass ({0}) found in stack trace", unfoundClass);
         return null;
     }
 }

@@ -16,9 +16,22 @@ To start the bot, use `./gradlew run`.
 
 To shut off the bot, run the `shutdown` bot command with your shutdown password. (`Ctrl + C` works too, but the former is preferred.)
 
+## Audio sources
+`/play` accepts a link from any of the following, or plain text to search with:
+
+| Source | Links | Search |
+| --- | --- | --- |
+| YouTube | videos, playlists, live streams, YouTube Kids links | default, or `ytsearch:` |
+| YouTube Music | tracks | `ytmsearch:` |
+| SoundCloud | tracks, playlists | `scsearch:` |
+| Bandcamp | tracks, albums | — |
+| Twitch | live channels | — |
+| Direct links | any link to an audio file or radio stream | — |
+
+Note that the bot fetches whatever direct link it is given, so it can be pointed at hosts reachable from the machine it runs on. Remove `HttpAudioSourceManager` from `BotAudio` if that is not wanted.
+
 ## TODO:
 Upcoming features:
-- Include support for other streaming services
 - Implement imageboard image grabbing utilities
 - Implement simple games with the bot (using C++)
 

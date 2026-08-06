@@ -2,13 +2,10 @@ package bot.ninetail.clients;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.*;
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 
 import jakarta.annotation.Nonnull;
 import jakarta.json.Json;
@@ -26,7 +23,7 @@ import bot.ninetail.system.ConfigLoader;
  */
 public class E621Client extends ImageboardClient {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(E621Client.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(E621Client.class.getName());
 
     /**
      * The base URL for e621.
@@ -53,12 +50,12 @@ public class E621Client extends ImageboardClient {
      */
     public JsonArray getPosts(@Nonnull String... tags) throws IOException, InterruptedException {
         if (getApiKey() == null || getApiKey().isEmpty()) {
-            LOGGER.log(Level.ERROR, "e621 API key missing!");
+            LOGGER.log(System.Logger.Level.ERROR, "e621 API key missing!");
             throw new IllegalArgumentException("No e621 token found!");
         }
 
         if (getLogin() == null || getLogin().isEmpty()) {
-            LOGGER.log(Level.ERROR, "e621 login missing!");
+            LOGGER.log(System.Logger.Level.ERROR, "e621 login missing!");
             throw new IllegalArgumentException("No e621 login found!");
         }
 
@@ -86,21 +83,21 @@ public class E621Client extends ImageboardClient {
             .uri(URI.create(url))
             .header("User-Agent", String.format("NinetailBot/1.0 (by %s on e621)", getLogin()))
             .build();
-        LOGGER.log(Level.INFO, "Issuing request to e621 for tags: {0}", combinedTags);
+        LOGGER.log(System.Logger.Level.INFO, "Issuing request to e621 for tags: {0}", combinedTags);
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        LOGGER.log(Level.INFO, "Obtaining response.");
+        LOGGER.log(System.Logger.Level.INFO, "Obtaining response.");
         if (response.statusCode() != 200) {
-            LOGGER.log(Level.ERROR, "Failed to execute HTTP request! Status code: {0}, Response: {1}", 
+            LOGGER.log(System.Logger.Level.ERROR, "Failed to execute HTTP request! Status code: {0}, Response: {1}", 
                 response.statusCode(), response.body());
             throw new IOException("Failed to execute HTTP request");
         }
-        LOGGER.log(Level.INFO, "Successfully obtained response.");
+        LOGGER.log(System.Logger.Level.INFO, "Successfully obtained response.");
         String responseBody = response.body();
         
         try (JsonReader jsonReader = Json.createReader(new StringReader(responseBody))) {
             JsonObject jsonResponse = jsonReader.readObject();
             if (!jsonResponse.containsKey("posts")) {
-                LOGGER.log(Level.ERROR, "No 'posts' key in e621 response");
+                LOGGER.log(System.Logger.Level.ERROR, "No 'posts' key in e621 response");
                 return Json.createArrayBuilder().build();
             }
             return jsonResponse.getJsonArray("posts");

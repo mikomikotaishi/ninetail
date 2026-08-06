@@ -2,8 +2,6 @@ package bot.ninetail.clients;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.*;
@@ -23,7 +21,7 @@ import bot.ninetail.structures.clients.TextManipulatorClient;
  */
 public class UwuifyClient extends TextManipulatorClient {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(UwuifyClient.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(UwuifyClient.class.getName());
 
     /**
      * The base URL for the Owoify API.
@@ -57,16 +55,16 @@ public class UwuifyClient extends TextManipulatorClient {
             .uri(URI.create(url))
             .build();
         
-        LOGGER.log(Level.INFO, "Issuing request to Owoify API for text: {0}", text);
+        LOGGER.log(System.Logger.Level.INFO, "Issuing request to Owoify API for text: {0}", text);
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        LOGGER.log(Level.INFO, "Obtaining response...");
+        LOGGER.log(System.Logger.Level.INFO, "Obtaining response...");
 
         if (response.statusCode() != 200) {
-            LOGGER.log(Level.ERROR, "Failed to execute HTTP request!");
+            LOGGER.log(System.Logger.Level.ERROR, "Failed to execute HTTP request!");
             throw new IOException("Failed to execute HTTP request: " + response.statusCode());
         }
 
-        LOGGER.log(Level.INFO, "Successfully obtained response.");
+        LOGGER.log(System.Logger.Level.INFO, "Successfully obtained response.");
         String responseBody = response.body();
         
         try (JsonReader jsonReader = Json.createReader(new StringReader(responseBody))) {

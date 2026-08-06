@@ -2,8 +2,6 @@ package bot.ninetail.clients;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.*;
@@ -24,7 +22,7 @@ import bot.ninetail.system.ConfigLoader;
  */
 public class Rule34Client extends ImageboardClient {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(Rule34Client.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(Rule34Client.class.getName());
 
     /**
      * The base URL for Rule34.
@@ -51,12 +49,12 @@ public class Rule34Client extends ImageboardClient {
      */
     public JsonArray getPosts(@Nonnull String... tags) throws IOException, InterruptedException {
         if (getApiKey() == null || getApiKey().isEmpty()) {
-            LOGGER.log(Level.ERROR, "Rule34 API key missing!");
+            LOGGER.log(System.Logger.Level.ERROR, "Rule34 API key missing!");
             throw new IllegalArgumentException("No Rule34 token found!");
         }
         
         if (getLogin() == null || getLogin().isEmpty()) {
-            LOGGER.log(Level.ERROR, "Rule34 user ID missing!");
+            LOGGER.log(System.Logger.Level.ERROR, "Rule34 user ID missing!");
             throw new IllegalArgumentException("No Rule34 user ID found!");
         }
 
@@ -86,15 +84,15 @@ public class Rule34Client extends ImageboardClient {
             .header("Accept-Language", "en-US,en;q=0.9")
             .header("Referer", "https://rule34.xxx/")
             .build();
-        LOGGER.log(Level.INFO, "Issuing request to Rule34 for tags: {0}", combinedTags);
+        LOGGER.log(System.Logger.Level.INFO, "Issuing request to Rule34 for tags: {0}", combinedTags);
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        LOGGER.log(Level.INFO, "Obtaining response.");
+        LOGGER.log(System.Logger.Level.INFO, "Obtaining response.");
         if (response.statusCode() != 200) {
-            LOGGER.log(Level.ERROR, "Failed to execute HTTP request! Status code: {0}, Response: {1}", 
+            LOGGER.log(System.Logger.Level.ERROR, "Failed to execute HTTP request! Status code: {0}, Response: {1}", 
                 response.statusCode(), response.body());
             throw new IOException("Failed to execute HTTP request: " + response.statusCode());
         }
-        LOGGER.log(Level.INFO, "Successfully obtained response.");
+        LOGGER.log(System.Logger.Level.INFO, "Successfully obtained response.");
         String responseBody = response.body();
         
         try (JsonReader jsonReader = Json.createReader(new StringReader(responseBody))) {

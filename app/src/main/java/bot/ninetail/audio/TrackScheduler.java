@@ -1,7 +1,5 @@
 package bot.ninetail.audio;
 
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -11,6 +9,7 @@ import bot.ninetail.util.TemporalFormatting;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
+import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 
@@ -22,7 +21,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
  */
 public class TrackScheduler extends AudioEventAdapter {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(TrackScheduler.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(TrackScheduler.class.getName());
 
     /**
      * The bot audio instance.
@@ -72,11 +71,11 @@ public class TrackScheduler extends AudioEventAdapter {
     public void queue(@Nonnull AudioTrack track) {
         String trackInfo = String.format("%s (%s)", track.getInfo().title, TemporalFormatting.getFormattedTime(track.getInfo().length));
         if (!player.startTrack(track, true)) {
-            LOGGER.log(Level.INFO, "Queued track: {0}", track.getInfo().title);
+            LOGGER.log(System.Logger.Level.INFO, "Queued track: {0}", track.getInfo().title);
             queue.offer(track);
             botAudio.getTextChannel().sendMessage(String.format("Queued track: **%s**", trackInfo)).queue();
         } else {
-            LOGGER.log(Level.INFO, "Now playing: {0}", track.getInfo().title);
+            LOGGER.log(System.Logger.Level.INFO, "Now playing: {0}", track.getInfo().title);
             botAudio.markActive();
             sendNowPlayingMessage(track);
         }
@@ -94,15 +93,33 @@ public class TrackScheduler extends AudioEventAdapter {
         if (endReason.mayStartNext) {
             AudioTrack nextTrack = queue.poll();
             if (nextTrack != null) {
-                LOGGER.log(Level.INFO, "Current song ended. Beginning next song...");
+                LOGGER.log(System.Logger.Level.INFO, "Current song ended. Beginning next song...");
                 player.startTrack(nextTrack, false);
                 botAudio.markActive();
                 sendNowPlayingMessage(nextTrack);
             } else {
-                LOGGER.log(Level.INFO, "Song queue empty.");
+                LOGGER.log(System.Logger.Level.INFO, "Song queue empty.");
                 botAudio.getTextChannel().sendMessage("Queue is empty. Use `/play` to queue new songs.").queue();
             }
         }
+    }
+
+    /**
+     * Reports a track that could not be played.
+     * Without this, playback failures are silent: the track is announced as playing, no audio
+     * ever arrives, and the queue moves on without explanation.
+     *
+     * @param player The audio player.
+     * @param track The track that failed.
+     * @param exception The reason the track failed.
+     */
+    @Override
+    public void onTrackException(AudioPlayer player, AudioTrack track, FriendlyException exception) {
+        String reason = AudioErrors.summarise(exception);
+        LOGGER.log(System.Logger.Level.WARNING, "Failed to play {0}: {1}", track.getInfo().title, reason);
+        botAudio.getTextChannel().sendMessage(
+            String.format("Could not play **%s**: %s", track.getInfo().title, reason)
+        ).queue();
     }
 
     /**
@@ -111,10 +128,10 @@ public class TrackScheduler extends AudioEventAdapter {
     public void skip() {
         AudioTrack nextTrack = queue.poll();
         if (nextTrack != null) {
-            LOGGER.log(Level.INFO, "Skipping to next track...");
+            LOGGER.log(System.Logger.Level.INFO, "Skipping to next track...");
             player.startTrack(nextTrack, false);
         } else {
-            LOGGER.log(Level.INFO, "No more tracks to skip.");
+            LOGGER.log(System.Logger.Level.INFO, "No more tracks to skip.");
             player.stopTrack();
         }
     }

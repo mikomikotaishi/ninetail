@@ -1,8 +1,6 @@
 package bot.ninetail.commands.imageboard;
 
 import java.io.IOException;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 
 import jakarta.annotation.Nonnull;
 import jakarta.json.JsonArray;
@@ -25,7 +23,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 @UtilityClass
 public final class GyateBooru implements ApiCommand {
     @Nonnull
-    private static final Logger LOGGER = System.getLogger(GyateBooru.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(GyateBooru.class.getName());
 
     /**
      * The Gyate Booru client.
@@ -39,7 +37,7 @@ public final class GyateBooru implements ApiCommand {
      * @param event The event that triggered the command.
      */
     public static void invoke(@Nonnull SlashCommandInteractionEvent event) {
-        LOGGER.log(Level.INFO, "Gyate Booru command invoked by {0} ({1}) of guild {2} ({3})", 
+        LOGGER.log(System.Logger.Level.INFO, "Gyate Booru command invoked by {0} ({1}) of guild {2} ({3})", 
             event.getUser().getGlobalName(), 
             event.getUser().getId(),
             event.getGuild() != null ? event.getGuild().getName() : "DIRECTMESSAGES",
@@ -47,14 +45,14 @@ public final class GyateBooru implements ApiCommand {
         );
         
         if (gyatebooruClient.getApiKey() == null) {
-            LOGGER.log(Level.WARNING, "Failed to invoke Gyate Booru command due to missing API token.");
+            LOGGER.log(System.Logger.Level.WARNING, "Failed to invoke Gyate Booru command due to missing API token.");
             event.reply("Sorry, Gyate Booru API token was not provided, I cannot retrieve anything.").queue();
             return;
         }
         String tag1 = event.getOption("tag1").getAsString();
         String tag2 = event.getOption("tag2") != null ? event.getOption("tag2").getAsString() : null;
         try {
-            LOGGER.log(Level.INFO, "Attempting to retrieve posts for tags: {0}{1}", 
+            LOGGER.log(System.Logger.Level.INFO, "Attempting to retrieve posts for tags: {0}{1}", 
                 tag1, (tag2 != null ? ", " + tag2 : "")
             );
             JsonArray posts = gyatebooruClient.getPosts(tag1, tag2);
@@ -74,7 +72,7 @@ public final class GyateBooru implements ApiCommand {
             String imageUrl = post.getString("file_url");
             event.reply(imageUrl).queue();
         } catch (IOException e) {
-            LOGGER.log(Level.WARNING, "Failed to retrieve posts for tags: {0}{1}", 
+            LOGGER.log(System.Logger.Level.WARNING, "Failed to retrieve posts for tags: {0}{1}", 
                 tag1, (tag2 != null ? ", " + tag2 : "")
             );
             event.reply(String.format("Error retrieving posts for tags: %s%s.", 
@@ -82,7 +80,7 @@ public final class GyateBooru implements ApiCommand {
                 tag2 != null ? " and " + TextFormat.markdownVerbatim(tag2) : "")
             ).queue();
         } catch (InterruptedException e) {
-            LOGGER.log(Level.WARNING, "Interrupted while retrieving posts for tags: {0}{1}", 
+            LOGGER.log(System.Logger.Level.WARNING, "Interrupted while retrieving posts for tags: {0}{1}", 
                 tag1, (tag2 != null ? ", " + tag2 : "")
             );
             event.reply(String.format("Interrupted while retrieving posts for tags: %s%s.", 
